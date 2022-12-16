@@ -1,11 +1,18 @@
 import axios from 'axios'
+import { nextConfig } from '../common-value'
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: nextConfig.apiBaseUrl,
 })
 
 axiosInstance.interceptors.request.use((config) => {
-  return { ...config }
+  return {
+    ...config,
+    headers: {
+      ...config.headers,
+      pathName: window?.location?.pathname,
+    },
+  }
 })
 
 axiosInstance.interceptors.response.use(

@@ -1,4 +1,5 @@
 import { OptionsType } from '@/types'
+import { nextConfig } from '../common-value'
 
 export const encodeBase64 = (data: string) => {
   return Buffer.from(data).toString('base64')
@@ -20,7 +21,7 @@ export const generateToken = (content: { userId: string; deviceId: string }) => 
     exp: Math.floor(Date.now() / 1000 + 60 * 60),
   }
 
-  const token = jwt.sign(contentJwt, process.env.NEXT_PUBLIC_SECRET_JWT_KEY || '', {
+  const token = jwt.sign(contentJwt, nextConfig.secretJWTKey, {
     algorithm: 'HS512',
   })
 

@@ -1,3 +1,4 @@
+import { nextConfig } from '@/lib'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
@@ -17,7 +18,7 @@ export const useEventSource = <T,>({
   const [evtSource, setEvtSource] = useState<EventSource>()
   const [evtData, setEvtData] = useState<T>()
 
-  const serverUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+  const serverUrl = nextConfig.apiBaseUrl
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

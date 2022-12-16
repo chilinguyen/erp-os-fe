@@ -1,5 +1,8 @@
 import { useTranslation } from '@/hooks'
 import { OptionsType } from '@/types'
+import getConfig from 'next/config'
+
+const { publicRuntimeConfig } = getConfig()
 
 export const GenderList = () => {
   const male = useTranslation('male')
@@ -70,3 +73,8 @@ export const AccessStatus = () => {
 }
 
 export const formatDate = 'yyyy-MM-dd'
+
+export const nextConfig = {
+  apiBaseUrl: publicRuntimeConfig.API_BASE_URL,
+  secretJWTKey: publicRuntimeConfig.SECRET_JWT_KEY,
+}
