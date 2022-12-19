@@ -1,5 +1,6 @@
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken, getListEditAble, lostOddProps } from '@/lib'
+import { getListEditAble, lostOddProps } from '@/lib'
 import { getDetailPermission, updatePermission } from '@/services/permission.service'
 import { PermissionRequest, PermissionRequestFailure, PermissionResponse } from '@/types/permission'
 import { Button, Grid, Loading, Text } from '@nextui-org/react'
@@ -12,7 +13,7 @@ import { DeletePermissionPopup } from '../inventory/DeletePermissionPopup'
 import { ModifierPermission } from '../inventory/ModifierPermission'
 
 export const PermissionDetail = () => {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
   const router = useRouter()
   const translate = useTranslationFunction()
 
@@ -21,14 +22,7 @@ export const PermissionDetail = () => {
     useState<PermissionResponse>(PermissionResponseDefault)
 
   const viewResult = useApiCall<PermissionResponse, string>({
-    callApi: () =>
-      getDetailPermission(
-        generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        }),
-        router?.query?.id?.toString() ?? '1'
-      ),
+    callApi: () => getDetailPermission(cookies.token, router?.query?.id?.toString() ?? '1'),
     handleSuccess: (message, data) => {
       setPermissionState(data)
     },
@@ -38,7 +32,7 @@ export const PermissionDetail = () => {
     callApi: () =>
       updatePermission(
         router?.query?.id?.toString() ?? '1',
-        generateToken({ userId: cookies.userId, deviceId: cookies.deviceId }),
+        cookies.token,
         lostOddProps<PermissionRequest>(PermissionRequestDefault, permissionState)
       ),
     handleError(status, message) {

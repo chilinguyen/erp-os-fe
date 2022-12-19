@@ -18,8 +18,8 @@ export const resendVerifySignUp = (email: string) => {
   return axiosInstance.post(`${apiRoute.auth.verifySignUp}/resend?email=${email}`)
 }
 
-export const logout = (deviceId: string, token: string) => {
-  return axiosInstance.post(`${apiRoute.auth.logout}?deviceId=${deviceId}`, null, {
+export const logout = (token: string) => {
+  return axiosInstance.post(`${apiRoute.auth.logout}`, null, {
     headers: {
       Authorization: token,
     },

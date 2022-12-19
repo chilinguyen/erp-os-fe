@@ -1,6 +1,6 @@
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken, getListEditAble, lostOddProps, StatusList } from '@/lib'
+import { getListEditAble, lostOddProps, StatusList } from '@/lib'
 import { changeStatusUser, getDetailUser, updateUser } from '@/services'
 import { UserRequest, UserRequestFailure, UserResponseSuccess } from '@/types'
 import { Button, Container, Dropdown, Loading, Text } from '@nextui-org/react'
@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import { DefaultUser, initUserRequest, UserForm } from '../inventory'
 
 export const UserDetail = () => {
-  const [cookies] = useCookies([DEVICE_ID, USER_ID])
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const router = useRouter()
   const translate = useTranslationFunction()
 
@@ -22,10 +22,7 @@ export const UserDetail = () => {
     callApi: () =>
       getDetailUser({
         id: router?.query?.id?.toString() ?? '1',
-        token: generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        }),
+        token: cookies.token,
       }),
     handleSuccess: (message, data) => {
       setUserState(data)
@@ -42,10 +39,7 @@ export const UserDetail = () => {
       updateUser({
         id: UserState.id,
         user: lostOddProps<UserRequest>(initUserRequest, UserState),
-        token: generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        }),
+        token: cookies.token,
       }),
     handleError(status, message) {
       if (status) {
@@ -62,10 +56,7 @@ export const UserDetail = () => {
     callApi: () => {
       return changeStatusUser({
         id: router?.query?.id?.toString() ?? '1',
-        token: generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        }),
+        token: cookies.token,
       })
     },
     handleError: (status, message) => {

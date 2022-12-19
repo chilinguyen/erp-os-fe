@@ -1,6 +1,5 @@
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken } from '@/lib'
 import { logout } from '@/services'
 import { Avatar, Dropdown, Navbar } from '@nextui-org/react'
 import { useRouter } from 'next/router'
@@ -13,17 +12,13 @@ import { RenderItemDesktop } from './RenderItemDesktop'
 import { RenderItemMobile } from './RenderItemMobile'
 
 export const NavBar = () => {
-  const [cookies, , removeCookie] = useCookies([DEVICE_ID, USER_ID])
+  const [cookies, , removeCookie] = useCookies([TOKEN_AUTHENTICATION])
   const router = useRouter()
 
   const translate = useTranslationFunction()
 
   const logoutResult = useApiCall({
-    callApi: () =>
-      logout(
-        cookies.deviceId,
-        generateToken({ userId: cookies.userId, deviceId: cookies.deviceId })
-      ),
+    callApi: () => logout(cookies.token),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -31,8 +26,7 @@ export const NavBar = () => {
     },
     handleSuccess(message) {
       toast.success(translate(message))
-      removeCookie('deviceId')
-      removeCookie('userId')
+      removeCookie(TOKEN_AUTHENTICATION)
       router.push('/login')
     },
   })

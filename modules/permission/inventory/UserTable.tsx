@@ -1,11 +1,12 @@
 import { CustomTable } from '@/components'
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
-import { generateToken, getTotalPage } from '@/lib'
+import { getTotalPage } from '@/lib'
 import {
   HeaderUserTable,
   listFunctionParseValue,
 } from '@/modules/user/management/management.inventory'
-import { getListUser } from '@/services'
+import { getYourListUser } from '@/services'
 import { UserListSuccess, UserResponseSuccess } from '@/types'
 import { Pagination } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
@@ -19,20 +20,13 @@ interface IUserTablePermission {
 }
 
 export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTablePermission) => {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
   const translate = useTranslationFunction()
 
   const [page, setPage] = useState<number>(1)
 
   const userResult = useApiCall<UserListSuccess, String>({
-    callApi: () =>
-      getListUser(
-        generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        }),
-        { page: page.toString() }
-      ),
+    callApi: () => getYourListUser(cookies.token, { page: page.toString() }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

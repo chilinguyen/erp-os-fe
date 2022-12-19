@@ -1,6 +1,5 @@
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken } from '@/lib'
 import { deletePermission } from '@/services'
 import { Button, Modal, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
@@ -9,7 +8,7 @@ import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
 
 export const DeletePermissionPopup = () => {
-  const [cookies] = useCookies([DEVICE_ID, USER_ID])
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const [open, setOpen] = useState(false)
   const router = useRouter()
 
@@ -20,14 +19,7 @@ export const DeletePermissionPopup = () => {
   }
 
   const deleteResult = useApiCall<string, string>({
-    callApi: () =>
-      deletePermission(
-        generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        }),
-        router?.query?.id?.toString() ?? '1'
-      ),
+    callApi: () => deletePermission(cookies.token, router?.query?.id?.toString() ?? '1'),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

@@ -1,6 +1,5 @@
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { updateDictionaryList } from '@/services'
 import { DictionaryKey, LanguageResponseSuccess, UpdateDictionaryListRequest } from '@/types'
@@ -18,7 +17,7 @@ export const IOCsvLanguage = ({
   viewLanguageResult: LanguageResponseSuccess[]
   setLetCall: Function
 }) => {
-  const [cookies] = useCookies([DEVICE_ID, USER_ID])
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const { language } = useSelector(ShareStoreSelector)
   const translate = useTranslationFunction()
   const [open, setOpen] = useState(false)
@@ -32,11 +31,7 @@ export const IOCsvLanguage = ({
   const cancel = useTranslation('cancel')
 
   const data = useApiCall<string, string>({
-    callApi: () =>
-      updateDictionaryList(
-        generateToken({ userId: cookies.userId, deviceId: cookies.deviceId }),
-        stateLanguage
-      ),
+    callApi: () => updateDictionaryList(cookies.token, stateLanguage),
     handleSuccess(message) {
       toast.success(translate(message))
       setLetCall(true)

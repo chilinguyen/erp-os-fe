@@ -1,6 +1,6 @@
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { useResponsive } from '@/hooks/useResponsive'
-import { generateToken } from '@/lib'
 import { getEditableSelect, getViewPointsSelect } from '@/services'
 import { PermissionRequest, PermissionRequestFailure, ViewPointKey } from '@/types'
 import { Collapse, Container, Input, Loading } from '@nextui-org/react'
@@ -26,7 +26,7 @@ export const ModifierPermission = ({
 }: IModifierPermission) => {
   const breakPoint = useResponsive()
   const translate = useTranslationFunction()
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
 
   const setListUser = (listUser: string[]) => {
     handleChangeState({ userId: listUser })
@@ -48,13 +48,7 @@ export const ModifierPermission = ({
   const selectEditable = useTranslation('selectEditable')
 
   const viewPointsResult = useApiCall<ViewPointKey, String>({
-    callApi: () =>
-      getViewPointsSelect(
-        generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        })
-      ),
+    callApi: () => getViewPointsSelect(cookies.token),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -63,13 +57,7 @@ export const ModifierPermission = ({
   })
 
   const editAblesResult = useApiCall<ViewPointKey, String>({
-    callApi: () =>
-      getEditableSelect(
-        generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        })
-      ),
+    callApi: () => getEditableSelect(cookies.token),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

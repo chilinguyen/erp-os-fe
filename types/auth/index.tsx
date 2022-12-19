@@ -3,9 +3,15 @@ export interface LoginRequest {
   password: string
 }
 
+export enum TypeAccount {
+  INTERNAL,
+  EXTERNAL,
+}
+
 export interface LoginResponseSuccess {
   userId: string
-  deviceId: string
+  token: string
+  type: TypeAccount
   verify2Fa: boolean
   needVerify: boolean
 }

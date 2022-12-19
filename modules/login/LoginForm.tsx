@@ -1,12 +1,12 @@
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { encodeBase64 } from '@/lib'
 import { toggleTheme } from '@/redux/general-settings'
 import { callForgotPassword, login } from '@/services'
-import { LoginResponseFailure, LoginResponseSuccess } from '@/types'
+import { LoginResponseFailure, LoginResponseSuccess, TypeAccount } from '@/types'
 import { Button, FormElement, Input, Loading, Modal, Row, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -16,7 +16,7 @@ export const LoginForm = () => {
   const emailRef = useRef<FormElement>(null)
   const passwordRef = useRef<FormElement>(null)
   const router = useRouter()
-  const [cookies, setCookie] = useCookies([DEVICE_ID, USER_ID])
+  const [, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
 
   const dispatch = useDispatch()
@@ -52,7 +52,7 @@ export const LoginForm = () => {
       }
       if (!data.needVerify && !data.verify2Fa) {
         toast.success(translate(message))
-        setCookie(DEVICE_ID, data.deviceId, {
+        setCookie(TOKEN_AUTHENTICATION, data.token, {
           path: '/',
           expires: new Date(new Date().setDate(new Date().getDate() + 7)),
         })
@@ -60,7 +60,12 @@ export const LoginForm = () => {
           path: '/',
           expires: new Date(new Date().setDate(new Date().getDate() + 7)),
         })
-        router.push('/')
+        if (data.type === TypeAccount.INTERNAL) {
+          router.push('/')
+        }
+        if (data.type === TypeAccount.EXTERNAL) {
+          router.push('/home')
+        }
       }
     },
     handleError(status, message) {
@@ -79,12 +84,6 @@ export const LoginForm = () => {
   const handleSignUp = () => {
     router.push('/sign-up')
   }
-
-  useEffect(() => {
-    if (cookies.deviceId && cookies.userId) {
-      router.push('/')
-    }
-  }, [cookies])
 
   const usernameLabel = useTranslation('username')
   const signIn = useTranslation('signIn')

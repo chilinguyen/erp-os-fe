@@ -1,8 +1,8 @@
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { toggleTheme } from '@/redux/general-settings'
 import { resendVerify2FA, resendVerifySignUp, Verify2FA, verifySignUp } from '@/services'
-import { LoginResponseSuccess } from '@/types'
+import { LoginResponseSuccess, TypeAccount } from '@/types'
 import { Button, Input, Loading, Modal, Row, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -14,7 +14,7 @@ import { inputStyles } from './verify.inventory'
 export const VerifyForm = () => {
   const [isCode, setIsCode] = useState<boolean>(false)
   const router = useRouter()
-  const [, setCookie] = useCookies([USER_ID, DEVICE_ID])
+  const [, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
   const [email, setEmail] = useState<string>('')
   const [code, setCode] = useState<string>('')
@@ -56,7 +56,7 @@ export const VerifyForm = () => {
     },
     handleSuccess(message, data) {
       toast.success(translate(message))
-      setCookie(DEVICE_ID, data.deviceId, {
+      setCookie(TOKEN_AUTHENTICATION, data.token, {
         path: '/',
         expires: new Date(new Date().setDate(new Date().getDate() + 7)),
       })
@@ -64,7 +64,12 @@ export const VerifyForm = () => {
         path: '/',
         expires: new Date(new Date().setDate(new Date().getDate() + 7)),
       })
-      router.push('/')
+      if (data.type === TypeAccount.INTERNAL) {
+        router.push('/')
+      }
+      if (data.type === TypeAccount.EXTERNAL) {
+        router.push('/home')
+      }
     },
   })
 

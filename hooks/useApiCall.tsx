@@ -1,4 +1,4 @@
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { setIsForbidden } from '@/redux/authentication'
 import { CommonResponseType } from '@/types'
 import { AxiosResponse } from 'axios'
@@ -23,7 +23,7 @@ export const useApiCall = <T, E>({
 
   const dispatch = useDispatch()
 
-  const [, , removeCookie] = useCookies([DEVICE_ID, USER_ID])
+  const [, , removeCookie] = useCookies([TOKEN_AUTHENTICATION])
 
   const router = useRouter()
 
@@ -47,8 +47,7 @@ export const useApiCall = <T, E>({
           handleError(statusCode, response.data.message)
         }
         if (statusCode === 401) {
-          removeCookie('deviceId')
-          removeCookie('userId')
+          removeCookie(TOKEN_AUTHENTICATION)
           router.push('/login')
         }
         if (statusCode === 403) {

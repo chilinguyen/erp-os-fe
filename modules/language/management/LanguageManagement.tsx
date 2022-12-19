@@ -1,6 +1,5 @@
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { setLanguage } from '@/redux/share-store'
 import { getLanguageByKey, getLanguageList } from '@/services'
@@ -16,17 +15,11 @@ import { LanguageCreatePopup } from '../inventory/LanguageCreatePopup'
 import { OneLanguage } from './OneLanguage'
 
 export const LanguageManagement = () => {
-  const [cookies] = useCookies([DEVICE_ID, USER_ID])
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
 
   const viewLanguageresult = useApiCall<LanguageListResponseSuccess, String>({
-    callApi: () =>
-      getLanguageList(
-        generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        })
-      ),
+    callApi: () => getLanguageList(cookies.token),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -39,11 +32,7 @@ export const LanguageManagement = () => {
   const { languageKey } = useSelector(GeneralSettingsSelector)
 
   const getLanguage = useApiCall<LanguageResponseSuccess, string>({
-    callApi: () =>
-      getLanguageByKey(
-        generateToken({ userId: cookies.userId, deviceId: cookies.deviceId }),
-        languageKey
-      ),
+    callApi: () => getLanguageByKey(cookies.token, languageKey),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

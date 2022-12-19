@@ -12,6 +12,15 @@ export const getListUser = (token: string, params?: QueryParams) => {
   })
 }
 
+export const getYourListUser = (token: string, params?: QueryParams) => {
+  return axiosInstance.get(apiRoute.user.getYourListUser, {
+    params,
+    headers: {
+      Authorization: token,
+    },
+  })
+}
+
 export const getDetailUser = ({ id, token }: { id: string; token: string }) => {
   return axiosInstance.get(apiRoute.user.getDetailUser, {
     headers: {
