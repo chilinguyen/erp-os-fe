@@ -1,5 +1,6 @@
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken, getListEditAble } from '@/lib'
+import { getListEditAble } from '@/lib'
 import { addPermission } from '@/services/permission.service'
 import { PermissionRequest, PermissionRequestFailure } from '@/types'
 import { Button, Loading, Text } from '@nextui-org/react'
@@ -11,7 +12,7 @@ import { PermissionRequestDefault } from '../inventory'
 import { ModifierPermission } from '../inventory/ModifierPermission'
 
 export const PermissionCreate = () => {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
   const router = useRouter()
   const translate = useTranslationFunction()
 
@@ -19,11 +20,7 @@ export const PermissionCreate = () => {
     useState<PermissionRequest>(PermissionRequestDefault)
 
   const createResult = useApiCall<PermissionRequest, PermissionRequestFailure>({
-    callApi: () =>
-      addPermission(
-        generateToken({ userId: cookies.userId, deviceId: cookies.deviceId }),
-        permissionState
-      ),
+    callApi: () => addPermission(cookies.token, permissionState),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

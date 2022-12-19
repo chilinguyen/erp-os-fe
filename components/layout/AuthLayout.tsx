@@ -1,6 +1,5 @@
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall } from '@/hooks'
-import { generateToken } from '@/lib'
 import { resetSignUpRequest } from '@/redux/authentication'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { getInChatRoom, getOutChatRoom } from '@/services'
@@ -13,7 +12,7 @@ import { Modal403 } from '../modals'
 
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
-  const [cookies] = useCookies([DEVICE_ID, USER_ID])
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
   const [chatStatus, setChatStatus] = useState<string>('out')
 
   const dispatch = useDispatch()
@@ -21,18 +20,16 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const outChatRoom = useApiCall({
-    callApi: () =>
-      getOutChatRoom(generateToken({ userId: cookies.userId, deviceId: cookies.deviceId })),
+    callApi: () => getOutChatRoom(cookies.token),
   })
 
   const inChatRoom = useApiCall({
-    callApi: () =>
-      getInChatRoom(generateToken({ userId: cookies.userId, deviceId: cookies.deviceId })),
+    callApi: () => getInChatRoom(cookies.token),
   })
 
   useEffect(() => {
     const onClose = () => {
-      if (cookies.userId && cookies.deviceId) {
+      if (cookies.token) {
         outChatRoom.setLetCall(true)
       }
     }
@@ -47,7 +44,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    if (router.asPath.includes('chat') && cookies.deviceId && cookies.userId) {
+    if (router.asPath.includes('chat') && cookies.token) {
       if (chatStatus !== 'in') {
         inChatRoom.setLetCall(true)
         setChatStatus('in')
@@ -66,7 +63,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       !router.asPath.includes('sign-up') &&
       !router.asPath.includes('verify')
     ) {
-      if (!cookies.deviceId && !cookies.userId) {
+      if (!cookies.token) {
         router.push('/login')
       }
     }
@@ -76,7 +73,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       router.asPath.includes('sign-up') ||
       router.asPath.includes('verify')
     ) {
-      if (cookies.deviceId && cookies.userId) {
+      if (cookies.token) {
         router.push('/')
       }
       dispatch(resetSignUpRequest())

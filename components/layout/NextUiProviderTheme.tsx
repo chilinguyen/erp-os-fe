@@ -1,3 +1,4 @@
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useGetDarkMode, useResponsive, useTranslationFunction } from '@/hooks'
 import { generateToken } from '@/lib'
 import { GeneralSettingsSelector, setGeneralSettings } from '@/redux/general-settings'
@@ -14,7 +15,7 @@ import { toast } from 'react-toastify'
 import { BackDropModal } from '../modals'
 
 export const NextUiProviderTheme = ({ children }: { children: React.ReactNode }) => {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
 
   const { darkTheme, languageKey } = useSelector(GeneralSettingsSelector)
 
@@ -25,8 +26,7 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
   const translate = useTranslationFunction()
 
   const result = useApiCall<GeneralSettingsResponseSuccess, string>({
-    callApi: () =>
-      getGeneralSettings(generateToken({ userId: cookies.userId, deviceId: cookies.deviceId })),
+    callApi: () => getGeneralSettings(cookies.token),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -40,11 +40,7 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
   })
 
   const getLanguage = useApiCall<LanguageResponseSuccess, string>({
-    callApi: () =>
-      getLanguageByKey(
-        generateToken({ userId: cookies.userId, deviceId: cookies.deviceId }),
-        languageKey
-      ),
+    callApi: () => getLanguageByKey(generateToken(cookies.token), languageKey),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -64,10 +60,10 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
   }, [isDark])
 
   useEffect(() => {
-    if (cookies.deviceId && cookies.userId) {
+    if (cookies.token) {
       result.setLetCall(true)
     }
-  }, [cookies.deviceId, cookies.userId])
+  }, [cookies.token])
 
   useEffect(() => {
     dispatch(setLoadingSettings(result.loading))

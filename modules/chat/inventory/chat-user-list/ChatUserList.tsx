@@ -1,7 +1,6 @@
 import { apiRoute } from '@/constants/apiRoutes'
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useEventSource, useResponsive } from '@/hooks'
-import { generateToken } from '@/lib'
 import { getChatRoom } from '@/services'
 import { ChatRoom, UserOnlineResponse } from '@/types'
 import { Loading, useTheme } from '@nextui-org/react'
@@ -18,7 +17,7 @@ interface IChatUserList {
 export const ChatUserList = ({ userChooseId, setUserChoose }: IChatUserList) => {
   const breakPoint = useResponsive()
 
-  const [cookies] = useCookies([DEVICE_ID, USER_ID])
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
   const { theme } = useTheme()
 
@@ -27,12 +26,11 @@ export const ChatUserList = ({ userChooseId, setUserChoose }: IChatUserList) => 
   const event = useEventSource<UserOnlineResponse[]>({
     eventUrl: apiRoute.message.onlineUser,
     eventName: 'get-online-users-event',
-    token: generateToken({ userId: cookies.userId, deviceId: cookies.deviceId }),
+    token: cookies.token,
   })
 
   const getChatRooms = useApiCall<ChatRoom[], string>({
-    callApi: () =>
-      getChatRoom(1, generateToken({ userId: cookies.userId, deviceId: cookies.deviceId })),
+    callApi: () => getChatRoom(1, cookies.token),
   })
 
   const getBackGroundColor = (id: string) => {

@@ -1,5 +1,5 @@
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken } from '@/lib'
 import { addNewLanguage } from '@/services'
 import { AddNewLanguageRequest, LanguageRequest } from '@/types'
 import { Button, Input, Modal, Text } from '@nextui-org/react'
@@ -17,7 +17,7 @@ export const LanguageCreatePopup = ({
   setLetCallList,
   updateStoreLanguage,
 }: ILanguageCreatePopup) => {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
 
   const translate = useTranslationFunction()
 
@@ -38,11 +38,7 @@ export const LanguageCreatePopup = ({
   }
 
   const createResult = useApiCall<LanguageRequest, Record<keyof LanguageRequest, string>>({
-    callApi: () =>
-      addNewLanguage(
-        generateToken({ userId: cookies.userId, deviceId: cookies.deviceId }),
-        languageState
-      ),
+    callApi: () => addNewLanguage(cookies.token, languageState),
     handleSuccess(message) {
       toast.success(translate(message))
       handleClose()

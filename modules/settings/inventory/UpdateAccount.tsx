@@ -1,3 +1,4 @@
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { generateToken, getListEditAble, lostOddProps } from '@/lib'
 import { DefaultUser, UserForm } from '@/modules/user/inventory'
@@ -11,7 +12,7 @@ import { toast } from 'react-toastify'
 import { initUpdateAccountRequest } from './settings.inventory'
 
 export const UpdateAccount = () => {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
 
   const [userState, setUserState] = useState<UserResponseSuccess>(DefaultUser)
@@ -20,10 +21,7 @@ export const UpdateAccount = () => {
     callApi: () =>
       getDetailUser({
         id: cookies.userId,
-        token: generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        }),
+        token: cookies.token,
       }),
     handleSuccess: (message, data) => {
       setUserState(data)
@@ -40,7 +38,7 @@ export const UpdateAccount = () => {
       updateAccountSettings(
         generateToken({
           userId: cookies.userId,
-          deviceId: cookies.deviceId,
+          deviceId: cookies.token,
         }),
         lostOddProps<UpdateAccountRequest>(initUpdateAccountRequest, userState)
       ),

@@ -1,6 +1,7 @@
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { useResponsive } from '@/hooks/useResponsive'
-import { encodeBase64, generateToken } from '@/lib'
+import { encodeBase64 } from '@/lib'
 import { inputStylesUser } from '@/modules/user/inventory'
 import { updatePassword } from '@/services'
 import { UpdatePasswordPayload } from '@/types'
@@ -10,7 +11,7 @@ import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
 
 export const UpdatePassword = () => {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
   const breakPoint = useResponsive()
   const translate = useTranslationFunction()
 
@@ -20,7 +21,7 @@ export const UpdatePassword = () => {
 
   const updateResult = useApiCall<string, UpdatePasswordPayload>({
     callApi: () =>
-      updatePassword(generateToken({ userId: cookies.userId, deviceId: cookies.deviceId }), {
+      updatePassword(cookies.token, {
         oldPassword: encodeBase64(oldPasswordState),
         newPassword: encodeBase64(newPasswordState),
         confirmNewPassword: encodeBase64(confirmPasswordState),

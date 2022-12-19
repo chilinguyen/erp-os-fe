@@ -1,6 +1,7 @@
 export const apiRoute = {
   user: {
     getListUser: 'user/get-list-users',
+    getYourListUser: 'user/get-list-your-users',
     getDetailUser: 'user/get-detail-user',
     changeStatus: 'user/change-status-user',
     addNewUser: 'user/add-new-user',
@@ -25,6 +26,7 @@ export const apiRoute = {
     deletePermission: 'permission/delete-permission',
     addPermission: 'permission/add-new-permission',
     getListPermission: '/permission/get-list-permissions',
+    getListYourPermission: '/permission/get-list-your-permissions',
     getViewPointsSelect: '/permission/get-view-points-select',
     getDetailPermission: '/permission/get-detail-permission',
     getEditableSelect: '/permission/get-editable-select',

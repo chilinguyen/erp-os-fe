@@ -1,5 +1,5 @@
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken } from '@/lib'
 import { updateLanguage } from '@/services'
 import { DictionaryKey, LanguageRequest, LanguageResponseSuccess } from '@/types'
 import { Button, Loading } from '@nextui-org/react'
@@ -15,7 +15,7 @@ interface IOneLanguage {
 }
 
 export const OneLanguage = ({ language, setLetCallList, updateStoreLanguage }: IOneLanguage) => {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
 
   const translate = useTranslationFunction()
 
@@ -24,15 +24,11 @@ export const OneLanguage = ({ language, setLetCallList, updateStoreLanguage }: I
 
   const updateResult = useApiCall<LanguageRequest, Record<keyof LanguageRequest, string>>({
     callApi: () =>
-      updateLanguage(
-        language.id,
-        generateToken({ userId: cookies.userId, deviceId: cookies.deviceId }),
-        {
-          key: language.key,
-          language: language.language,
-          dictionary: dictionaryList,
-        }
-      ),
+      updateLanguage(language.id, cookies.token, {
+        key: language.key,
+        language: language.language,
+        dictionary: dictionaryList,
+      }),
     handleSuccess(message) {
       toast.success(translate(message))
       setLetCallList(true)

@@ -1,5 +1,5 @@
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useResponsive, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken } from '@/lib'
 import { GeneralSettingsSelector, setGeneralSettings } from '@/redux/general-settings'
 import { getGeneralSettings, updateGeneralSettings } from '@/services/settings.service'
 import { GeneralSettingsResponseSuccess, UpdateGeneralFailure } from '@/types'
@@ -11,7 +11,7 @@ import { SettingTheme } from './general-setting.inventory'
 import { SettingLanguage } from './general-setting.inventory/SettingLanguage'
 
 export const GeneralSettings = () => {
-  const [cookie] = useCookies()
+  const [cookie] = useCookies([TOKEN_AUTHENTICATION])
   const translate = useTranslationFunction()
 
   const GeneralSettings = useSelector(GeneralSettingsSelector)
@@ -20,8 +20,7 @@ export const GeneralSettings = () => {
   const responsive = useResponsive()
 
   const viewResult = useApiCall<GeneralSettingsResponseSuccess, string>({
-    callApi: () =>
-      getGeneralSettings(generateToken({ userId: cookie.userId, deviceId: cookie.deviceId })),
+    callApi: () => getGeneralSettings(cookie.token),
     handleSuccess: (message, data) => {
       toast.success(translate(message))
       dispatch(setGeneralSettings(data))
@@ -34,11 +33,7 @@ export const GeneralSettings = () => {
   })
 
   const updateResult = useApiCall<GeneralSettingsResponseSuccess, UpdateGeneralFailure>({
-    callApi: () =>
-      updateGeneralSettings(
-        generateToken({ userId: cookie.userId, deviceId: cookie.deviceId }),
-        GeneralSettings
-      ),
+    callApi: () => updateGeneralSettings(cookie.token, GeneralSettings),
     handleSuccess: (message) => {
       toast.success(translate(message))
     },

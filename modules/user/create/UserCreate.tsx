@@ -1,6 +1,6 @@
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken, getListEditAble, lostOddProps } from '@/lib'
+import { getListEditAble, lostOddProps } from '@/lib'
 import { addNewUser } from '@/services'
 import { UserRequest, UserRequestFailure, UserResponseSuccess } from '@/types'
 import { Button, Loading, Text } from '@nextui-org/react'
@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import { DefaultUser, initUserRequest, UserForm } from '../inventory'
 
 export const UserCreate = () => {
-  const [cookies] = useCookies([DEVICE_ID, USER_ID])
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const router = useRouter()
   const translate = useTranslationFunction()
 
@@ -21,10 +21,7 @@ export const UserCreate = () => {
     callApi: () =>
       addNewUser({
         user: lostOddProps<UserRequest>(initUserRequest, UserState),
-        token: generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.deviceId,
-        }),
+        token: cookies.token,
       }),
     handleError(status, message) {
       if (status !== 400) {

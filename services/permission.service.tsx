@@ -12,6 +12,15 @@ export const getListPermission = (token: string, params?: QueryParams) => {
   })
 }
 
+export const getListYourPermission = (token: string, params?: QueryParams) => {
+  return axiosInstance.get(apiRoute.permissions.getListYourPermission, {
+    params,
+    headers: {
+      Authorization: token,
+    },
+  })
+}
+
 export const addPermission = (token: string, request: PermissionRequest) => {
   return axiosInstance.post(apiRoute.permissions.addPermission, request, {
     headers: {

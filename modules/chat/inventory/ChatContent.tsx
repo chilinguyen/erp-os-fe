@@ -1,5 +1,5 @@
 import { apiRoute } from '@/constants/apiRoutes'
-import { DEVICE_ID, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useEventSource, useResponsive, useScroll, useTranslation } from '@/hooks'
 import { generateToken } from '@/lib'
 import { getOldMessage, sendMessage } from '@/services'
@@ -22,19 +22,14 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
 
   const [message, setMessage] = useState<string>('')
 
-  const [cookie] = useCookies([DEVICE_ID, USER_ID])
+  const [cookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
   const { theme } = useTheme()
 
   const writeMessage = useTranslation('writeMessage')
 
   const getOldMessages = useApiCall<MessageResponseList, string>({
-    callApi: () =>
-      getOldMessage(
-        1,
-        user.id,
-        generateToken({ userId: cookie.userId, deviceId: cookie.deviceId })
-      ),
+    callApi: () => getOldMessage(1, user.id, cookie.token),
   })
 
   useEffect(() => {
@@ -43,7 +38,7 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
 
   const sendMessages = useApiCall<MessageResponse, string>({
     callApi: () =>
-      sendMessage(user.id, generateToken({ userId: cookie.userId, deviceId: cookie.deviceId }), {
+      sendMessage(user.id, cookie.token, {
         message,
       }),
     handleSuccess(message, data) {
@@ -57,7 +52,7 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
   const getLastMessage = useEventSource<MessageResponse>({
     eventUrl: apiRoute.message.getLastMessage,
     eventName: 'get-last-message',
-    token: generateToken({ userId: cookie.userId, deviceId: cookie.deviceId }),
+    token: generateToken(cookie.token),
   })
 
   useEffect(() => {

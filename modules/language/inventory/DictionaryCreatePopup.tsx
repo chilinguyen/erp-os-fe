@@ -1,5 +1,5 @@
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken } from '@/lib'
 import { addNewDictionary } from '@/services'
 import { DictionaryKey } from '@/types'
 import { Button, Input, Modal, Text } from '@nextui-org/react'
@@ -21,7 +21,7 @@ export const DictionaryCreatePopup = ({
   updateStoreLanguage,
   listKeyExist,
 }: IDictionaryCreatePopup) => {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
   const [dictionaryState, setDictionaryState] = useState<DictionaryKey>({})
 
@@ -35,11 +35,7 @@ export const DictionaryCreatePopup = ({
   }
 
   const createResult = useApiCall<DictionaryKey, Record<keyof DictionaryKey, string>>({
-    callApi: () =>
-      addNewDictionary(
-        generateToken({ userId: cookies.userId, deviceId: cookies.deviceId }),
-        dictionaryState
-      ),
+    callApi: () => addNewDictionary(cookies.token, dictionaryState),
     handleSuccess(message) {
       toast.success(translate(message))
       handleClose()
