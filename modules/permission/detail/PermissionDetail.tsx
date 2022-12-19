@@ -1,7 +1,8 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { getListEditAble, lostOddProps } from '@/lib'
-import { getDetailPermission, updatePermission } from '@/services/permission.service'
+import { getMethod, putMethod } from '@/services'
 import { PermissionRequest, PermissionRequestFailure, PermissionResponse } from '@/types/permission'
 import { Button, Grid, Loading, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
@@ -22,7 +23,10 @@ export const PermissionDetail = () => {
     useState<PermissionResponse>(PermissionResponseDefault)
 
   const viewResult = useApiCall<PermissionResponse, string>({
-    callApi: () => getDetailPermission(cookies.token, router?.query?.id?.toString() ?? '1'),
+    callApi: () =>
+      getMethod(apiRoute.permissions.getDetailPermission, cookies.token, {
+        id: router?.query?.id?.toString() ?? '1',
+      }),
     handleSuccess: (message, data) => {
       setPermissionState(data)
     },
@@ -30,9 +34,12 @@ export const PermissionDetail = () => {
 
   const updateResult = useApiCall<PermissionRequest, PermissionRequestFailure>({
     callApi: () =>
-      updatePermission(
-        router?.query?.id?.toString() ?? '1',
+      putMethod(
+        apiRoute.permissions.updatePermission,
         cookies.token,
+        {
+          id: router?.query?.id?.toString() ?? '1',
+        },
         lostOddProps<PermissionRequest>(PermissionRequestDefault, permissionState)
       ),
     handleError(status, message) {
@@ -147,6 +154,7 @@ export const PermissionDetail = () => {
           </Grid.Container>
         </div>
       </div>
+
       <ModifierPermission
         editAble={type === 'read' ? {} : getListEditAble(PermissionRequestDefault)}
         permissionState={permissionState}

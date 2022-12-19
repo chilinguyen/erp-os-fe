@@ -19,10 +19,3 @@ export interface MessageResponse {
   context: string
   created: Date
 }
-
-export interface MessageResponseList {
-  data: MessageResponse[]
-  page: number
-  pageSize: number
-  totalRows: number
-}

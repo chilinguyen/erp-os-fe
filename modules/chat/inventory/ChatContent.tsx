@@ -2,8 +2,8 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useEventSource, useResponsive, useScroll, useTranslation } from '@/hooks'
 import { generateToken } from '@/lib'
-import { getOldMessage, sendMessage } from '@/services'
-import { MessageResponse, MessageResponseList } from '@/types'
+import { getMethod, postMethod } from '@/services'
+import { CommonListResultType, MessageResponse } from '@/types'
 import { Button, Input, Loading, useTheme } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -28,8 +28,9 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
 
   const writeMessage = useTranslation('writeMessage')
 
-  const getOldMessages = useApiCall<MessageResponseList, string>({
-    callApi: () => getOldMessage(1, user.id, cookie.token),
+  const getOldMessages = useApiCall<CommonListResultType<MessageResponse>, string>({
+    callApi: () =>
+      getMethod(apiRoute.message.getOldMessage, cookie.token, { page: '1', id: user.id }),
   })
 
   useEffect(() => {
@@ -38,9 +39,7 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
 
   const sendMessages = useApiCall<MessageResponse, string>({
     callApi: () =>
-      sendMessage(user.id, cookie.token, {
-        message,
-      }),
+      postMethod(apiRoute.message.sendMessage, cookie.token, { message }, { id: user.id }),
     handleSuccess(message, data) {
       const newMessages = messages.filter((item) => item.id !== '')
       newMessages.push(data)

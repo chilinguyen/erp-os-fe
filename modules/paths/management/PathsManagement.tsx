@@ -4,29 +4,27 @@ import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { getTotalPage } from '@/lib'
 import { getMethod } from '@/services'
-import { CommonListResultType, PermissionResponse } from '@/types'
-import { Button, Pagination, Text } from '@nextui-org/react'
-import { useRouter } from 'next/router'
+import { CommonListResultType, PathResponse } from '@/types'
+import { Pagination, Text } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
-import { Header, ListActions } from './management.inventory'
+import { CreatePathPopup } from '../create/CreatePathPopup'
+import { DeletePathPopup } from '../delete/DeletePathPopup'
+import { Header } from './management.inventory'
 
-export const PermissionManagement = () => {
+export const PathsManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
 
+  const [pathSelectedId, setPathSelectedId] = useState<string[]>([])
+
   const [page, setPage] = useState<number>(1)
 
-  const router = useRouter()
+  const pathsPascal = useTranslation('path')
 
-  const permissionManagementPascal = useTranslation('permissionManagementPascal')
-
-  const permissionCreatePascal = useTranslation('permissionCreatePascal')
-
-  const result = useApiCall<CommonListResultType<PermissionResponse>, String>({
-    callApi: () =>
-      getMethod(apiRoute.permissions.getListPermission, cookies.token, { page: page.toString() }),
+  const result = useApiCall<CommonListResultType<PathResponse>, String>({
+    callApi: () => getMethod(apiRoute.paths.getPathList, cookies.token, { page: page.toString() }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -42,33 +40,31 @@ export const PermissionManagement = () => {
 
   const header = Header()
 
-  const listActions = ListActions()
-
   return (
     <>
       <Text showIn="sm" h2>
-        {permissionManagementPascal}
+        {pathsPascal}
       </Text>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Text hideIn="sm" h1>
-          {permissionManagementPascal}
+          {pathsPascal}
         </Text>
-        <Button
-          onClick={() => {
-            router.push('/permission/create')
-          }}
-          size="sm"
-        >
-          {permissionCreatePascal}
-        </Button>
+        <div style={{ display: 'flex', gap: 5 }}>
+          <CreatePathPopup callList={setLetCall} />
+          <DeletePathPopup
+            deleteId={pathSelectedId}
+            setDeleteId={setPathSelectedId}
+            setLetCallList={setLetCall}
+          />
+        </div>
       </div>
-      <CustomTable<PermissionResponse>
+      <CustomTable<PathResponse>
         header={header}
         body={data ? data.result.data : []}
-        listActions={listActions}
         selectionMode="single"
         listFunctionParseValue={{}}
         loading={loading}
+        handleChangeSelection={setPathSelectedId}
       >
         <>{null}</>
       </CustomTable>

@@ -5,7 +5,13 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use((config) => {
-  return { ...config }
+  return {
+    ...config,
+    headers: {
+      ...config.headers,
+      pathName: window?.location?.pathname,
+    },
+  }
 })
 
 axiosInstance.interceptors.response.use(

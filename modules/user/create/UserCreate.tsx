@@ -1,7 +1,8 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { getListEditAble, lostOddProps } from '@/lib'
-import { addNewUser } from '@/services'
+import { postMethod } from '@/services'
 import { UserRequest, UserRequestFailure, UserResponseSuccess } from '@/types'
 import { Button, Loading, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
@@ -19,10 +20,11 @@ export const UserCreate = () => {
 
   const createResult = useApiCall<UserRequest, UserRequestFailure>({
     callApi: () =>
-      addNewUser({
-        user: lostOddProps<UserRequest>(initUserRequest, UserState),
-        token: cookies.token,
-      }),
+      postMethod<UserRequest>(
+        apiRoute.user.addNewUser,
+        cookies.token,
+        lostOddProps<UserRequest>(initUserRequest, UserState)
+      ),
     handleError(status, message) {
       if (status !== 400) {
         toast.error(translate(message))

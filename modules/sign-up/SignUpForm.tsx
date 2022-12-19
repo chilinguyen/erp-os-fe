@@ -1,13 +1,13 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { encodeBase64 } from '@/lib'
 import { authenticationSelector } from '@/redux/authentication'
-import { toggleTheme } from '@/redux/general-settings'
-import { singUp } from '@/services'
-import { SignUpFailure } from '@/types'
+import { postMethod } from '@/services'
+import { SignUpFailure, SignUpRequest } from '@/types'
 import { Button, Loading, Modal, Row, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { SignUpStepSwitch } from './SignStepSwitch'
 
@@ -18,17 +18,11 @@ export const SignUpForm = () => {
 
   const router = useRouter()
 
-  const dispatch = useDispatch()
-
   const translate = useTranslationFunction()
-
-  const handleChangeTheme = () => {
-    dispatch(toggleTheme())
-  }
 
   const { error, loading, setLetCall } = useApiCall<String, SignUpFailure>({
     callApi: () =>
-      singUp({
+      postMethod<SignUpRequest>(apiRoute.auth.signUp, undefined, {
         username: signUpRequest.username,
         password: encodeBase64(signUpRequest.password),
         firstName: signUpRequest.firstName,
@@ -63,7 +57,6 @@ export const SignUpForm = () => {
     if (step > 1) setStep(step - 1)
   }
 
-  const changeTheme = useTranslation('changeTheme')
   const signIn = useTranslation('signIn')
   const next = useTranslation('next')
   const back = useTranslation('back')
@@ -118,12 +111,7 @@ export const SignUpForm = () => {
         <SignUpStepSwitch setStep={setStep} step={step} error={error} />
         <Row />
       </Modal.Body>
-      <Modal.Footer>
-        <Button auto flat onClick={handleChangeTheme}>
-          {changeTheme}
-        </Button>
-        {showButton()}
-      </Modal.Footer>
+      <Modal.Footer>{showButton()}</Modal.Footer>
     </>
   )
 }

@@ -1,8 +1,9 @@
 import { SelectCustom } from '@/components'
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useResponsive, useTranslation, useTranslationFunction } from '@/hooks'
 import { setGeneralSettings } from '@/redux/general-settings'
-import { getLanguageSelectList } from '@/services'
+import { getMethod } from '@/services'
 import { OptionsType } from '@/types'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -24,7 +25,7 @@ export const SettingLanguage = ({ disabled, languageKey, setLetCallUpdate }: ISe
   const [languageOptions, setLanguageOptions] = useState<OptionsType<string>[]>([])
 
   const languageResult = useApiCall<OptionsType<string>[], string>({
-    callApi: () => getLanguageSelectList(cookie.token),
+    callApi: () => getMethod(apiRoute.language.getLanguageSelectList, cookie.token),
     handleSuccess: (message, data) => {
       toast.success(translate(message))
       setLanguageOptions(data)

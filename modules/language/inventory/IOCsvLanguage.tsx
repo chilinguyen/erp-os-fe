@@ -1,7 +1,8 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { ShareStoreSelector } from '@/redux/share-store'
-import { updateDictionaryList } from '@/services'
+import { putMethod } from '@/services'
 import { DictionaryKey, LanguageResponseSuccess, UpdateDictionaryListRequest } from '@/types'
 import { Button, Modal, Text } from '@nextui-org/react'
 import { ChangeEvent, useState } from 'react'
@@ -31,7 +32,8 @@ export const IOCsvLanguage = ({
   const cancel = useTranslation('cancel')
 
   const data = useApiCall<string, string>({
-    callApi: () => updateDictionaryList(cookies.token, stateLanguage),
+    callApi: () =>
+      putMethod(apiRoute.language.updateDictionaryList, cookies.token, undefined, stateLanguage),
     handleSuccess(message) {
       toast.success(translate(message))
       setLetCall(true)

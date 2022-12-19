@@ -1,8 +1,9 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall } from '@/hooks'
 import { resetSignUpRequest } from '@/redux/authentication'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
-import { getInChatRoom, getOutChatRoom } from '@/services'
+import { postMethod } from '@/services'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -20,11 +21,11 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const outChatRoom = useApiCall({
-    callApi: () => getOutChatRoom(cookies.token),
+    callApi: () => postMethod(apiRoute.message.outChatRoom, cookies.token),
   })
 
   const inChatRoom = useApiCall({
-    callApi: () => getInChatRoom(cookies.token),
+    callApi: () => postMethod(apiRoute.message.toChatRoom, cookies.token),
   })
 
   useEffect(() => {

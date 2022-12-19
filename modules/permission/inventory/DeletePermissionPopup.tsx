@@ -1,6 +1,7 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { deletePermission } from '@/services'
+import { putMethod } from '@/services'
 import { Button, Modal, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -19,7 +20,10 @@ export const DeletePermissionPopup = () => {
   }
 
   const deleteResult = useApiCall<string, string>({
-    callApi: () => deletePermission(cookies.token, router?.query?.id?.toString() ?? '1'),
+    callApi: () =>
+      putMethod(apiRoute.permissions.deletePermission, cookies.token, {
+        id: router?.query?.id?.toString() ?? '1',
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

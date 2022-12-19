@@ -54,4 +54,9 @@ export const apiRoute = {
     deleteDictionaryKey: 'language/delete-dictionary-key',
     updateDictionaryList: 'language/update-dictionary-list',
   },
+  paths: {
+    getPathList: 'paths/get-path-list',
+    addNewPath: 'paths/add-new-path',
+    deletePath: 'paths/delete-path',
+  },
 }

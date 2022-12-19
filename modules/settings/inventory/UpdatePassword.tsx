@@ -1,9 +1,10 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { useResponsive } from '@/hooks/useResponsive'
 import { encodeBase64 } from '@/lib'
 import { inputStylesUser } from '@/modules/user/inventory'
-import { updatePassword } from '@/services'
+import { putMethod } from '@/services'
 import { UpdatePasswordPayload } from '@/types'
 import { Button, Input, Loading, Text } from '@nextui-org/react'
 import { useState } from 'react'
@@ -21,7 +22,7 @@ export const UpdatePassword = () => {
 
   const updateResult = useApiCall<string, UpdatePasswordPayload>({
     callApi: () =>
-      updatePassword(cookies.token, {
+      putMethod(apiRoute.settings.updatePassword, cookies.token, undefined, {
         oldPassword: encodeBase64(oldPasswordState),
         newPassword: encodeBase64(newPasswordState),
         confirmNewPassword: encodeBase64(confirmPasswordState),

@@ -15,13 +15,6 @@ export interface PermissionRequest {
   editable: ViewPointKey
 }
 
-export interface PermissionListResponse {
-  data: PermissionResponse[]
-  page: number
-  pageSize: number
-  totalRows: number
-}
-
 export type PermissionRequestFailure = Record<keyof PermissionRequest, string>
 
 export type ViewPointType = { key: string; label: string }

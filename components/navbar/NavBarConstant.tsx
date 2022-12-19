@@ -21,6 +21,8 @@ export const NavBarItems = () => {
 
   const langMangPascal = useTranslation('langMangPascal')
 
+  const pathsPascal = useTranslation('path')
+
   const result = useMemo(() => {
     return [
       {
@@ -48,6 +50,10 @@ export const NavBarItems = () => {
         path: '/language',
         children: [{ label: langMangPascal, path: '/language/management' }],
       },
+      {
+        label: pathsPascal,
+        path: '/paths',
+      },
     ]
   }, [
     dashboardPascal,
@@ -58,6 +64,8 @@ export const NavBarItems = () => {
     permissionCreatePascal,
     languagePascal,
     langMangPascal,
+    permissionManagementPascal,
+    pathsPascal,
   ])
 
   return result as NavBarItemType[]

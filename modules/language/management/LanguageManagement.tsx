@@ -1,9 +1,10 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { setLanguage } from '@/redux/share-store'
-import { getLanguageByKey, getLanguageList } from '@/services'
-import { LanguageListResponseSuccess, LanguageResponseSuccess } from '@/types'
+import { getMethod } from '@/services'
+import { CommonListResultType, LanguageResponseSuccess } from '@/types'
 import { Collapse, Loading, Text } from '@nextui-org/react'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
@@ -18,8 +19,8 @@ export const LanguageManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
 
-  const viewLanguageresult = useApiCall<LanguageListResponseSuccess, String>({
-    callApi: () => getLanguageList(cookies.token),
+  const viewLanguageresult = useApiCall<CommonListResultType<LanguageResponseSuccess>, String>({
+    callApi: () => getMethod(apiRoute.language.getLanguageList, cookies.token),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -32,7 +33,8 @@ export const LanguageManagement = () => {
   const { languageKey } = useSelector(GeneralSettingsSelector)
 
   const getLanguage = useApiCall<LanguageResponseSuccess, string>({
-    callApi: () => getLanguageByKey(cookies.token, languageKey),
+    callApi: () =>
+      getMethod(apiRoute.language.getLanguageByKey, cookies.token, { key: languageKey }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
