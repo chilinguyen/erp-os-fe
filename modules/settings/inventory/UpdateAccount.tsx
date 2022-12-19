@@ -1,9 +1,9 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { generateToken, getListEditAble, lostOddProps } from '@/lib'
+import { getListEditAble, lostOddProps } from '@/lib'
 import { DefaultUser, UserForm } from '@/modules/user/inventory'
-import { getDetailUser } from '@/services'
-import { updateAccountSettings } from '@/services/settings.service'
+import { getMethod, putMethod } from '@/services'
 import { UpdateAccountFailure, UpdateAccountRequest, UserResponseSuccess } from '@/types'
 import { Button, Container, Loading, Text } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
@@ -18,11 +18,7 @@ export const UpdateAccount = () => {
   const [userState, setUserState] = useState<UserResponseSuccess>(DefaultUser)
 
   const viewResult = useApiCall<UserResponseSuccess, string>({
-    callApi: () =>
-      getDetailUser({
-        id: cookies.userId,
-        token: cookies.token,
-      }),
+    callApi: () => getMethod(apiRoute.user.getDetailUser, cookies.token, { id: cookies.userId }),
     handleSuccess: (message, data) => {
       setUserState(data)
     },
@@ -35,11 +31,10 @@ export const UpdateAccount = () => {
 
   const updateResult = useApiCall<UpdateAccountRequest, UpdateAccountFailure>({
     callApi: () =>
-      updateAccountSettings(
-        generateToken({
-          userId: cookies.userId,
-          deviceId: cookies.token,
-        }),
+      putMethod<UpdateAccountRequest>(
+        apiRoute.settings.updateAccountSettings,
+        cookies.token,
+        undefined,
         lostOddProps<UpdateAccountRequest>(initUpdateAccountRequest, userState)
       ),
     handleError(status, message) {

@@ -1,5 +1,4 @@
 export type GeneralSettingsResponseSuccess = {
-  darkTheme: boolean
   languageKey: string
 }
 

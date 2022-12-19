@@ -9,13 +9,6 @@ export interface LanguageResponseSuccess {
   dictionary: DictionaryKey
 }
 
-export interface LanguageListResponseSuccess {
-  data: LanguageResponseSuccess[]
-  page: 0
-  pageSize: 0
-  totalRows: 0
-}
-
 export interface LanguageRequest {
   language: string
   key: string

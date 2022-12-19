@@ -1,6 +1,7 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { addNewDictionary } from '@/services'
+import { postMethod } from '@/services'
 import { DictionaryKey } from '@/types'
 import { Button, Input, Modal, Text } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
@@ -35,7 +36,7 @@ export const DictionaryCreatePopup = ({
   }
 
   const createResult = useApiCall<DictionaryKey, Record<keyof DictionaryKey, string>>({
-    callApi: () => addNewDictionary(cookies.token, dictionaryState),
+    callApi: () => postMethod(apiRoute.language.addNewDictionary, cookies.token, dictionaryState),
     handleSuccess(message) {
       toast.success(translate(message))
       handleClose()

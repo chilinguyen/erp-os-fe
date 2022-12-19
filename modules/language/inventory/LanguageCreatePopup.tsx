@@ -1,7 +1,8 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { addNewLanguage } from '@/services'
-import { AddNewLanguageRequest, LanguageRequest } from '@/types'
+import { postMethod } from '@/services'
+import { AddNewLanguageRequest } from '@/types'
 import { Button, Input, Modal, Text } from '@nextui-org/react'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -37,8 +38,16 @@ export const LanguageCreatePopup = ({
     setLanguageState({ ...newLanguageState, ...newUpdate })
   }
 
-  const createResult = useApiCall<LanguageRequest, Record<keyof LanguageRequest, string>>({
-    callApi: () => addNewLanguage(cookies.token, languageState),
+  const createResult = useApiCall<
+    AddNewLanguageRequest,
+    Record<keyof AddNewLanguageRequest, string>
+  >({
+    callApi: () =>
+      postMethod<AddNewLanguageRequest>(
+        apiRoute.language.addNewLanguage,
+        cookies.token,
+        languageState
+      ),
     handleSuccess(message) {
       toast.success(translate(message))
       handleClose()

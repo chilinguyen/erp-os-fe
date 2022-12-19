@@ -1,1 +1,1 @@
-export * from './SettingTheme'
+export * from './SettingLanguage'

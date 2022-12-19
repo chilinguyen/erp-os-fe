@@ -1,7 +1,7 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useEventSource, useResponsive } from '@/hooks'
-import { getChatRoom } from '@/services'
+import { getMethod } from '@/services'
 import { ChatRoom, UserOnlineResponse } from '@/types'
 import { Loading, useTheme } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
@@ -30,7 +30,7 @@ export const ChatUserList = ({ userChooseId, setUserChoose }: IChatUserList) => 
   })
 
   const getChatRooms = useApiCall<ChatRoom[], string>({
-    callApi: () => getChatRoom(1, cookies.token),
+    callApi: () => getMethod(apiRoute.message.getChatRooms, cookies.token, { page: '1' }),
   })
 
   const getBackGroundColor = (id: string) => {

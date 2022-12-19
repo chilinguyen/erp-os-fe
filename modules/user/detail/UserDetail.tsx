@@ -1,7 +1,8 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { getListEditAble, lostOddProps, StatusList } from '@/lib'
-import { changeStatusUser, getDetailUser, updateUser } from '@/services'
+import { getMethod, putMethod } from '@/services'
 import { UserRequest, UserRequestFailure, UserResponseSuccess } from '@/types'
 import { Button, Container, Dropdown, Loading, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
@@ -20,9 +21,8 @@ export const UserDetail = () => {
 
   const viewResult = useApiCall<UserResponseSuccess, string>({
     callApi: () =>
-      getDetailUser({
+      getMethod(apiRoute.user.getDetailUser, cookies.token, {
         id: router?.query?.id?.toString() ?? '1',
-        token: cookies.token,
       }),
     handleSuccess: (message, data) => {
       setUserState(data)
@@ -36,11 +36,12 @@ export const UserDetail = () => {
 
   const updateResult = useApiCall<UserRequest, UserRequestFailure>({
     callApi: () =>
-      updateUser({
-        id: UserState.id,
-        user: lostOddProps<UserRequest>(initUserRequest, UserState),
-        token: cookies.token,
-      }),
+      putMethod<UserRequest>(
+        apiRoute.user.updateUser,
+        cookies.token,
+        { id: UserState.id },
+        lostOddProps<UserRequest>(initUserRequest, UserState)
+      ),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -54,9 +55,8 @@ export const UserDetail = () => {
 
   const changeStatus = useApiCall<UserResponseSuccess, string>({
     callApi: () => {
-      return changeStatusUser({
+      return putMethod(apiRoute.user.changeStatus, cookies.token, {
         id: router?.query?.id?.toString() ?? '1',
-        token: cookies.token,
       })
     },
     handleError: (status, message) => {

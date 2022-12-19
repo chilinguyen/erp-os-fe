@@ -1,8 +1,9 @@
 import { CustomTable } from '@/components/table'
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { getTotalPage } from '@/lib'
-import { getListUser } from '@/services'
+import { getMethod } from '@/services'
 import { UserListSuccess, UserResponseSuccess } from '@/types'
 import { Button, Pagination, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
@@ -24,7 +25,7 @@ export const UserManagement = () => {
   const router = useRouter()
 
   const result = useApiCall<UserListSuccess, String>({
-    callApi: () => getListUser(cookies.token, { page: page.toString() }),
+    callApi: () => getMethod(apiRoute.user.getListUser, cookies.token, { page: page.toString() }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

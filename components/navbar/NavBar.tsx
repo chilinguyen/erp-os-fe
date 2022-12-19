@@ -1,6 +1,7 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { logout } from '@/services'
+import { postMethod } from '@/services'
 import { Avatar, Dropdown, Navbar } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { Fragment } from 'react'
@@ -18,7 +19,7 @@ export const NavBar = () => {
   const translate = useTranslationFunction()
 
   const logoutResult = useApiCall({
-    callApi: () => logout(cookies.token),
+    callApi: () => postMethod(apiRoute.auth.logout, cookies.token),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

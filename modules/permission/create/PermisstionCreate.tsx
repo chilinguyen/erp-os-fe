@@ -1,7 +1,8 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { getListEditAble } from '@/lib'
-import { addPermission } from '@/services/permission.service'
+import { postMethod } from '@/services'
 import { PermissionRequest, PermissionRequestFailure } from '@/types'
 import { Button, Loading, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
@@ -20,7 +21,7 @@ export const PermissionCreate = () => {
     useState<PermissionRequest>(PermissionRequestDefault)
 
   const createResult = useApiCall<PermissionRequest, PermissionRequestFailure>({
-    callApi: () => addPermission(cookies.token, permissionState),
+    callApi: () => postMethod(apiRoute.permissions.addPermission, cookies.token, permissionState),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

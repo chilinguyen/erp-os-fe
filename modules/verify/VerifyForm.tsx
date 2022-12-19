@@ -1,13 +1,12 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { toggleTheme } from '@/redux/general-settings'
-import { resendVerify2FA, resendVerifySignUp, Verify2FA, verifySignUp } from '@/services'
+import { postMethod } from '@/services'
 import { LoginResponseSuccess, TypeAccount } from '@/types'
 import { Button, Input, Loading, Modal, Row, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { inputStyles } from './verify.inventory'
 
@@ -22,7 +21,6 @@ export const VerifyForm = () => {
   const verifyLabel = useTranslation(router?.query.type === 'verify2FA' ? '2FALabel' : 'EmailLabel')
   const emailLabel = useTranslation('email')
   const codeLabel = useTranslation('codeLabel')
-  const changeTheme = useTranslation('changeTheme')
   const signIn = useTranslation('signIn')
   const submit = useTranslation('submit')
   const send = useTranslation('send')
@@ -34,12 +32,6 @@ export const VerifyForm = () => {
     router.push('/login')
   }
 
-  const dispatch = useDispatch()
-
-  const handleChangeTheme = () => {
-    dispatch(toggleTheme())
-  }
-
   useEffect(() => {
     if (router?.query.type === 'verify2FA') {
       setEmail(router?.query.email?.toString() || '')
@@ -48,7 +40,11 @@ export const VerifyForm = () => {
   }, [router])
 
   const verify2FACall = useApiCall<LoginResponseSuccess, string>({
-    callApi: () => Verify2FA(email, code),
+    callApi: () =>
+      postMethod(apiRoute.auth.verify2FA, undefined, {
+        email,
+        code,
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -74,7 +70,11 @@ export const VerifyForm = () => {
   })
 
   const verifyEmail = useApiCall<string, string>({
-    callApi: () => verifySignUp(email, code),
+    callApi: () =>
+      postMethod(apiRoute.auth.verifySignUp, undefined, {
+        email,
+        code,
+      }),
     handleError(status, message) {
       if (status === 400) {
         toast.error(translate(message))
@@ -87,7 +87,7 @@ export const VerifyForm = () => {
   })
 
   const resultResendEmail = useApiCall<string, string>({
-    callApi: () => resendVerifySignUp(email),
+    callApi: () => postMethod(`${apiRoute.auth.verifySignUp}/resend`, undefined, { email }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -102,7 +102,7 @@ export const VerifyForm = () => {
   })
 
   const resultResend2FA = useApiCall<string, string>({
-    callApi: () => resendVerify2FA(email),
+    callApi: () => postMethod(`${apiRoute.auth.verifySignUp}/resend`, undefined, { email }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -176,9 +176,6 @@ export const VerifyForm = () => {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button auto flat onClick={handleChangeTheme}>
-          {changeTheme}
-        </Button>
         <Button disabled={loading} auto onClick={handleLogin}>
           {signIn}
         </Button>

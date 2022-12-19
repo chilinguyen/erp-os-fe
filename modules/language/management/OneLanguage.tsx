@@ -1,6 +1,7 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { updateLanguage } from '@/services'
+import { putMethod } from '@/services'
 import { DictionaryKey, LanguageRequest, LanguageResponseSuccess } from '@/types'
 import { Button, Loading } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
@@ -24,11 +25,16 @@ export const OneLanguage = ({ language, setLetCallList, updateStoreLanguage }: I
 
   const updateResult = useApiCall<LanguageRequest, Record<keyof LanguageRequest, string>>({
     callApi: () =>
-      updateLanguage(language.id, cookies.token, {
-        key: language.key,
-        language: language.language,
-        dictionary: dictionaryList,
-      }),
+      putMethod<LanguageRequest>(
+        apiRoute.language.updateLanguage,
+        cookies.token,
+        { id: language.id },
+        {
+          key: language.key,
+          language: language.language,
+          dictionary: dictionaryList,
+        }
+      ),
     handleSuccess(message) {
       toast.success(translate(message))
       setLetCallList(true)

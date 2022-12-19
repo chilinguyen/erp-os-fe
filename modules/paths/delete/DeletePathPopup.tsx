@@ -5,20 +5,15 @@ import { putMethod } from '@/services'
 import { Button, Modal, Text } from '@nextui-org/react'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { TiDelete } from 'react-icons/ti'
 import { toast } from 'react-toastify'
 
-interface IDeleteDictionaryPopup {
-  dictionaryKey: string
-  setLetCallList: Function
-  updateStoreLanguage: Function
+interface IDeletePathPopup {
+  deleteId: string[]
+  setDeleteId: (id: string[]) => void
+  setLetCallList: (v: boolean) => void
 }
 
-export const DeleteDictionaryPopup = ({
-  dictionaryKey,
-  setLetCallList,
-  updateStoreLanguage,
-}: IDeleteDictionaryPopup) => {
+export const DeletePathPopup = ({ deleteId, setDeleteId, setLetCallList }: IDeletePathPopup) => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const [open, setOpen] = useState(false)
 
@@ -28,42 +23,48 @@ export const DeleteDictionaryPopup = ({
     setOpen(false)
   }
 
-  const deleteResult = useApiCall({
+  const deleteResult = useApiCall<string, string>({
     callApi: () =>
-      putMethod(apiRoute.language.deleteDictionaryKey, cookies.token, { key: dictionaryKey }),
+      putMethod(apiRoute.paths.deletePath, cookies.token, {
+        id: deleteId?.[0],
+      }),
+    handleError(status, message) {
+      if (status) {
+        toast.error(translate(message))
+      }
+    },
     handleSuccess(message) {
       toast.success(translate(message))
-      setOpen(false)
+      setDeleteId([])
+      handleClose()
       setLetCallList(true)
-      updateStoreLanguage()
-    },
-    handleError(status, message) {
-      if (status) toast.error(translate(message))
     },
   })
 
   const deleteLabel = useTranslation('delete')
   const cancel = useTranslation('cancel')
-  const deleteKeyLabel = useTranslation('deleteKeyLabel')
+  const deletePathNoti = useTranslation('deletePathNoti')
 
   return (
     <>
-      <TiDelete
-        style={{ cursor: 'pointer' }}
-        size={25}
-        color="red"
+      <Button
         onClick={() => {
           setOpen(true)
         }}
-      />
+        size="sm"
+        color="error"
+        disabled={deleteId.length === 0}
+      >
+        {deleteLabel}
+      </Button>
       <Modal open={open} onClose={handleClose} blur>
         <Modal.Header>
           <Text h2 id="modal-title">
-            {deleteLabel} {dictionaryKey}
+            {deleteLabel}
           </Text>
         </Modal.Header>
 
-        <Modal.Body>{deleteKeyLabel}</Modal.Body>
+        <Modal.Body>{deletePathNoti}</Modal.Body>
 
         <Modal.Footer justify="center">
           <Button disabled={deleteResult.loading} auto color="warning" onClick={handleClose}>

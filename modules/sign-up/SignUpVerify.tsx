@@ -1,6 +1,7 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { authenticationSelector } from '@/redux/authentication'
-import { resendVerifySignUp, verifySignUp } from '@/services'
+import { postMethod } from '@/services'
 import { Button, FormElement, Input, Loading, Row, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useRef } from 'react'
@@ -18,7 +19,11 @@ export const SignUpVerify = () => {
   const { signUpRequest } = useSelector(authenticationSelector)
 
   const { loading, setLetCall } = useApiCall({
-    callApi: () => verifySignUp(signUpRequest.email, codeRef.current?.value || ''),
+    callApi: () =>
+      postMethod(apiRoute.auth.verifySignUp, undefined, {
+        email: signUpRequest.email,
+        code: codeRef.current?.value || '',
+      }),
     handleError(status, message) {
       if (status === 400) {
         toast.error(translate(message))
@@ -31,7 +36,8 @@ export const SignUpVerify = () => {
   })
 
   const resultResend = useApiCall({
-    callApi: () => resendVerifySignUp(signUpRequest.email),
+    callApi: () =>
+      postMethod(`${apiRoute.auth.verifySignUp}/resend`, undefined, { email: signUpRequest.email }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

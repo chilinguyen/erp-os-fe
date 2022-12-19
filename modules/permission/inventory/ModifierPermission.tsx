@@ -1,7 +1,8 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { useResponsive } from '@/hooks/useResponsive'
-import { getEditableSelect, getViewPointsSelect } from '@/services'
+import { getMethod } from '@/services'
 import { PermissionRequest, PermissionRequestFailure, ViewPointKey } from '@/types'
 import { Collapse, Container, Input, Loading } from '@nextui-org/react'
 import { useEffect } from 'react'
@@ -48,7 +49,7 @@ export const ModifierPermission = ({
   const selectEditable = useTranslation('selectEditable')
 
   const viewPointsResult = useApiCall<ViewPointKey, String>({
-    callApi: () => getViewPointsSelect(cookies.token),
+    callApi: () => getMethod(apiRoute.permissions.getViewPointsSelect, cookies.token),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -57,7 +58,7 @@ export const ModifierPermission = ({
   })
 
   const editAblesResult = useApiCall<ViewPointKey, String>({
-    callApi: () => getEditableSelect(cookies.token),
+    callApi: () => getMethod(apiRoute.permissions.getEditableSelect, cookies.token),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

@@ -1,14 +1,13 @@
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { encodeBase64 } from '@/lib'
-import { toggleTheme } from '@/redux/general-settings'
-import { callForgotPassword, login } from '@/services'
-import { LoginResponseFailure, LoginResponseSuccess, TypeAccount } from '@/types'
+import { postMethod } from '@/services'
+import { LoginRequest, LoginResponseFailure, LoginResponseSuccess, TypeAccount } from '@/types'
 import { Button, FormElement, Input, Loading, Modal, Row, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useRef } from 'react'
 import { useCookies } from 'react-cookie'
-import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { inputStyles } from './login.inventory'
 
@@ -19,14 +18,11 @@ export const LoginForm = () => {
   const [, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
 
-  const dispatch = useDispatch()
-
-  const handleChangeTheme = () => {
-    dispatch(toggleTheme())
-  }
-
   const resultForgotPassword = useApiCall({
-    callApi: () => callForgotPassword(emailRef?.current?.value || ''),
+    callApi: () =>
+      postMethod(apiRoute.auth.forgotPassword, undefined, {
+        email: emailRef?.current?.value || '',
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -39,7 +35,7 @@ export const LoginForm = () => {
 
   const result = useApiCall<LoginResponseSuccess, LoginResponseFailure>({
     callApi: () =>
-      login({
+      postMethod<LoginRequest>(apiRoute.auth.login, undefined, {
         username: emailRef.current ? emailRef.current.value : '',
         password: encodeBase64(passwordRef.current ? passwordRef.current.value : ''),
       }),
@@ -89,7 +85,6 @@ export const LoginForm = () => {
   const signIn = useTranslation('signIn')
   const passwordLabel = useTranslation('password')
   const signUp = useTranslation('signUp')
-  const changeTheme = useTranslation('changeTheme')
   const forgotPassword = useTranslation('forgotPassword')
 
   return (
@@ -125,9 +120,6 @@ export const LoginForm = () => {
         </Row>
       </Modal.Body>
       <Modal.Footer>
-        <Button auto flat onClick={handleChangeTheme}>
-          {changeTheme}
-        </Button>
         <Button disabled={loading} auto onClick={handleSignUp}>
           {signUp}
         </Button>
