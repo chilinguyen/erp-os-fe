@@ -20,7 +20,7 @@ export const SignUpVerify = () => {
 
   const { loading, setLetCall } = useApiCall({
     callApi: () =>
-      postMethod(apiRoute.auth.verifySignUp, undefined, {
+      postMethod(apiRoute.auth.verifySignUp, undefined, undefined, {
         email: signUpRequest.email,
         code: codeRef.current?.value || '',
       }),
@@ -37,7 +37,9 @@ export const SignUpVerify = () => {
 
   const resultResend = useApiCall({
     callApi: () =>
-      postMethod(`${apiRoute.auth.verifySignUp}/resend`, undefined, { email: signUpRequest.email }),
+      postMethod(`${apiRoute.auth.verifySignUp}/resend`, undefined, undefined, {
+        email: signUpRequest.email,
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

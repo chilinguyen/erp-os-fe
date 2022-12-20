@@ -20,7 +20,7 @@ export const LoginForm = () => {
 
   const resultForgotPassword = useApiCall({
     callApi: () =>
-      postMethod(apiRoute.auth.forgotPassword, undefined, {
+      postMethod(apiRoute.auth.forgotPassword, undefined, undefined, {
         email: emailRef?.current?.value || '',
       }),
     handleError(status, message) {
