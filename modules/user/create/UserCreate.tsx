@@ -23,7 +23,7 @@ export const UserCreate = () => {
       postMethod<UserRequest>(
         apiRoute.user.addNewUser,
         cookies.token,
-        lostOddProps<UserRequest>(initUserRequest, UserState)
+        lostOddProps<UserRequest>(UserState, initUserRequest)
       ),
     handleError(status, message) {
       if (status !== 400) {

@@ -1,4 +1,4 @@
-import { OptionsType } from '@/types'
+import { OptionsType, ViewPointType } from '@/types'
 
 export const encodeBase64 = (data: string) => {
   return Buffer.from(data).toString('base64')
@@ -31,19 +31,21 @@ export const convertValueToLabel = <T,>(value: T, list: OptionsType<T>[]) => {
   return list.find((item) => item.value === value)?.label ?? ''
 }
 
-export const lostOddProps = <T extends {}>(target: T, source: T) => {
-  Object.keys(target).forEach((key) => {
-    if (source[key as keyof T]) {
-      target[key as keyof T] = source[key as keyof T]
+export const lostOddProps = <T extends {}>(source: Partial<T>, editable: ViewPointType[] = []) => {
+  let target: Partial<T> = {}
+  editable.forEach((key) => {
+    if (source?.[key.key as keyof T] !== undefined) {
+      target = { ...target, [key.key as keyof T]: source[key.key as keyof T] }
     }
   })
+
   return target
 }
 
-export const getListEditAble = <T extends {}>(target: T) => {
-  let listReturn: Partial<Record<keyof T, boolean>> = {}
-  Object.keys(target).forEach((key) => {
-    listReturn = { ...listReturn, [key as keyof T]: true }
+export const getListEditAble = (editable: ViewPointType[] = []) => {
+  let listReturn = {}
+  editable.forEach((key) => {
+    listReturn = { ...listReturn, [key.key]: true }
   })
   return listReturn
 }

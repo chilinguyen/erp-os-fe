@@ -11,7 +11,6 @@ import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
 import { CreatePathPopup } from '../create/CreatePathPopup'
 import { DeletePathPopup } from '../delete/DeletePathPopup'
-import { Header } from './management.inventory'
 
 export const PathsManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -38,8 +37,6 @@ export const PathsManagement = () => {
     setLetCall(true)
   }, [])
 
-  const header = Header()
-
   return (
     <>
       <Text showIn="sm" h2>
@@ -58,8 +55,8 @@ export const PathsManagement = () => {
           />
         </div>
       </div>
-      <CustomTable<PathResponse>
-        header={header}
+      <CustomTable
+        header={data?.viewPoints ?? [{ key: '', label: '' }]}
         body={data ? data.result.data : []}
         selectionMode="single"
         listFunctionParseValue={{}}

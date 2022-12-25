@@ -10,7 +10,6 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
-import { Header, ListActions } from './management.inventory'
 
 export const PermissionManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -40,10 +39,6 @@ export const PermissionManagement = () => {
     setLetCall(true)
   }, [])
 
-  const header = Header()
-
-  const listActions = ListActions()
-
   return (
     <>
       <Text showIn="sm" h2>
@@ -62,10 +57,9 @@ export const PermissionManagement = () => {
           {permissionCreatePascal}
         </Button>
       </div>
-      <CustomTable<PermissionResponse>
-        header={header}
+      <CustomTable
+        header={data?.viewPoints ?? []}
         body={data ? data.result.data : []}
-        listActions={listActions}
         selectionMode="single"
         listFunctionParseValue={{}}
         loading={loading}

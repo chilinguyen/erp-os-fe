@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
-import { DefaultUser, initUserRequest, UserForm } from '../inventory'
+import { DefaultUser, UserForm } from '../inventory'
 
 export const UserDetail = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -40,7 +40,7 @@ export const UserDetail = () => {
         apiRoute.user.updateUser,
         cookies.token,
         { id: UserState.id },
-        lostOddProps<UserRequest>(initUserRequest, UserState)
+        lostOddProps<UserRequest>(UserState, viewResult.data?.editable)
       ),
     handleError(status, message) {
       if (status) {
@@ -200,7 +200,7 @@ export const UserDetail = () => {
           user={UserState}
           onchangeUserState={onchangeUserState}
           errorState={updateResult?.error?.result}
-          editAble={type === 'update' ? getListEditAble(initUserRequest) : {}}
+          editAble={type === 'update' ? getListEditAble(viewResult?.data?.editable) : {}}
         />
       </div>
     </div>

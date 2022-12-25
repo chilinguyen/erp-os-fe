@@ -89,7 +89,12 @@ export const PermissionCreate = () => {
         </div>
       </div>
       <ModifierPermission
-        editAble={getListEditAble(PermissionRequestDefault)}
+        editAble={getListEditAble([
+          { key: 'name', label: 'name' },
+          { key: 'userId', label: 'userId' },
+          { key: 'viewPoints', label: 'viewPoints' },
+          { key: 'editable', label: 'editable' },
+        ])}
         permissionState={permissionState}
         handleChangeState={handleChangeState}
         errorState={createResult?.error?.result}

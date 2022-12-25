@@ -3,16 +3,13 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { getTotalPage } from '@/lib'
-import {
-  HeaderUserTable,
-  listFunctionParseValue,
-} from '@/modules/user/management/management.inventory'
 import { getMethod } from '@/services'
-import { UserListSuccess, UserResponseSuccess } from '@/types'
+import { UserListSuccess } from '@/types'
 import { Pagination } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
+import { listFunctionParseValue } from './permission.inventory'
 
 interface IUserTablePermission {
   setListUser: Function
@@ -42,12 +39,10 @@ export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTa
 
   const listFunctionParseValues = listFunctionParseValue()
 
-  const headerUserTable = HeaderUserTable()
-
   return (
     <div>
-      <CustomTable<UserResponseSuccess>
-        header={headerUserTable}
+      <CustomTable
+        header={userResult?.data?.viewPoints ?? []}
         body={userResult?.data?.result?.data ?? []}
         selectionMode={editAble ? 'multiple' : 'none'}
         listFunctionParseValue={listFunctionParseValues}

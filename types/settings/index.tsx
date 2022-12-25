@@ -9,15 +9,15 @@ export type UpdatePasswordPayload = {
 }
 
 export interface UpdateAccountRequest {
-  username: string
-  gender: number
-  dob: string
-  address: string
-  verify2FA: boolean
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
+  username?: string
+  gender?: number
+  dob?: string
+  address?: string
+  verify2FA?: boolean
+  firstName?: string
+  lastName?: string
+  email?: string
+  phone?: string
 }
 
 export type UpdateAccountFailure = Record<keyof UpdateAccountRequest, string>
