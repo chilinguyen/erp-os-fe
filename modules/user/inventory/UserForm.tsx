@@ -1,9 +1,10 @@
 import { DatePicker, SelectCustom } from '@/components'
 import { useTranslation, useTranslationFunction } from '@/hooks'
-import { useResponsive } from '@/hooks/useResponsive'
 import { GenderList } from '@/lib'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { UserDetailFailure, UserResponseSuccess } from '@/types'
 import { Card, Input, Text } from '@nextui-org/react'
+import { useSelector } from 'react-redux'
 import { inputStylesUser } from './User.inventory'
 
 interface IUserForm {
@@ -14,7 +15,7 @@ interface IUserForm {
 }
 
 export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUserForm) => {
-  const breakPoint = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
   const translate = useTranslationFunction()
 
   const usernameLabel = useTranslation('username')

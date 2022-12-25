@@ -1,6 +1,8 @@
-import { useResponsive, useTranslationFunction } from '@/hooks'
+import { useTranslationFunction } from '@/hooks'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { ViewPointType } from '@/types'
 import { Checkbox } from '@nextui-org/react'
+import { useSelector } from 'react-redux'
 
 interface IViewPointPermission {
   listViewPoint: ViewPointType[]
@@ -17,7 +19,7 @@ export const ViewPointPermission = ({
   editAble,
   keyObj,
 }: IViewPointPermission) => {
-  const breakPoint = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
   const translate = useTranslationFunction()
 
   return (

@@ -1,18 +1,24 @@
+import { setBreakPoint } from '@/redux/share-store'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 export const useResponsive = () => {
-  const [breakPoint, setBreakPoint] = useState<number>(1)
+  const [pixel, setPixel] = useState<number>(1)
+
+  const dispatch = useDispatch()
+
   useEffect(() => {
     const getWidth = () => {
+      setPixel(window.innerWidth)
       if (window.innerWidth <= 960) {
-        setBreakPoint(1)
+        dispatch(setBreakPoint(1))
         return
       }
       if (window.innerWidth <= 1280) {
-        setBreakPoint(2)
+        dispatch(setBreakPoint(2))
         return
       }
-      setBreakPoint(3)
+      dispatch(setBreakPoint(3))
     }
 
     getWidth()
@@ -24,5 +30,5 @@ export const useResponsive = () => {
     }
   }, [])
 
-  return breakPoint
+  return pixel
 }

@@ -1,8 +1,13 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
-import { useApiCall, useGetDarkMode, useResponsive, useTranslationFunction } from '@/hooks'
+import { useApiCall, useGetDarkMode, useTranslationFunction } from '@/hooks'
 import { GeneralSettingsSelector, setGeneralSettings } from '@/redux/general-settings'
-import { setLanguage, setLoadingLanguage, setLoadingSettings } from '@/redux/share-store'
+import {
+  setLanguage,
+  setLoadingLanguage,
+  setLoadingSettings,
+  ShareStoreSelector,
+} from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { DarkTheme, LightTheme } from '@/styles/themes'
 import { GeneralSettingsResponseSuccess, LanguageResponseSuccess } from '@/types'
@@ -18,7 +23,7 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
 
   const { darkTheme, languageKey } = useSelector(GeneralSettingsSelector)
 
-  const responsive = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
   const dispatch = useDispatch()
 
@@ -32,7 +37,7 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
       }
     },
     handleSuccess(message, data) {
-      if (responsive === 3) {
+      if (breakPoint === 3) {
         dispatch(setGeneralSettings(data))
       }
     },
