@@ -1,19 +1,20 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { useResponsive } from '@/hooks/useResponsive'
 import { encodeBase64 } from '@/lib'
 import { inputStylesUser } from '@/modules/user/inventory'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { putMethod } from '@/services'
 import { UpdatePasswordPayload } from '@/types'
 import { Button, Input, Loading, Text } from '@nextui-org/react'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 export const UpdatePassword = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])
-  const breakPoint = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
   const translate = useTranslationFunction()
 
   const [oldPasswordState, setOldPassword] = useState<string>('')

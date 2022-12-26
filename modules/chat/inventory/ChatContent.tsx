@@ -1,7 +1,8 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useEventSource, useResponsive, useScroll, useTranslation } from '@/hooks'
+import { useApiCall, useEventSource, useScroll, useTranslation } from '@/hooks'
 import { generateToken } from '@/lib'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod, postMethod } from '@/services'
 import { CommonListResultType, MessageResponse } from '@/types'
 import { Button, Input, Loading, useTheme } from '@nextui-org/react'
@@ -9,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { MdSend } from 'react-icons/md'
+import { useSelector } from 'react-redux'
 
 interface IChatContent {
   user: { id: string; name: string; avt: string }
@@ -16,7 +18,7 @@ interface IChatContent {
 }
 
 export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
-  const breakPoint = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
   const [messages, setMessages] = useState<MessageResponse[]>([])
 

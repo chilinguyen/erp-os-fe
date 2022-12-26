@@ -1,6 +1,7 @@
-import { useResponsive } from '@/hooks'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { UserOnlineResponse } from '@/types'
 import { Avatar } from '@nextui-org/react'
+import { useSelector } from 'react-redux'
 
 interface IOneUser {
   user: UserOnlineResponse
@@ -8,7 +9,7 @@ interface IOneUser {
 }
 
 export const OneUser = ({ user, isOnline }: IOneUser) => {
-  const breakPoint = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
   return (
     <>

@@ -1,13 +1,14 @@
 import { SelectCustom } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
-import { useApiCall, useResponsive, useTranslation, useTranslationFunction } from '@/hooks'
+import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { setGeneralSettings } from '@/redux/general-settings'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { OptionsType } from '@/types'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 interface ISettingLanguage {
@@ -18,7 +19,7 @@ interface ISettingLanguage {
 
 export const SettingLanguage = ({ disabled, languageKey, setLetCallUpdate }: ISettingLanguage) => {
   const [cookie] = useCookies([TOKEN_AUTHENTICATION])
-  const breakPoint = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
   const dispatch = useDispatch()
   const translate = useTranslationFunction()
 

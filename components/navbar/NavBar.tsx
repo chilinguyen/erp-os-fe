@@ -9,7 +9,6 @@ import { useCookies } from 'react-cookie'
 import { BsFillChatLeftDotsFill } from 'react-icons/bs'
 import { toast } from 'react-toastify'
 import { NavBarItems } from './NavBarConstant'
-import { RenderItemDesktop } from './RenderItemDesktop'
 import { RenderItemMobile } from './RenderItemMobile'
 
 export const NavBar = () => {
@@ -38,15 +37,15 @@ export const NavBar = () => {
 
   return (
     <Navbar variant="sticky" css={{ zIndex: 1000 }}>
-      <Navbar.Toggle showIn="xs" />
-      <Navbar.Content hideIn="xs" enableCursorHighlight variant="underline">
+      <Navbar.Toggle showIn="sm" />
+      {/* <Navbar.Content hideIn="xs" enableCursorHighlight variant="underline">
         {NavBarItems().map((item) => (
           <Fragment key={item.path}>
             <RenderItemDesktop item={item} />
           </Fragment>
         ))}
-      </Navbar.Content>
-      <Navbar.Collapse showIn="xs">
+      </Navbar.Content> */}
+      <Navbar.Collapse showIn="sm">
         {NavBarItems().map((item) => (
           <Fragment key={item.path}>
             <RenderItemMobile level={0} item={item} />

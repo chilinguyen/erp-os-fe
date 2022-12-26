@@ -1,11 +1,13 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useEventSource, useResponsive } from '@/hooks'
+import { useApiCall, useEventSource } from '@/hooks'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { ChatRoom, UserOnlineResponse } from '@/types'
 import { Loading, useTheme } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { useSelector } from 'react-redux'
 import { OneUser } from './OneUser'
 import { SlideBar } from './SlideBar'
 
@@ -15,7 +17,7 @@ interface IChatUserList {
 }
 
 export const ChatUserList = ({ userChooseId, setUserChoose }: IChatUserList) => {
-  const breakPoint = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 

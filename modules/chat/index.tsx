@@ -1,9 +1,10 @@
-import { useResponsive } from '@/hooks'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { ChatContent, ChatUserList } from './inventory'
 
 export default function ChatRoom() {
-  const breakPoint = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
   const [userChoose, setUserChoose] = useState({ id: '', name: '', avt: '' })
 
