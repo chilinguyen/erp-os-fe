@@ -23,9 +23,11 @@ export const RenderItemSideBar = ({ item, hasDivide, level }: IRenderItemSideBar
             paddingTop: 10,
             paddingBottom: 10,
             paddingLeft: level * 10,
+            paddingRight: 10,
             display: 'flex',
             justifyContent: 'space-between',
             height: 'full',
+            cursor: 'pointer',
           }}
           onClick={() => {
             setShowCollapse(!isShowCollapse)
@@ -65,6 +67,7 @@ export const RenderItemSideBar = ({ item, hasDivide, level }: IRenderItemSideBar
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: level * 10,
+        cursor: 'pointer',
       }}
       onClick={() => {
         router.push(item.path)
