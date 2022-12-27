@@ -21,7 +21,7 @@ export const RenderItemMobile = ({ item, level }: { item: NavBarItemType; level:
         item.children &&
         item.children.length > 0 &&
         item.children.map((itemChild) => (
-          <RenderItemMobile level={level + 1} key={item.path} item={itemChild} />
+          <RenderItemMobile level={level + 1} key={itemChild.path} item={itemChild} />
         ))}
     </>
   )

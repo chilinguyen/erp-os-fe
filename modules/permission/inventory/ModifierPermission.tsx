@@ -1,12 +1,13 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { useResponsive } from '@/hooks/useResponsive'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { PermissionRequest, PermissionRequestFailure, ViewPointKey } from '@/types'
 import { Collapse, Container, Input, Loading } from '@nextui-org/react'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { inputStylesPermission } from './permission.inventory'
 import { UserTablePermission } from './UserTable'
@@ -25,7 +26,7 @@ export const ModifierPermission = ({
   editAble,
   errorState,
 }: IModifierPermission) => {
-  const breakPoint = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
   const translate = useTranslationFunction()
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])
 

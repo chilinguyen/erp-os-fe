@@ -1,7 +1,8 @@
-import { useResponsive } from '@/hooks'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { UserOnlineResponse } from '@/types'
 import { useRef, useState } from 'react'
 import { AiOutlineLeftCircle, AiOutlineRightCircle } from 'react-icons/ai'
+import { useSelector } from 'react-redux'
 import { OneUser } from './OneUser'
 
 interface ISlideBar {
@@ -9,7 +10,7 @@ interface ISlideBar {
 }
 
 export const SlideBar = ({ userList }: ISlideBar) => {
-  const breakPoint = useResponsive()
+  const { breakPoint } = useSelector(ShareStoreSelector)
   const [index, setIndex] = useState(0)
   const refAvatar = useRef<HTMLDivElement>(null)
 
