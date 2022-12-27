@@ -1,18 +1,20 @@
-import { ActionType, HeaderTableType } from '@/types'
+import { useTranslation, useTranslationFunction } from '@/hooks'
+import { ActionType, ViewPointType } from '@/types'
 import { Col, Container, Loading, Row, Table, TableProps, Tooltip } from '@nextui-org/react'
-import { useRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 import React from 'react'
+import { AiOutlineEye } from 'react-icons/ai'
 
-interface ICustomTable<T> {
-  header: HeaderTableType[]
-  body: T[]
+interface ICustomTable {
+  header: ViewPointType[]
+  body: { [key: string]: any }[]
   listActions?: ActionType[]
-  listFunctionParseValue: Partial<Record<keyof T, Function>>
+  listFunctionParseValue?: { [key: string]: Function }
   handleChangeSelection?: Function
   loading?: boolean
 }
 
-export function CustomTable<T extends { id: string }>({
+export function CustomTable({
   header,
   body,
   listActions,
@@ -20,37 +22,53 @@ export function CustomTable<T extends { id: string }>({
   handleChangeSelection,
   loading,
   ...props
-}: ICustomTable<T> & TableProps) {
+}: ICustomTable & TableProps) {
   const router = useRouter()
+  const translate = useTranslationFunction()
 
-  const renderCell = (data: T, columnKey: React.Key) => {
-    if (listFunctionParseValue[columnKey as keyof T]) {
-      return listFunctionParseValue[columnKey as keyof T]!(data[columnKey as keyof T])
+  const detail = useTranslation('detail')
+
+  const renderCell = (data: { [key: string]: any }, columnKey: React.Key) => {
+    if (listFunctionParseValue?.[columnKey]) {
+      return listFunctionParseValue[columnKey]!(data[columnKey])
     }
+
+    if (typeof data?.[columnKey] === 'object') {
+      return null
+    }
+
     switch (columnKey) {
       case 'actions':
         return (
           <Row justify="center" align="center">
-            {listActions
-              ? listActions.map((action) => (
-                  <Col key={action.content} css={{ d: 'flex' }}>
-                    <Tooltip content={action.content}>
-                      <div
-                        onClick={(e) => {
-                          action.func(data['id' as keyof T], router)
-                          e.stopPropagation()
-                        }}
-                      >
-                        {action.icon}
-                      </div>
-                    </Tooltip>
-                  </Col>
-                ))
-              : null}
+            {(
+              listActions ?? [
+                {
+                  content: detail,
+                  icon: <AiOutlineEye size={20} fill="#979797" />,
+                  func: (id: string, router: NextRouter) => {
+                    router.push(`/user/${id}`)
+                  },
+                },
+              ]
+            ).map((action) => (
+              <Col key={action.content} css={{ d: 'flex' }}>
+                <Tooltip content={action.content}>
+                  <div
+                    onClick={(e) => {
+                      action.func(data?.id, router)
+                      e.stopPropagation()
+                    }}
+                  >
+                    {action.icon}
+                  </div>
+                </Tooltip>
+              </Col>
+            ))}
           </Row>
         )
       default:
-        return data[columnKey as keyof T] as React.ReactNode
+        return data[columnKey]?.toString()
     }
   }
 
@@ -74,12 +92,16 @@ export function CustomTable<T extends { id: string }>({
       onSelectionChange={handleChange}
       {...props}
     >
-      <Table.Header columns={header}>
-        {(column) => <Table.Column key={column.key}>{column.name}</Table.Column>}
+      <Table.Header columns={[{ key: 'actions', label: '' }].concat(header)}>
+        {(column) => (
+          <Table.Column key={column.key}>
+            {column?.label ? translate(column.label) : ''}
+          </Table.Column>
+        )}
       </Table.Header>
       <Table.Body items={body}>
         {(item) => (
-          <Table.Row key={item['id' as keyof T] as string}>
+          <Table.Row key={item?.id}>
             {(columnKey) => <Table.Cell>{renderCell(item, columnKey)}</Table.Cell>}
           </Table.Row>
         )}

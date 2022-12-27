@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
-import { PermissionRequestDefault, PermissionResponseDefault } from '../inventory'
+import { PermissionResponseDefault } from '../inventory'
 import { DeletePermissionPopup } from '../inventory/DeletePermissionPopup'
 import { ModifierPermission } from '../inventory/ModifierPermission'
 
@@ -40,7 +40,7 @@ export const PermissionDetail = () => {
         {
           id: router?.query?.id?.toString() ?? '1',
         },
-        lostOddProps<PermissionRequest>(PermissionRequestDefault, permissionState)
+        lostOddProps<PermissionRequest>(permissionState, viewResult?.data?.editable)
       ),
     handleError(status, message) {
       if (status) {
@@ -156,7 +156,7 @@ export const PermissionDetail = () => {
       </div>
 
       <ModifierPermission
-        editAble={type === 'read' ? {} : getListEditAble(PermissionRequestDefault)}
+        editAble={type === 'read' ? {} : getListEditAble(viewResult?.data?.editable)}
         permissionState={permissionState}
         handleChangeState={handleChangeState}
         errorState={updateResult?.error?.result}

@@ -101,7 +101,7 @@ export const ModifierPermission = ({
           <Collapse title={selectUser}>
             <UserTablePermission
               editAble={editAble?.userId}
-              listUser={permissionState.userId}
+              listUser={permissionState?.userId ?? []}
               setListUser={setListUser}
             />
           </Collapse>

@@ -3,14 +3,14 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { getTotalPage } from '@/lib'
+import { listFunctionParseValue } from '@/modules/permission/inventory'
 import { getMethod } from '@/services'
-import { UserListSuccess, UserResponseSuccess } from '@/types'
+import { UserListSuccess } from '@/types'
 import { Button, Pagination, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
-import { HeaderUserTable, ListActions, listFunctionParseValue } from './management.inventory'
 
 export const UserManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -41,10 +41,6 @@ export const UserManagement = () => {
 
   const listFunctionParseValues = listFunctionParseValue()
 
-  const headerUserTables = HeaderUserTable()
-
-  const listActions = ListActions()
-
   return (
     <>
       <Text showIn="sm" h2>
@@ -63,10 +59,9 @@ export const UserManagement = () => {
           {createUserPascal}
         </Button>
       </div>
-      <CustomTable<UserResponseSuccess>
-        header={headerUserTables}
+      <CustomTable
+        header={data?.viewPoints ?? [{ key: '', label: '' }]}
         body={data ? data.result.data : []}
-        listActions={listActions}
         selectionMode="single"
         listFunctionParseValue={listFunctionParseValues}
         loading={loading}

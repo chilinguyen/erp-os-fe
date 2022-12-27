@@ -1,9 +1,12 @@
+import { ViewPointType } from '../permission'
+
 export interface CommonResponseType<T> {
   success: boolean
   result: T
   message: string
   statusCode: number
-  viewPoints: string[]
+  viewPoints: ViewPointType[]
+  editable: ViewPointType[]
 }
 
 export interface CommonListResultType<T> {

@@ -1,4 +1,4 @@
-import { UserRequest, UserResponseSuccess } from '@/types'
+import { UserResponseSuccess, ViewPointType } from '@/types'
 import { InputProps } from '@nextui-org/react'
 
 export const DefaultUser: UserResponseSuccess = {
@@ -32,14 +32,14 @@ export const inputStylesUser = ({ error }: { error?: string }) => {
   }
 }
 
-export const initUserRequest: UserRequest = {
-  username: '',
-  gender: 0,
-  dob: '',
-  address: '',
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: '',
-  deleted: 0,
-}
+export const initUserRequest: ViewPointType[] = [
+  { key: 'username', label: 'username' },
+  { key: 'gender', label: 'gender' },
+  { key: 'dob', label: 'dob' },
+  { key: 'address', label: 'address' },
+  { key: 'firstName', label: 'firstName' },
+  { key: 'lastName', label: 'lastName' },
+  { key: 'email', label: 'email' },
+  { key: 'phone', label: 'phone' },
+  { key: 'deleted', label: 'deleted' },
+]

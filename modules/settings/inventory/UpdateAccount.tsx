@@ -9,7 +9,6 @@ import { Button, Container, Loading, Text } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
-import { initUpdateAccountRequest } from './settings.inventory'
 
 export const UpdateAccount = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -35,7 +34,7 @@ export const UpdateAccount = () => {
         apiRoute.settings.updateAccountSettings,
         cookies.token,
         undefined,
-        lostOddProps<UpdateAccountRequest>(initUpdateAccountRequest, userState)
+        lostOddProps<UpdateAccountRequest>(userState, viewResult?.data?.editable)
       ),
     handleError(status, message) {
       if (status) {
@@ -76,7 +75,7 @@ export const UpdateAccount = () => {
         user={userState}
         onchangeUserState={onchangeUserState}
         errorState={updateResult?.error?.result}
-        editAble={getListEditAble(initUpdateAccountRequest)}
+        editAble={getListEditAble(viewResult?.data?.editable)}
       />
 
       <Button

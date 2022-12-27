@@ -9,10 +9,10 @@ export interface PermissionResponse {
 }
 
 export interface PermissionRequest {
-  name: string
-  userId: string[]
-  viewPoints: ViewPointKey
-  editable: ViewPointKey
+  name?: string
+  userId?: string[]
+  viewPoints?: ViewPointKey
+  editable?: ViewPointKey
 }
 
 export type PermissionRequestFailure = Record<keyof PermissionRequest, string>
