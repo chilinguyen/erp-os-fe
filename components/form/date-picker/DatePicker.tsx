@@ -116,7 +116,7 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
             left: 0,
             width: 375,
             backgroundColor: theme?.colors.accents2.value,
-            boxShadow: theme?.shadows.lg.value,
+            boxShadow: type !== '' ? theme?.shadows.lg.value : '',
             zIndex: 101,
             borderRadius: 10,
           }}

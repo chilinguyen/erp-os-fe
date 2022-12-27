@@ -4,14 +4,16 @@ import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { postMethod } from '@/services'
 import { Avatar, Dropdown, Navbar } from '@nextui-org/react'
 import { useRouter } from 'next/router'
-import { Fragment } from 'react'
 import { useCookies } from 'react-cookie'
 import { BsFillChatLeftDotsFill } from 'react-icons/bs'
 import { toast } from 'react-toastify'
-import { NavBarItems } from './NavBarConstant'
-import { RenderItemMobile } from './RenderItemMobile'
 
-export const NavBar = () => {
+interface INavBar {
+  isOpenSideBar: boolean
+  setOpenSideBar: (v: boolean) => void
+}
+
+export const NavBar = ({ isOpenSideBar, setOpenSideBar }: INavBar) => {
   const [cookies, , removeCookie] = useCookies([TOKEN_AUTHENTICATION])
   const router = useRouter()
 
@@ -36,22 +38,29 @@ export const NavBar = () => {
   const signOut = useTranslation('signOut')
 
   return (
-    <Navbar variant="sticky" css={{ zIndex: 1000 }}>
-      <Navbar.Toggle showIn="sm" />
-      {/* <Navbar.Content hideIn="xs" enableCursorHighlight variant="underline">
-        {NavBarItems().map((item) => (
+    <Navbar variant="sticky" maxWidth="fluid" css={{ zIndex: 1000 }}>
+      <Navbar.Toggle
+        isSelected={isOpenSideBar}
+        onPress={() => {
+          setOpenSideBar(!isOpenSideBar)
+        }}
+        showIn="sm"
+      />
+      <Navbar.Content enableCursorHighlight variant="underline">
+        {/* {NavBarItems().map((item) => (
           <Fragment key={item.path}>
             <RenderItemDesktop item={item} />
           </Fragment>
-        ))}
-      </Navbar.Content> */}
-      <Navbar.Collapse showIn="sm">
+        ))} */}
+        <div />
+      </Navbar.Content>
+      {/* <Navbar.Collapse showIn="sm">
         {NavBarItems().map((item) => (
           <Fragment key={item.path}>
             <RenderItemMobile level={0} item={item} />
           </Fragment>
         ))}
-      </Navbar.Collapse>
+      </Navbar.Collapse> */}
       <Navbar.Content>
         <div
           onClick={() => {
