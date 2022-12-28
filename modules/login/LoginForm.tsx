@@ -5,6 +5,7 @@ import { encodeBase64 } from '@/lib'
 import { postMethod } from '@/services'
 import { LoginRequest, LoginResponseFailure, LoginResponseSuccess, TypeAccount } from '@/types'
 import { Button, FormElement, Input, Loading, Modal, Row, Text } from '@nextui-org/react'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useRef } from 'react'
 import { useCookies } from 'react-cookie'
@@ -77,18 +78,26 @@ export const LoginForm = () => {
     setLetCall(true)
   }
 
-  const handleSignUp = () => {
-    router.push('/sign-up')
-  }
+  // const handleSignUp = () => {
+  //   router.push('/sign-up')
+  // }
 
   const usernameLabel = useTranslation('username')
   const signIn = useTranslation('signIn')
   const passwordLabel = useTranslation('password')
-  const signUp = useTranslation('signUp')
+  // const signUp = useTranslation('signUp')
   const forgotPassword = useTranslation('forgotPassword')
 
   return (
     <>
+      <Head>
+        <script src="https://accounts.google.com/gsi/client" async defer />
+        <script type="text/javascript">{`
+        ${function SignInGoogle(res: any) {
+          document.cookie = `googleId=${res.credential}`
+        }}
+        `}</script>
+      </Head>
       <Modal.Header>
         <Text id="modal-title" size={18}>
           {signIn}
@@ -120,12 +129,21 @@ export const LoginForm = () => {
         </Row>
       </Modal.Body>
       <Modal.Footer>
-        <Button disabled={loading} auto onClick={handleSignUp}>
+        {/* <Button disabled={loading} auto onClick={handleSignUp}>
           {signUp}
-        </Button>
+        </Button> */}
         <Button disabled={loading} auto onClick={handleLogin}>
           {loading ? <Loading /> : <>{signIn}</>}
         </Button>
+        <div
+          id="g_id_onload"
+          data-client_id="223076068985-vtu1nmtpbk9raq86b3p4a87hm99ncol9.apps.googleusercontent.com"
+          data-context="signout"
+          data-ux_mode="popup"
+          data-callback="SignInGoogle"
+          data-auto_select="false"
+          data-itp_support="true"
+        />
       </Modal.Footer>
     </>
   )
