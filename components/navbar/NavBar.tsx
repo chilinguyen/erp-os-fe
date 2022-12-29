@@ -2,7 +2,7 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { postMethod } from '@/services'
-import { Avatar, Dropdown, Navbar } from '@nextui-org/react'
+import { Avatar, Dropdown, Navbar, useTheme } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 import { BsFillChatLeftDotsFill } from 'react-icons/bs'
@@ -16,6 +16,7 @@ interface INavBar {
 export const NavBar = ({ isOpenSideBar, setOpenSideBar }: INavBar) => {
   const [cookies, , removeCookie] = useCookies([TOKEN_AUTHENTICATION])
   const router = useRouter()
+  const { theme } = useTheme()
 
   const translate = useTranslationFunction()
 
@@ -26,9 +27,9 @@ export const NavBar = ({ isOpenSideBar, setOpenSideBar }: INavBar) => {
         toast.error(translate(message))
       }
     },
-    handleSuccess(message) {
-      toast.success(translate(message))
+    handleSuccess() {
       removeCookie(TOKEN_AUTHENTICATION)
+      document.cookie = 'g_state=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
       router.push('/login')
     },
   })
@@ -38,7 +39,17 @@ export const NavBar = ({ isOpenSideBar, setOpenSideBar }: INavBar) => {
   const signOut = useTranslation('signOut')
 
   return (
-    <Navbar variant="sticky" maxWidth="fluid" css={{ zIndex: 1000 }}>
+    <Navbar
+      variant="sticky"
+      maxWidth="fluid"
+      css={{
+        zIndex: 1000,
+        backgroundColor: theme?.colors.backgroundContrast.value ?? 'white',
+        '.nextui-navbar-container': {
+          backgroundColor: theme?.colors.backgroundContrast.value ?? 'white',
+        },
+      }}
+    >
       <Navbar.Toggle
         isSelected={isOpenSideBar}
         onPress={() => {

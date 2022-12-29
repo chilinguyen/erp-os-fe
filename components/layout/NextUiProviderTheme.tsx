@@ -15,7 +15,7 @@ import { NextUIProvider } from '@nextui-org/react'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import { BackDropModal } from '../modals'
 
 export const NextUiProviderTheme = ({ children }: { children: React.ReactNode }) => {
@@ -81,6 +81,12 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
 
   return (
     <NextUIProvider theme={darkTheme ? DarkTheme : LightTheme}>
+      <ToastContainer
+        autoClose={2000}
+        position="top-center"
+        theme={darkTheme ? 'dark' : 'light'}
+        style={{ zIndex: 1000000 }}
+      />
       {children} <BackDropModal />
     </NextUIProvider>
   )
