@@ -5,7 +5,6 @@ import { encodeBase64 } from '@/lib'
 import { postMethod } from '@/services'
 import { LoginRequest, LoginResponseFailure, LoginResponseSuccess, TypeAccount } from '@/types'
 import { Button, FormElement, Input, Loading, Modal, Row, Text } from '@nextui-org/react'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useRef } from 'react'
 import { useCookies } from 'react-cookie'
@@ -90,14 +89,14 @@ export const LoginForm = () => {
 
   return (
     <>
-      <Head>
+      {/* <Head>
         <script src="https://accounts.google.com/gsi/client" async defer />
         <script type="text/javascript">{`
         ${function SignInGoogle(res: any) {
           document.cookie = `googleId=${res.credential}`
         }}
         `}</script>
-      </Head>
+      </Head> */}
       <Modal.Header>
         <Text id="modal-title" size={18}>
           {signIn}
@@ -135,15 +134,15 @@ export const LoginForm = () => {
         <Button disabled={loading} auto onClick={handleLogin}>
           {loading ? <Loading /> : <>{signIn}</>}
         </Button>
-        <div
+        {/* <div
           id="g_id_onload"
-          data-client_id="223076068985-vtu1nmtpbk9raq86b3p4a87hm99ncol9.apps.googleusercontent.com"
+          data-client_id={process.env.NEXT_PUBLIC_AUTH_GOOGLE_KEY}
           data-context="signout"
           data-ux_mode="popup"
           data-callback="SignInGoogle"
           data-auto_select="false"
           data-itp_support="true"
-        />
+        /> */}
       </Modal.Footer>
     </>
   )

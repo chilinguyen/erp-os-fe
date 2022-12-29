@@ -27,9 +27,9 @@ export const NavBar = ({ isOpenSideBar, setOpenSideBar }: INavBar) => {
         toast.error(translate(message))
       }
     },
-    handleSuccess(message) {
-      toast.success(translate(message))
+    handleSuccess() {
       removeCookie(TOKEN_AUTHENTICATION)
+      document.cookie = 'g_state=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
       router.push('/login')
     },
   })

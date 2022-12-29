@@ -14,6 +14,7 @@ export const apiRoute = {
     logout: '/auth/logout',
     verify2FA: '/auth/verify-2fa',
     forgotPassword: '/auth/forgot-password',
+    loginWithGoogle: '/auth/login-google',
   },
   settings: {
     updatePassword: 'settings/update-password',
