@@ -1,11 +1,13 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { setIsLoggedIn } from '@/redux/authentication'
 import { postMethod } from '@/services'
 import { Avatar, Dropdown, Navbar, useTheme } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 import { BsFillChatLeftDotsFill } from 'react-icons/bs'
+import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 
 interface INavBar {
@@ -17,6 +19,7 @@ export const NavBar = ({ isOpenSideBar, setOpenSideBar }: INavBar) => {
   const [cookies, , removeCookie] = useCookies([TOKEN_AUTHENTICATION])
   const router = useRouter()
   const { theme } = useTheme()
+  const dispatch = useDispatch()
 
   const translate = useTranslationFunction()
 
@@ -30,6 +33,7 @@ export const NavBar = ({ isOpenSideBar, setOpenSideBar }: INavBar) => {
     handleSuccess() {
       removeCookie(TOKEN_AUTHENTICATION)
       document.cookie = 'g_state=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+      dispatch(setIsLoggedIn(false))
       router.push('/login')
     },
   })

@@ -1,10 +1,6 @@
-import { useTheme } from '@nextui-org/react'
-import Image from 'next/image'
 import React from 'react'
 
 export const LoginLayout = ({ children }: { children: React.ReactNode }) => {
-  const { isDark } = useTheme()
-
   return (
     <div
       style={{
@@ -13,11 +9,18 @@ export const LoginLayout = ({ children }: { children: React.ReactNode }) => {
         width: '100vw',
       }}
     >
-      {isDark ? (
-        <Image src="/background/darkBack.jpg" alt="background" layout="fill" objectFit="cover" />
-      ) : (
-        <Image src="/background/lightBack.jpg" alt="background" layout="fill" objectFit="cover" />
-      )}
+      <div
+        style={{
+          background:
+            'linear-gradient(45deg,#efefef 25%,rgba(239,239,239,0) 25%,rgba(239,239,239,0) 75%,#efefef 75%,#efefef),linear-gradient(45deg,#efefef 25%,rgba(239,239,239,0) 25%,rgba(239,239,239,0) 75%,#efefef 75%,#efefef)',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 0,
+        }}
+      />
       {children}
     </div>
   )

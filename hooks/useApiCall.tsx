@@ -1,5 +1,5 @@
-import { GOOGLE_ID, TOKEN_AUTHENTICATION } from '@/constants/auth'
-import { setIsForbidden } from '@/redux/authentication'
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
+import { setIsForbidden, setIsLoggedIn } from '@/redux/authentication'
 import { CommonResponseType } from '@/types'
 import { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
@@ -23,7 +23,7 @@ export const useApiCall = <T, E>({
 
   const dispatch = useDispatch()
 
-  const [, , removeCookie] = useCookies([TOKEN_AUTHENTICATION, GOOGLE_ID])
+  const [, , removeCookie] = useCookies([TOKEN_AUTHENTICATION])
 
   const router = useRouter()
 
@@ -48,7 +48,8 @@ export const useApiCall = <T, E>({
         }
         if (statusCode === 401) {
           removeCookie(TOKEN_AUTHENTICATION)
-          // removeCookie(GOOGLE_ID)
+          dispatch(setIsLoggedIn(false))
+
           router.push('/login')
         }
         if (statusCode === 403) {
