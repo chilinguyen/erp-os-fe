@@ -2,12 +2,14 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { encodeBase64 } from '@/lib'
+import { setIsLoggedIn } from '@/redux/authentication'
 import { postMethod } from '@/services'
 import { LoginRequest, LoginResponseFailure, LoginResponseSuccess, TypeAccount } from '@/types'
 import { Button, FormElement, Input, Loading, Modal, Row, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useRef } from 'react'
 import { useCookies } from 'react-cookie'
+import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { inputStyles } from './login.inventory'
 
@@ -17,6 +19,7 @@ export const LoginForm = () => {
   const router = useRouter()
   const [, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
+  const dispatch = useDispatch()
 
   const resultForgotPassword = useApiCall({
     callApi: () =>
@@ -56,6 +59,7 @@ export const LoginForm = () => {
           path: '/',
           expires: new Date(new Date().setDate(new Date().getDate() + 7)),
         })
+        dispatch(setIsLoggedIn(true))
         if (data.type === TypeAccount.INTERNAL) {
           router.push('/')
         }

@@ -1,22 +1,23 @@
 import { apiRoute } from '@/constants/apiRoutes'
-import { GOOGLE_ID, TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
-import { resetSignUpRequest } from '@/redux/authentication'
+import { authenticationSelector, resetSignUpRequest, setIsLoggedIn } from '@/redux/authentication'
 import { postMethod } from '@/services'
 import { LoginResponseSuccess, TypeAccount } from '@/types'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { Modal403 } from '../modals'
 
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
-  const [cookies, setCookie, removeCookie] = useCookies([TOKEN_AUTHENTICATION, GOOGLE_ID, USER_ID])
+  const [cookies, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const [chatStatus, setChatStatus] = useState<string>('out')
   const translate = useTranslationFunction()
   const [googleToken, setGoogleToken] = useState('')
+  const { isLoggedIn } = useSelector(authenticationSelector)
   const dispatch = useDispatch()
 
   const outChatRoom = useApiCall({
@@ -26,6 +27,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const inChatRoom = useApiCall({
     callApi: () => postMethod(apiRoute.message.toChatRoom, cookies.token),
   })
+
   const loginWithGoogle = useApiCall<LoginResponseSuccess, {}>({
     callApi: () =>
       postMethod(apiRoute.auth.loginWithGoogle, undefined, undefined, {
@@ -54,13 +56,14 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         if (data.type === TypeAccount.EXTERNAL) {
           router.push('/home')
         }
+        dispatch(setIsLoggedIn(true))
       }
-      removeCookie(GOOGLE_ID)
     },
   })
+
   useEffect(() => {
     const onClose = () => {
-      if (cookies.token) {
+      if (isLoggedIn) {
         outChatRoom.setLetCall(true)
       }
     }
@@ -75,7 +78,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    if (router.asPath.includes('chat') && cookies.token) {
+    if (router.asPath.includes('chat') && isLoggedIn) {
       if (chatStatus !== 'in') {
         inChatRoom.setLetCall(true)
         setChatStatus('in')
@@ -84,7 +87,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       outChatRoom.setLetCall(true)
       setChatStatus('out')
     }
-  }, [cookies, router])
+  }, [isLoggedIn, router])
 
   useEffect(() => {
     if (
@@ -94,27 +97,36 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       !router.asPath.includes('sign-up') &&
       !router.asPath.includes('verify')
     ) {
-      if (!cookies.token) {
+      if (!isLoggedIn && !cookies.token) {
         router.push('/login')
       }
     }
+
     if (
       (router && router.asPath.includes('login')) ||
       router.asPath.includes('forgot-password') ||
       router.asPath.includes('sign-up') ||
       router.asPath.includes('verify')
     ) {
-      if (cookies.token) {
+      if (isLoggedIn) {
         router.push('/')
       }
       dispatch(resetSignUpRequest())
     }
-  }, [router, cookies])
+  }, [router, isLoggedIn])
+
+  useEffect(() => {
+    if (cookies.token) {
+      dispatch(setIsLoggedIn(true))
+    } else {
+      dispatch(setIsLoggedIn(false))
+    }
+  }, [])
 
   useEffect(() => {
     /* global google */
     /* @ts-ignore */
-    if (google && !cookies.token) {
+    if (google && !isLoggedIn) {
       /* @ts-ignore */
       google.accounts.id.initialize({
         client_id: process.env.NEXT_PUBLIC_AUTH_GOOGLE_KEY,
@@ -128,13 +140,14 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       /* @ts-ignore */
       google.accounts.id.prompt()
     }
-  }, [cookies.token])
+  }, [isLoggedIn])
 
   useEffect(() => {
     if (googleToken) {
       loginWithGoogle.setLetCall(true)
     }
   }, [googleToken])
+
   return (
     <>
       <Modal403 />
