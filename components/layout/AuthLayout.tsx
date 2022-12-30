@@ -4,7 +4,6 @@ import { useApiCall, useTranslationFunction } from '@/hooks'
 import { resetSignUpRequest } from '@/redux/authentication'
 import { postMethod } from '@/services'
 import { LoginResponseSuccess, TypeAccount } from '@/types'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -17,7 +16,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const [cookies, setCookie, removeCookie] = useCookies([TOKEN_AUTHENTICATION, GOOGLE_ID, USER_ID])
   const [chatStatus, setChatStatus] = useState<string>('out')
   const translate = useTranslationFunction()
-
+  const [googleToken, setGoogleToken] = useState('')
   const dispatch = useDispatch()
 
   const outChatRoom = useApiCall({
@@ -30,7 +29,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const loginWithGoogle = useApiCall<LoginResponseSuccess, {}>({
     callApi: () =>
       postMethod(apiRoute.auth.loginWithGoogle, undefined, undefined, {
-        idToken: cookies.googleId,
+        idToken: googleToken,
       }),
     handleError(status, message) {
       toast.error(translate(message))
@@ -113,43 +112,32 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   }, [router, cookies])
 
   useEffect(() => {
-    if (cookies.googleId) {
+    /* global google */
+    /* @ts-ignore */
+    if (google && !cookies.token) {
+      /* @ts-ignore */
+      google.accounts.id.initialize({
+        client_id: process.env.NEXT_PUBLIC_AUTH_GOOGLE_KEY,
+        context: 'Login into franchise',
+        callback: (res: any) => {
+          if (res?.credential) {
+            setGoogleToken(res.credential)
+          }
+        },
+      })
+      /* @ts-ignore */
+      google.accounts.id.prompt()
+    }
+  }, [cookies.token])
+
+  useEffect(() => {
+    if (googleToken) {
       loginWithGoogle.setLetCall(true)
     }
-  }, [cookies.googleId])
-
+  }, [googleToken])
   return (
     <>
-      <Head>
-        <script src="https://accounts.google.com/gsi/client" async defer />
-        <script type="text/javascript">{`
-        ${function SignInGoogle(res: any) {
-          document.cookie = `googleId=${res.credential}`
-          if (window) {
-            window.location.reload()
-          }
-        }}
-        `}</script>
-      </Head>
-      {/* <ToastContainer
-        autoClose={2000}
-        position="top-center"
-        theme={darkTheme ? 'dark' : 'light'}
-        style={{ zIndex: 1000000 }}
-      /> */}
       <Modal403 />
-
-      <div
-        id="g_id_onload"
-        data-client_id={process.env.NEXT_PUBLIC_AUTH_GOOGLE_KEY}
-        data-context="use"
-        data-ux_mode="popup"
-        data-callback="SignInGoogle"
-        data-auto_select="false"
-        data-itp_support="true"
-        data-skip_prompt_cookie="googleId"
-      />
-
       {children}
     </>
   )

@@ -14,7 +14,10 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head>{CssBaseline.flush()}</Head>
+        <Head>
+          {CssBaseline.flush()}
+          <script src="https://accounts.google.com/gsi/client" async defer />
+        </Head>
         <body>
           <Main />
           <NextScript />
