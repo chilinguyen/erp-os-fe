@@ -79,7 +79,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    if (router.asPath.includes('chat') && isLoggedIn) {
+    if (router.asPath.includes('chat') && isLoggedIn && isFirstRender) {
       if (chatStatus !== 'in') {
         inChatRoom.setLetCall(true)
         setChatStatus('in')
@@ -88,7 +88,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       outChatRoom.setLetCall(true)
       setChatStatus('out')
     }
-  }, [isLoggedIn, router])
+  }, [isLoggedIn, router, isFirstRender])
 
   useEffect(() => {
     if (
@@ -114,7 +114,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       }
       dispatch(resetSignUpRequest())
     }
-  }, [router, isLoggedIn])
+  }, [router, isLoggedIn, isFirstRender])
 
   useEffect(() => {
     if (cookies.token) {
@@ -142,7 +142,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       /* @ts-ignore */
       google.accounts.id.prompt()
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, isFirstRender])
 
   useEffect(() => {
     if (googleToken) {
