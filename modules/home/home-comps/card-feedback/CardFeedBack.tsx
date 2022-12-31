@@ -1,23 +1,31 @@
 import { CardBase } from '@/components'
+import { FeedBackFromTravelers } from '@/components/mock-data/MockDataType'
 
-export const CardFeedBack = () => {
+interface CardFeedBackProps {
+  data: FeedBackFromTravelers
+}
+export const CardFeedBack = ({ data }: CardFeedBackProps) => {
   return (
     <CardBase
-      wrapperStyle={{ border: '1px solid #e9ebee', borderBottom: '4px solid #75a8f9' }}
+      wrapperStyle={{
+        border: '1px solid #e9ebee',
+        borderBottom: '4px solid #75a8f9',
+        padding: '24px 32px',
+      }}
       title={{
-        content: 'Meeru Island Resort & Spa',
+        content: data.hotel,
         style: { color: '#5392f9' },
         hoveredStyle: { color: '#75a8f9' },
       }}
       subTitle={{
-        content: 'in Greece',
+        content: data.location,
         style: { color: '#737373' },
       }}
       description={{
-        content:
-          'We booked Hotel Eucalyptus through Agoda after reading a handful of reviews, and it was easily the best decision we made for our trip to Santorini.',
+        content: data.description,
+        style: { fontSize: 20, fontWeight: 700 },
       }}
-      child={<div>- Joyce from Canada</div>}
+      child={<div>- {data.name}</div>}
     />
   )
 }

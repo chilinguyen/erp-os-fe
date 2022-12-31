@@ -1,12 +1,16 @@
 import { CardBase } from '@/components'
+import { HighlightData } from '@/components/mock-data/MockDataType'
 import { MdLocationPin } from 'react-icons/md'
 
-export const CardProduct = () => {
+interface CardProductProps {
+  data: HighlightData
+}
+export const CardProduct = ({ data }: CardProductProps) => {
   return (
     <CardBase
       wrapperStyle={{ alignItems: 'start', gap: 2 }}
       image={{
-        content: '/test/explore-travel/test1.jpg',
+        content: data.imageUrl,
         child: (
           <div
             style={{
@@ -43,16 +47,19 @@ export const CardProduct = () => {
         ),
       }}
       title={{
-        content: 'Chery apartment - Thao Dien Center',
+        content: data.name,
         style: { padding: 2, fontSize: '14px' },
       }}
       child={
         <>
           <div style={{ color: '#5392f9', fontSize: 12, padding: 2 }}>
             <MdLocationPin size={12} />
-            <span>District 1, Ho Chi Minh City</span>
+            <span>{data.address}</span>
           </div>
-          <div style={{ color: '#E12D2D', padding: 2 }}>VND 595,838</div>
+          <div style={{ color: 'rgb(115,115,115)', padding: 2, fontSize: 12 }}>
+            Giá mỗi đêm rẻ nhất từ
+          </div>
+          <div style={{ color: '#E12D2D', padding: 2 }}>{data.price}</div>
         </>
       }
     />

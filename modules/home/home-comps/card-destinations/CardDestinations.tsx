@@ -1,16 +1,27 @@
+import { RecommendedDataType } from '@/components/mock-data/MockDataType'
 import { CardBase } from '@/components'
 
-export const CardDestinations = () => {
+interface CardDestinationsProps {
+  data: RecommendedDataType
+}
+export const CardDestinations = ({ data }: CardDestinationsProps) => {
+  if (!data) return null
   return (
+    // <CardBase
+    //   image={{
+    //     content: '/test/explore-travel/test1.jpg',
+    //     style: { borderRadius: '100%' },
+    //     hoveredStyle: { scale: '110%' },
+    //   }}
     <CardBase
       image={{
-        content: '/test/explore-travel/test1.jpg',
+        content: data.imageUrl,
         style: { borderRadius: '100%' },
         hoveredStyle: { scale: '110%' },
       }}
-      title={{ content: 'Ho Chi Minh City', style: { padding: '8px 8px 0' } }}
+      title={{ content: data.name, style: { padding: '8px 8px 0' } }}
       subTitle={{
-        content: '156,786 properties',
+        content: data.properties.concat(' chỗ ở'),
         style: { padding: '4px 8px 8px' },
       }}
     />
