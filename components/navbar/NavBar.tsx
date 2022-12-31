@@ -32,7 +32,6 @@ export const NavBar = ({ isOpenSideBar, setOpenSideBar }: INavBar) => {
     },
     handleSuccess() {
       removeCookie(TOKEN_AUTHENTICATION)
-      document.cookie = 'g_state=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
       dispatch(setIsLoggedIn(false))
       router.push('/login')
     },

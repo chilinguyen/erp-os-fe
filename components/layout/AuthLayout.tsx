@@ -17,6 +17,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const [chatStatus, setChatStatus] = useState<string>('out')
   const translate = useTranslationFunction()
   const [googleToken, setGoogleToken] = useState('')
+  const [isFirstRender, setIsFirstRender] = useState(true)
   const { isLoggedIn } = useSelector(authenticationSelector)
   const dispatch = useDispatch()
 
@@ -97,7 +98,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       !router.asPath.includes('sign-up') &&
       !router.asPath.includes('verify')
     ) {
-      if (!isLoggedIn && !cookies.token) {
+      if (!isLoggedIn && !isFirstRender) {
         router.push('/login')
       }
     }
@@ -121,16 +122,17 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     } else {
       dispatch(setIsLoggedIn(false))
     }
+    setIsFirstRender(false)
   }, [])
 
   useEffect(() => {
     /* global google */
     /* @ts-ignore */
-    if (google && !isLoggedIn) {
+    if (google && !isLoggedIn && !isFirstRender) {
       /* @ts-ignore */
       google.accounts.id.initialize({
         client_id: process.env.NEXT_PUBLIC_AUTH_GOOGLE_KEY,
-        context: 'Login into franchise',
+        context: 'use',
         callback: (res: any) => {
           if (res?.credential) {
             setGoogleToken(res.credential)
