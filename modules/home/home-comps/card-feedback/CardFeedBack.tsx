@@ -11,6 +11,7 @@ export const CardFeedBack = ({ data }: CardFeedBackProps) => {
         border: '1px solid #e9ebee',
         borderBottom: '4px solid #75a8f9',
         padding: '24px 32px',
+        justifyContent: 'start',
       }}
       title={{
         content: data.hotel,

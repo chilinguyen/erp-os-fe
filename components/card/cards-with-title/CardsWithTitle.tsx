@@ -11,7 +11,12 @@ export const CardsWithTitle = ({ title, children }: ICardsWithTitle) => {
     <CardBase
       wrapperStyle={{ gap: 24 }}
       title={{ content: title, style: { fontSize: '24px' } }}
-      child={<CardBase wrapperStyle={{ flexDirection: 'row', gap: 32 }} child={children} />}
+      child={
+        <CardBase
+          wrapperStyle={{ flexDirection: 'row', gap: 32, alignItems: 'stretch' }}
+          child={children}
+        />
+      }
     />
   )
 }

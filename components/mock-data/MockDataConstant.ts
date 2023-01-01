@@ -195,7 +195,7 @@ export const feedBackData: FeedBackFromTravelers[] = [
     id: '1',
     name: 'RaHà Nộiee đến từ Philippines',
     description:
-      'Nơi đây hoàn toàn giống như hình ảnh đăng trên Agoda. Dịch vụ cực tốt, chúng tôi đã có 1 kỳ nghỉ tuyệt vời!',
+      'Nơi đây hoàn toàn giống như hình ảnh đăng trên Agoda. Dịch vụ cực tốt, chúng tôi đã có 1 kỳ nghỉ tuyệt vời!Nơi đây hoàn toàn giống như hình ảnh đăng trên Agoda. Dịch vụ cực tốt, chúng tôi đã có 1 kỳ nghỉ tuyệt vời!',
     location: 'ở Đài Loan',
     hotel: 'Khách sạn King Plaza',
   },
