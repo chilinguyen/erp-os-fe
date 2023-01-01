@@ -76,8 +76,8 @@ export const CardBase = ({
       onClick={handleClickCard}
       style={{
         ...initWrapperStyle,
-        ...wrapperStyle,
         cursor: Link ? 'pointer' : 'default',
+        ...wrapperStyle,
         ...returnPsedo(hoverCard, hoveredStyle),
       }}
     >
