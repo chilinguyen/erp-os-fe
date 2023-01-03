@@ -142,6 +142,11 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       /* @ts-ignore */
       google.accounts.id.prompt()
     }
+    /* @ts-ignore */
+    if (google && isLoggedIn) {
+      /* @ts-ignore */
+      google.accounts.id.cancel()
+    }
   }, [isLoggedIn, isFirstRender])
 
   useEffect(() => {
