@@ -1,4 +1,3 @@
-import { CardsWithTitle } from '@/components'
 import {
   cityData,
   countryData,
@@ -15,7 +14,7 @@ import {
 import { CustomSlider } from '@/components/slider/Slider'
 import TabBase from '@/components/tab/tab-base/TabBase'
 import { useState } from 'react'
-import { CardExplore, CardFeedBack, CardProduct } from '../home-comps'
+import { CardExplore, CardFeedBack, CardProduct, CardsWithTitle } from '../home-comps'
 import { CardDestinations } from '../home-comps/card-destinations/CardDestinations'
 
 export const HomeModule = () => {

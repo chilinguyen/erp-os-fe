@@ -12,8 +12,6 @@ export const initWrapperStyle: CSSProperties = {
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
   transition: 'all 0.2s linear',
 }
 
