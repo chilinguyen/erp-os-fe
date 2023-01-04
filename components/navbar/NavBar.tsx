@@ -5,17 +5,21 @@ import { setIsLoggedIn } from '@/redux/authentication'
 import { postMethod } from '@/services'
 import { Avatar, Dropdown, Navbar, useTheme } from '@nextui-org/react'
 import { useRouter } from 'next/router'
+import { Fragment } from 'react'
 import { useCookies } from 'react-cookie'
 import { BsFillChatLeftDotsFill } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
+import { NavBarItems } from './NavBarConstant'
+import { RenderItemDesktop } from './RenderItemDesktop'
 
 interface INavBar {
   isOpenSideBar: boolean
   setOpenSideBar: (v: boolean) => void
+  useNavbar?: boolean
 }
 
-export const NavBar = ({ isOpenSideBar, setOpenSideBar }: INavBar) => {
+export const NavBar = ({ isOpenSideBar, setOpenSideBar, useNavbar }: INavBar) => {
   const [cookies, , removeCookie] = useCookies([TOKEN_AUTHENTICATION])
   const router = useRouter()
   const { theme } = useTheme()
@@ -60,13 +64,16 @@ export const NavBar = ({ isOpenSideBar, setOpenSideBar }: INavBar) => {
         }}
         showIn="sm"
       />
-      <Navbar.Content enableCursorHighlight variant="underline">
-        {/* {NavBarItems().map((item) => (
-          <Fragment key={item.path}>
-            <RenderItemDesktop item={item} />
-          </Fragment>
-        ))} */}
-        <div />
+      <Navbar.Content enableCursorHighlight variant="underline" hideIn="sm">
+        {useNavbar ? (
+          NavBarItems().map((item) => (
+            <Fragment key={item.path}>
+              <RenderItemDesktop item={item} />
+            </Fragment>
+          ))
+        ) : (
+          <div />
+        )}
       </Navbar.Content>
       {/* <Navbar.Collapse showIn="sm">
         {NavBarItems().map((item) => (
