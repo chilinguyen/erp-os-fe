@@ -1,3 +1,4 @@
+import { useTheme } from '@nextui-org/react'
 import { NavBarItems } from '../navbar/NavBarConstant'
 import { RenderItemSideBar } from './RenderItemSideBar'
 
@@ -8,6 +9,7 @@ interface ISideBar {
 }
 
 export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
+  const { theme } = useTheme()
   return (
     <>
       <div
@@ -34,7 +36,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           top: 76,
           left: 0,
           bottom: 0,
-          backgroundColor: 'white',
+          backgroundColor: theme?.colors.backgroundContrast.value ?? 'white',
           zIndex: 900,
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           overflow: 'auto',

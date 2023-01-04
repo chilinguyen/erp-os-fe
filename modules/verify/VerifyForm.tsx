@@ -1,12 +1,14 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { setIsLoggedIn } from '@/redux/authentication'
 import { postMethod } from '@/services'
 import { LoginResponseSuccess, TypeAccount } from '@/types'
 import { Button, Input, Loading, Modal, Row, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { inputStyles } from './verify.inventory'
 
@@ -14,6 +16,7 @@ export const VerifyForm = () => {
   const [isCode, setIsCode] = useState<boolean>(false)
   const router = useRouter()
   const [, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
+  const dispatch = useDispatch()
 
   const [email, setEmail] = useState<string>('')
   const [code, setCode] = useState<string>('')
@@ -60,6 +63,7 @@ export const VerifyForm = () => {
         path: '/',
         expires: new Date(new Date().setDate(new Date().getDate() + 7)),
       })
+      dispatch(setIsLoggedIn(true))
       if (data.type === TypeAccount.INTERNAL) {
         router.push('/')
       }

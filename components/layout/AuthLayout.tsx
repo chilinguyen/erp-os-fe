@@ -1,24 +1,25 @@
 import { apiRoute } from '@/constants/apiRoutes'
-import { TOKEN_AUTHENTICATION } from '@/constants/auth'
-import { useApiCall } from '@/hooks'
-import { resetSignUpRequest } from '@/redux/authentication'
-import { GeneralSettingsSelector } from '@/redux/general-settings'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
+import { useApiCall, useTranslationFunction } from '@/hooks'
+import { authenticationSelector, resetSignUpRequest, setIsLoggedIn } from '@/redux/authentication'
 import { postMethod } from '@/services'
+import { LoginResponseSuccess, TypeAccount } from '@/types'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { Modal403 } from '../modals'
 
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
-  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
+  const [cookies, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const [chatStatus, setChatStatus] = useState<string>('out')
-
+  const translate = useTranslationFunction()
+  const [googleToken, setGoogleToken] = useState('')
+  const [isFirstRender, setIsFirstRender] = useState(true)
+  const { isLoggedIn } = useSelector(authenticationSelector)
   const dispatch = useDispatch()
-
-  const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const outChatRoom = useApiCall({
     callApi: () => postMethod(apiRoute.message.outChatRoom, cookies.token),
@@ -28,9 +29,42 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     callApi: () => postMethod(apiRoute.message.toChatRoom, cookies.token),
   })
 
+  const loginWithGoogle = useApiCall<LoginResponseSuccess, {}>({
+    callApi: () =>
+      postMethod(apiRoute.auth.loginWithGoogle, undefined, undefined, {
+        idToken: googleToken,
+      }),
+    handleError(status, message) {
+      toast.error(translate(message))
+    },
+    handleSuccess(message, data) {
+      if (data.needVerify) {
+        router.push('/verify?type=verifyEmail')
+      }
+      if (!data.needVerify && !data.verify2Fa) {
+        toast.success(translate(message))
+        setCookie(TOKEN_AUTHENTICATION, data.token, {
+          path: '/',
+          expires: new Date(new Date().setDate(new Date().getDate() + 7)),
+        })
+        setCookie(USER_ID, data.userId, {
+          path: '/',
+          expires: new Date(new Date().setDate(new Date().getDate() + 7)),
+        })
+        if (data.type === TypeAccount.INTERNAL) {
+          router.push('/')
+        }
+        if (data.type === TypeAccount.EXTERNAL) {
+          router.push('/home')
+        }
+        dispatch(setIsLoggedIn(true))
+      }
+    },
+  })
+
   useEffect(() => {
     const onClose = () => {
-      if (cookies.token) {
+      if (isLoggedIn) {
         outChatRoom.setLetCall(true)
       }
     }
@@ -45,7 +79,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    if (router.asPath.includes('chat') && cookies.token) {
+    if (router.asPath.includes('chat') && isLoggedIn && isFirstRender) {
       if (chatStatus !== 'in') {
         inChatRoom.setLetCall(true)
         setChatStatus('in')
@@ -54,7 +88,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       outChatRoom.setLetCall(true)
       setChatStatus('out')
     }
-  }, [cookies, router])
+  }, [isLoggedIn, router, isFirstRender])
 
   useEffect(() => {
     if (
@@ -64,31 +98,65 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       !router.asPath.includes('sign-up') &&
       !router.asPath.includes('verify')
     ) {
-      if (!cookies.token) {
+      if (!isLoggedIn && !isFirstRender) {
         router.push('/login')
       }
     }
+
     if (
       (router && router.asPath.includes('login')) ||
       router.asPath.includes('forgot-password') ||
       router.asPath.includes('sign-up') ||
       router.asPath.includes('verify')
     ) {
-      if (cookies.token) {
+      if (isLoggedIn) {
         router.push('/')
       }
       dispatch(resetSignUpRequest())
     }
-  }, [router, cookies])
+  }, [router, isLoggedIn, isFirstRender])
+
+  useEffect(() => {
+    if (cookies.token) {
+      dispatch(setIsLoggedIn(true))
+    } else {
+      dispatch(setIsLoggedIn(false))
+    }
+    setIsFirstRender(false)
+  }, [])
+
+  useEffect(() => {
+    /* global google */
+    /* @ts-ignore */
+    if (google && !isLoggedIn && !isFirstRender) {
+      /* @ts-ignore */
+      google.accounts.id.initialize({
+        client_id: process.env.NEXT_PUBLIC_AUTH_GOOGLE_KEY,
+        context: 'use',
+        callback: (res: any) => {
+          if (res?.credential) {
+            setGoogleToken(res.credential)
+          }
+        },
+      })
+      /* @ts-ignore */
+      google.accounts.id.prompt()
+    }
+    /* @ts-ignore */
+    if (google && isLoggedIn) {
+      /* @ts-ignore */
+      google.accounts.id.cancel()
+    }
+  }, [isLoggedIn, isFirstRender])
+
+  useEffect(() => {
+    if (googleToken) {
+      loginWithGoogle.setLetCall(true)
+    }
+  }, [googleToken])
 
   return (
     <>
-      <ToastContainer
-        autoClose={2000}
-        position="top-center"
-        theme={darkTheme ? 'dark' : 'light'}
-        style={{ zIndex: 1000000 }}
-      />
       <Modal403 />
       {children}
     </>

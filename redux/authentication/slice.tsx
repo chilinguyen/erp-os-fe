@@ -12,6 +12,7 @@ const initialState: AuthenticationStoreTypes = {
     email: '',
     address: '',
   },
+  isLoggedIn: false,
 }
 
 const AuthenticationSlice = createSlice({
@@ -34,10 +35,13 @@ const AuthenticationSlice = createSlice({
     reset: (state) => {
       Object.assign(state, initialState)
     },
+    setIsLoggedIn: (state, actions: PayloadAction<boolean>) => {
+      state.isLoggedIn = actions.payload
+    },
   },
 })
 
-export const { setSignUpRequest, reset, resetSignUpRequest, setIsForbidden } =
+export const { setSignUpRequest, reset, resetSignUpRequest, setIsForbidden, setIsLoggedIn } =
   AuthenticationSlice.actions
 
 export default AuthenticationSlice
