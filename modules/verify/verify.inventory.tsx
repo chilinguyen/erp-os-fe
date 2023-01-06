@@ -1,7 +1,5 @@
-import { InputProps } from '@nextui-org/react'
-
 export const inputStyles = ({ error }: { error?: string }) => {
-  const initialValue: Partial<InputProps> = {
+  const initialValue: Partial<any> = {
     clearable: true,
     status: error ? 'error' : 'default',
     helperText: error || '',

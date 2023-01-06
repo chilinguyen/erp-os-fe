@@ -1,5 +1,4 @@
 import { UserResponseSuccess, ViewPointType } from '@/types'
-import { InputProps } from '@nextui-org/react'
 
 export const DefaultUser: UserResponseSuccess = {
   id: '',
@@ -21,7 +20,7 @@ export const DefaultUser: UserResponseSuccess = {
 }
 
 export const inputStylesUser = ({ error }: { error?: string }) => {
-  const initialValue: Partial<InputProps> = {
+  const initialValue: Partial<any> = {
     status: error ? 'error' : 'default',
     helperText: error || '',
     underlined: true,

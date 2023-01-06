@@ -1,12 +1,4 @@
-import { apiRoute } from '@/constants/apiRoutes'
-import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { putMethod } from '@/services'
-import { Button, Modal, Text } from '@nextui-org/react'
-import { useState } from 'react'
-import { useCookies } from 'react-cookie'
 import { TiDelete } from 'react-icons/ti'
-import { toast } from 'react-toastify'
 
 interface IDeleteDictionaryPopup {
   dictionaryKey: string
@@ -19,44 +11,40 @@ export const DeleteDictionaryPopup = ({
   setLetCallList,
   updateStoreLanguage,
 }: IDeleteDictionaryPopup) => {
-  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  const [open, setOpen] = useState(false)
+  // const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
+  // const [open, setOpen] = useState(false)
 
-  const translate = useTranslationFunction()
+  // const translate = useTranslationFunction()
 
-  const handleClose = () => {
-    setOpen(false)
-  }
+  // const handleClose = () => {
+  //   setOpen(false)
+  // }
 
-  const deleteResult = useApiCall({
-    callApi: () =>
-      putMethod(apiRoute.language.deleteDictionaryKey, cookies.token, { key: dictionaryKey }),
-    handleSuccess(message) {
-      toast.success(translate(message))
-      setOpen(false)
-      setLetCallList(true)
-      updateStoreLanguage()
-    },
-    handleError(status, message) {
-      if (status) toast.error(translate(message))
-    },
-  })
+  // const deleteResult = useApiCall({
+  //   callApi: () =>
+  //     putMethod(apiRoute.language.deleteDictionaryKey, cookies.token, { key: dictionaryKey }),
+  //   handleSuccess(message) {
+  //     toast.success(translate(message))
+  //     setOpen(false)
+  //     setLetCallList(true)
+  //     updateStoreLanguage()
+  //   },
+  //   handleError(status, message) {
+  //     if (status) toast.error(translate(message))
+  //   },
+  // })
 
-  const deleteLabel = useTranslation('delete')
-  const cancel = useTranslation('cancel')
-  const deleteKeyLabel = useTranslation('deleteKeyLabel')
+  // const deleteLabel = useTranslation('delete')
+  // const cancel = useTranslation('cancel')
+  // const deleteKeyLabel = useTranslation('deleteKeyLabel')
 
   return (
     <>
-      <TiDelete
-        style={{ cursor: 'pointer' }}
-        size={25}
-        color="red"
-        onClick={() => {
-          setOpen(true)
-        }}
-      />
-      <Modal open={open} onClose={handleClose} blur>
+      <TiDelete style={{ cursor: 'pointer' }} size={25} color="red" onClick={() => {}} />
+      {dictionaryKey}
+      {updateStoreLanguage}
+      {setLetCallList}
+      {/* <Modal open={open} onClose={handleClose} blur>
         <Modal.Header>
           <Text h2 id="modal-title">
             {deleteLabel} {dictionaryKey}
@@ -81,7 +69,7 @@ export const DeleteDictionaryPopup = ({
             {deleteLabel}
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </>
   )
 }

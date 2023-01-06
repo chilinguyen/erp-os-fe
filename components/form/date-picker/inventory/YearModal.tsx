@@ -1,4 +1,3 @@
-import { Divider, Text, useTheme } from '@nextui-org/react'
 import { useState } from 'react'
 import { getListYear } from './DatePicker.inventory'
 
@@ -11,21 +10,21 @@ interface IYearModal {
 }
 
 export const YearModal = ({ year, setYear, setYearRange, yearRange, setType }: IYearModal) => {
-  const { theme } = useTheme()
   const [hoverItem, setHoverItem] = useState(-1)
 
   const getColor = (item: number) => {
     if (year === item) {
-      return theme?.colors.blue400.value
+      return 'blue'
     }
     if (hoverItem === item) {
-      return theme?.colors.blue200.value
+      return 'black'
     }
     return ''
   }
 
   return (
     <>
+      {setYearRange}
       <div
         style={{
           height: 40,
@@ -35,7 +34,7 @@ export const YearModal = ({ year, setYear, setYearRange, yearRange, setType }: I
           alignItems: 'center',
         }}
       >
-        <Text
+        {/* <Text
           css={{ cursor: 'pointer' }}
           onClick={() => {
             setYearRange(yearRange - 10)
@@ -53,10 +52,10 @@ export const YearModal = ({ year, setYear, setYearRange, yearRange, setType }: I
           }}
         >
           {'>>'}
-        </Text>
+        </Text> */}
       </div>
 
-      <Divider />
+      {/* <Divider /> */}
 
       <div
         style={{

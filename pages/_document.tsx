@@ -1,4 +1,3 @@
-import { CssBaseline } from '@nextui-org/react'
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document'
 import React from 'react'
 
@@ -15,7 +14,6 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          {CssBaseline.flush()}
           <script src="https://accounts.google.com/gsi/client" async defer />
         </Head>
         <body>

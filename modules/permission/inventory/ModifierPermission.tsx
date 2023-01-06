@@ -1,87 +1,69 @@
-import { apiRoute } from '@/constants/apiRoutes'
-import { TOKEN_AUTHENTICATION } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { ShareStoreSelector } from '@/redux/share-store'
-import { getMethod } from '@/services'
-import { PermissionRequest, PermissionRequestFailure, ViewPointKey } from '@/types'
-import { Collapse, Container, Input, Loading } from '@nextui-org/react'
-import { useEffect } from 'react'
-import { useCookies } from 'react-cookie'
-import { useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
-import { inputStylesPermission } from './permission.inventory'
-import { UserTablePermission } from './UserTable'
-import { ViewPointPermission } from './ViewPointPermission'
+// interface IModifierPermission {
+//   handleChangeState: (newUpdate: Partial<PermissionRequest>) => void
+//   permissionState: PermissionRequest
+//   editAble?: Partial<Record<keyof PermissionRequest, boolean>>
+//   errorState?: Partial<PermissionRequestFailure>
+// }
 
-interface IModifierPermission {
-  handleChangeState: (newUpdate: Partial<PermissionRequest>) => void
-  permissionState: PermissionRequest
-  editAble?: Partial<Record<keyof PermissionRequest, boolean>>
-  errorState?: Partial<PermissionRequestFailure>
-}
+export const ModifierPermission = () =>
+  // { errorState }: IModifierPermission
+  {
+    // const { breakPoint } = useSelector(ShareStoreSelector)
+    // const translate = useTranslationFunction()
+    // const [cookies] = useCookies([TOKEN_AUTHENTICATION])
 
-export const ModifierPermission = ({
-  handleChangeState,
-  permissionState,
-  editAble,
-  errorState,
-}: IModifierPermission) => {
-  const { breakPoint } = useSelector(ShareStoreSelector)
-  const translate = useTranslationFunction()
-  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
+    // const setListUser = (listUser: string[]) => {
+    //   handleChangeState({ userId: listUser })
+    // }
+    // const setViewPoints = (listView: ViewPointKey) => {
+    //   handleChangeState({ viewPoints: { ...permissionState.viewPoints, ...listView } })
+    // }
 
-  const setListUser = (listUser: string[]) => {
-    handleChangeState({ userId: listUser })
-  }
-  const setViewPoints = (listView: ViewPointKey) => {
-    handleChangeState({ viewPoints: { ...permissionState.viewPoints, ...listView } })
-  }
+    // const setEditAble = (listView: ViewPointKey) => {
+    //   handleChangeState({ editable: { ...permissionState.editable, ...listView } })
+    // }
 
-  const setEditAble = (listView: ViewPointKey) => {
-    handleChangeState({ editable: { ...permissionState.editable, ...listView } })
-  }
+    // const permissionName = useTranslation('permissionName')
 
-  const permissionName = useTranslation('permissionName')
+    // const selectUser = useTranslation('selectUser')
 
-  const selectUser = useTranslation('selectUser')
+    // const selectViewPoint = useTranslation('selectViewPoint')
 
-  const selectViewPoint = useTranslation('selectViewPoint')
+    // const selectEditable = useTranslation('selectEditable')
 
-  const selectEditable = useTranslation('selectEditable')
+    // const viewPointsResult = useApiCall<ViewPointKey, String>({
+    //   callApi: () => getMethod(apiRoute.permissions.getViewPointsSelect, cookies.token),
+    //   handleError(status, message) {
+    //     if (status) {
+    //       toast.error(translate(message))
+    //     }
+    //   },
+    // })
 
-  const viewPointsResult = useApiCall<ViewPointKey, String>({
-    callApi: () => getMethod(apiRoute.permissions.getViewPointsSelect, cookies.token),
-    handleError(status, message) {
-      if (status) {
-        toast.error(translate(message))
-      }
-    },
-  })
+    // const editAblesResult = useApiCall<ViewPointKey, String>({
+    //   callApi: () => getMethod(apiRoute.permissions.getEditableSelect, cookies.token),
+    //   handleError(status, message) {
+    //     if (status) {
+    //       toast.error(translate(message))
+    //     }
+    //   },
+    // })
 
-  const editAblesResult = useApiCall<ViewPointKey, String>({
-    callApi: () => getMethod(apiRoute.permissions.getEditableSelect, cookies.token),
-    handleError(status, message) {
-      if (status) {
-        toast.error(translate(message))
-      }
-    },
-  })
+    // useEffect(() => {
+    //   viewPointsResult.setLetCall(true)
+    //   editAblesResult.setLetCall(true)
+    // }, [])
 
-  useEffect(() => {
-    viewPointsResult.setLetCall(true)
-    editAblesResult.setLetCall(true)
-  }, [])
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-      <div
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+        {/* <div
         style={{
           display: 'grid',
           gridTemplateColumns: `repeat(${breakPoint > 1 ? 2 : 1}, minmax(0, 1fr))`,
           gap: 40,
         }}
-      >
-        <div style={{ gridColumn: 'span 1 / span 1' }}>
+      > */}
+        {/* <div style={{ gridColumn: 'span 1 / span 1' }}>
           <Input
             css={{ width: '100%' }}
             value={permissionState.name}
@@ -149,8 +131,8 @@ export const ModifierPermission = ({
               )}
             </Collapse.Group>
           </Collapse>
-        </Collapse.Group>
+        </Collapse.Group> */}
+        {/* </div> */}
       </div>
-    </div>
-  )
-}
+    )
+  }

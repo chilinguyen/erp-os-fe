@@ -1,15 +1,13 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useEventSource, useScroll, useTranslation } from '@/hooks'
+import { useApiCall, useEventSource, useScroll } from '@/hooks'
 import { generateToken } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
-import { getMethod, postMethod } from '@/services'
+import { getMethod } from '@/services'
 import { CommonListResultType, MessageResponse } from '@/types'
-import { Button, Input, Loading, useTheme } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
-import { MdSend } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 
 interface IChatContent {
@@ -22,13 +20,11 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
 
   const [messages, setMessages] = useState<MessageResponse[]>([])
 
-  const [message, setMessage] = useState<string>('')
+  // const [message, setMessage] = useState<string>('')
 
   const [cookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
-  const { theme } = useTheme()
-
-  const writeMessage = useTranslation('writeMessage')
+  // const writeMessage = useTranslation('writeMessage')
 
   const getOldMessages = useApiCall<CommonListResultType<MessageResponse>, string>({
     callApi: () =>
@@ -39,16 +35,16 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
     if (getOldMessages.data) setMessages(getOldMessages.data.result.data)
   }, [getOldMessages.data])
 
-  const sendMessages = useApiCall<MessageResponse, string>({
-    callApi: () =>
-      postMethod(apiRoute.message.sendMessage, cookie.token, { message }, { id: user.id }),
-    handleSuccess(message, data) {
-      const newMessages = messages.filter((item) => item.id !== '')
-      newMessages.push(data)
-      setMessages(newMessages)
-      setMessage('')
-    },
-  })
+  // const sendMessages = useApiCall<MessageResponse, string>({
+  //   callApi: () =>
+  //     postMethod(apiRoute.message.sendMessage, cookie.token, { message }, { id: user.id }),
+  //   handleSuccess(message, data) {
+  //     const newMessages = messages.filter((item) => item.id !== '')
+  //     newMessages.push(data)
+  //     setMessages(newMessages)
+  //     setMessage('')
+  //   },
+  // })
 
   const getLastMessage = useEventSource<MessageResponse>({
     eventUrl: apiRoute.message.getLastMessage,
@@ -85,7 +81,7 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
     if (getOldMessages.loading)
       return (
         <div style={{ marginTop: 10, width: '100%', display: 'flex', justifyContent: 'center' }}>
-          <Loading />
+          loading
         </div>
       )
     return messages.length > 0 && messages[0].id !== '' ? (
@@ -111,10 +107,7 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
                   marginLeft: 20,
                   padding: '10px 20px',
                   borderRadius: 20,
-                  backgroundColor:
-                    chat.sendId !== cookie.userId
-                      ? theme?.colors.accents5.value
-                      : theme?.colors.blue500.value,
+                  backgroundColor: chat.sendId !== cookie.userId ? 'blue' : 'black',
                   fontSize: 20,
                 }}
               >
@@ -143,7 +136,7 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
           alignItems: 'center',
           gap: 20,
           borderBottom: '1px solid',
-          borderColor: theme?.colors.accents1.value,
+          borderColor: 'blue',
           paddingLeft: 20,
           height: breakPoint === 1 ? 60 : 150,
         }}
@@ -152,7 +145,7 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
           onClick={() => {
             setUserChoose({ id: '', name: '', avt: '' })
           }}
-          style={{ fontSize: 30, color: theme?.colors.blue500.value, fontWeight: 700 }}
+          style={{ fontSize: 30, color: 'blue', fontWeight: 700 }}
         />
         <div style={{ fontSize: 30 }}>{user.name}</div>
       </div>
@@ -170,7 +163,7 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
       >
         {getContent()}
       </div>
-      <Input
+      {/* <Input
         css={{ fontSize: 20, width: '100%', padding: 5, height: '80px' }}
         placeholder={writeMessage}
         value={message}
@@ -188,7 +181,7 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
             disabled={!message}
           />
         }
-      />
+      /> */}
     </div>
   )
 }

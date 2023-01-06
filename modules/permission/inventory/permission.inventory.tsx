@@ -1,6 +1,5 @@
 import { convertValueToLabel, StatusList } from '@/lib'
 import { PermissionRequest, PermissionResponse } from '@/types'
-import { InputProps } from '@nextui-org/react'
 
 export const listFunctionParseValue = () => {
   const statusList = StatusList()
@@ -20,7 +19,7 @@ export const PermissionRequestDefault: PermissionRequest = {
 }
 
 export const inputStylesPermission = ({ error }: { error?: string }) => {
-  const initialValue: Partial<InputProps> = {
+  const initialValue: Partial<any> = {
     status: error ? 'error' : 'default',
     helperText: error || '',
     underlined: true,

@@ -1,61 +1,44 @@
-import { apiRoute } from '@/constants/apiRoutes'
-import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { GeneralSettingsSelector } from '@/redux/general-settings'
-import { setLanguage } from '@/redux/share-store'
-import { getMethod } from '@/services'
-import { CommonListResultType, LanguageResponseSuccess } from '@/types'
-import { Collapse, Loading, Text } from '@nextui-org/react'
-import { useEffect } from 'react'
-import { useCookies } from 'react-cookie'
-import { useDispatch, useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
-import { DictionaryCreatePopup } from '../inventory/DictionaryCreatePopup'
-import { IOCsvLanguage } from '../inventory/IOCsvLanguage'
-import { LanguageCreatePopup } from '../inventory/LanguageCreatePopup'
-import { OneLanguage } from './OneLanguage'
-
 export const LanguageManagement = () => {
-  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  const translate = useTranslationFunction()
+  // const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
+  // const translate = useTranslationFunction()
 
-  const viewLanguageresult = useApiCall<CommonListResultType<LanguageResponseSuccess>, String>({
-    callApi: () => getMethod(apiRoute.language.getLanguageList, cookies.token),
-    handleError(status, message) {
-      if (status) {
-        toast.error(translate(message))
-      }
-    },
-  })
+  // const viewLanguageresult = useApiCall<CommonListResultType<LanguageResponseSuccess>, String>({
+  //   callApi: () => getMethod(apiRoute.language.getLanguageList, cookies.token),
+  //   handleError(status, message) {
+  //     if (status) {
+  //       toast.error(translate(message))
+  //     }
+  //   },
+  // })
 
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
-  const { languageKey } = useSelector(GeneralSettingsSelector)
+  // const { languageKey } = useSelector(GeneralSettingsSelector)
 
-  const getLanguage = useApiCall<LanguageResponseSuccess, string>({
-    callApi: () =>
-      getMethod(apiRoute.language.getLanguageByKey, cookies.token, { key: languageKey }),
-    handleError(status, message) {
-      if (status) {
-        toast.error(translate(message))
-      }
-    },
-    handleSuccess(message, data) {
-      dispatch(setLanguage(data.dictionary))
-    },
-  })
+  // const getLanguage = useApiCall<LanguageResponseSuccess, string>({
+  //   callApi: () =>
+  //     getMethod(apiRoute.language.getLanguageByKey, cookies.token, { key: languageKey }),
+  //   handleError(status, message) {
+  //     if (status) {
+  //       toast.error(translate(message))
+  //     }
+  //   },
+  //   handleSuccess(message, data) {
+  //     dispatch(setLanguage(data.dictionary))
+  //   },
+  // })
 
-  const updateStoreLanguage = () => {
-    getLanguage.setLetCall(true)
-  }
+  // const updateStoreLanguage = () => {
+  //   getLanguage.setLetCall(true)
+  // }
 
-  useEffect(() => {
-    viewLanguageresult.setLetCall(true)
-  }, [])
+  // useEffect(() => {
+  //   viewLanguageresult.setLetCall(true)
+  // }, [])
 
   return (
     <>
-      <Text showIn="sm" h2>
+      {/* <Text showIn="sm" h2>
         {useTranslation('langMangPascal')}
       </Text>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -105,7 +88,7 @@ export const LanguageManagement = () => {
             </Collapse>
           ))}
         </Collapse.Group>
-      )}
+      )} */}
     </>
   )
 }

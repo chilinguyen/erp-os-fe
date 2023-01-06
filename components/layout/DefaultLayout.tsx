@@ -1,6 +1,5 @@
 import { useResponsive } from '@/hooks'
 import { useState } from 'react'
-import { NavBar } from '../navbar'
 import { SideBar } from '../sidebar'
 
 const DefaultLayout = ({
@@ -15,7 +14,6 @@ const DefaultLayout = ({
 
   return (
     <>
-      <NavBar isOpenSideBar={isOpenSideBar} setOpenSideBar={setOpenSideBar} useNavbar={useNavbar} />
       {(!useNavbar || isOpenSideBar) && (
         <SideBar isOpenSideBar={isOpenSideBar} setOpenSideBar={setOpenSideBar} pixel={pixel} />
       )}

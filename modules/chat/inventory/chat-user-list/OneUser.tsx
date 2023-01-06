@@ -1,7 +1,4 @@
-import { ShareStoreSelector } from '@/redux/share-store'
 import { UserOnlineResponse } from '@/types'
-import { Avatar } from '@nextui-org/react'
-import { useSelector } from 'react-redux'
 
 interface IOneUser {
   user: UserOnlineResponse
@@ -9,18 +6,18 @@ interface IOneUser {
 }
 
 export const OneUser = ({ user, isOnline }: IOneUser) => {
-  const { breakPoint } = useSelector(ShareStoreSelector)
+  // const { breakPoint } = useSelector(ShareStoreSelector)
 
   return (
     <>
       <div style={{ position: 'relative' }}>
-        <Avatar
+        {/* <Avatar
           bordered
           as="button"
           color="primary"
           css={{ size: breakPoint === 1 ? 50 : 80 }}
           src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-        />
+        /> */}
         {isOnline && (
           <div
             style={{
