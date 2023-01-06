@@ -1,4 +1,3 @@
-import { Input, InputProps, useTheme } from '@nextui-org/react'
 import { useEffect, useRef, useState } from 'react'
 import { DayModal, getDayString, MonthModal, YearModal } from './inventory'
 
@@ -6,7 +5,7 @@ interface IDatePicker {
   value?: Date | string
   onChange: Function
   label: string
-  buttonProps: Partial<InputProps>
+  buttonProps: Partial<any>
   disable?: boolean
 }
 
@@ -17,7 +16,6 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
   const [day, setDay] = useState(nowDay.getDate())
 
   const [type, setType] = useState<'day' | 'month' | 'year' | ''>('')
-  const { theme } = useTheme()
   const divRef = useRef<HTMLDivElement>(null)
 
   const [yearRange, setYearRange] = useState(year - (year % 10))
@@ -74,6 +72,7 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
 
   return (
     <>
+      {buttonProps}
       {type !== '' && (
         <div
           style={{
@@ -99,13 +98,14 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
         ref={divRef}
         style={{ width: '100%', position: 'relative', zIndex: 101 }}
       >
-        <Input
+        {/* <Input
           css={{ width: '100%' }}
           value={getDayString(nowDay.getDate(), nowDay.getMonth() + 1, nowDay.getFullYear())}
           label={label}
           readOnly
           {...buttonProps}
-        />
+        /> */}
+        {label}
         <div
           onClick={(event) => {
             event.stopPropagation()
@@ -115,8 +115,8 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
             top: divRef?.current?.clientHeight,
             left: 0,
             width: 375,
-            backgroundColor: theme?.colors.accents2.value,
-            boxShadow: type !== '' ? theme?.shadows.lg.value : '',
+            backgroundColor: 'blue',
+            boxShadow: type !== '' ? 'black' : '',
             zIndex: 101,
             borderRadius: 10,
           }}

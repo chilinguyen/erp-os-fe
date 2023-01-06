@@ -1,45 +1,31 @@
-import { CustomTable } from '@/components'
-import { apiRoute } from '@/constants/apiRoutes'
-import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { getTotalPage } from '@/lib'
-import { getMethod } from '@/services'
-import { CommonListResultType, PathResponse } from '@/types'
-import { Pagination, Text } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
-import { useCookies } from 'react-cookie'
-import { toast } from 'react-toastify'
-import { CreatePathPopup } from '../create/CreatePathPopup'
-import { DeletePathPopup } from '../delete/DeletePathPopup'
-
 export const PathsManagement = () => {
-  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  const translate = useTranslationFunction()
+  // const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
+  // const translate = useTranslationFunction()
 
-  const [pathSelectedId, setPathSelectedId] = useState<string[]>([])
+  // const [pathSelectedId, setPathSelectedId] = useState<string[]>([])
 
-  const [page, setPage] = useState<number>(1)
+  // const [page, setPage] = useState<number>(1)
 
-  const pathsPascal = useTranslation('path')
+  // const pathsPascal = useTranslation('path')
 
-  const result = useApiCall<CommonListResultType<PathResponse>, String>({
-    callApi: () => getMethod(apiRoute.paths.getPathList, cookies.token, { page: page.toString() }),
-    handleError(status, message) {
-      if (status) {
-        toast.error(translate(message))
-      }
-    },
-  })
+  // const result = useApiCall<CommonListResultType<PathResponse>, String>({
+  //   callApi: () => getMethod(apiRoute.paths.getPathList, cookies.token, { page: page.toString() }),
+  //   handleError(status, message) {
+  //     if (status) {
+  //       toast.error(translate(message))
+  //     }
+  //   },
+  // })
 
-  const { data, loading, setLetCall } = result
+  // const { data, loading, setLetCall } = result
 
-  useEffect(() => {
-    setLetCall(true)
-  }, [])
+  // useEffect(() => {
+  //   setLetCall(true)
+  // }, [])
 
   return (
     <>
-      <Text showIn="sm" h2>
+      {/* <Text showIn="sm" h2>
         {pathsPascal}
       </Text>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -74,7 +60,7 @@ export const PathsManagement = () => {
           page={page}
           css={{ marginTop: 20 }}
         />
-      )}
+      )} */}
     </>
   )
 }

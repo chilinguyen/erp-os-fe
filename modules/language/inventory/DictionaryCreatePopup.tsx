@@ -1,14 +1,3 @@
-import { apiRoute } from '@/constants/apiRoutes'
-import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { postMethod } from '@/services'
-import { DictionaryKey } from '@/types'
-import { Button, Input, Modal, Text } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
-import { useCookies } from 'react-cookie'
-import { toast } from 'react-toastify'
-import { inputStylesLanguage } from './Language.inventory'
-
 interface IDictionaryCreatePopup {
   listKeyOfDictionary: string[]
   setLetCallList: Function
@@ -22,51 +11,51 @@ export const DictionaryCreatePopup = ({
   updateStoreLanguage,
   listKeyExist,
 }: IDictionaryCreatePopup) => {
-  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
+  // const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
-  const [dictionaryState, setDictionaryState] = useState<DictionaryKey>({})
+  // const [dictionaryState, setDictionaryState] = useState<DictionaryKey>({})
 
-  const [open, setOpen] = useState(false)
-  const [checkKeyExist, setCheckKeyExist] = useState(false)
+  // const [open, setOpen] = useState(false)
+  // const [checkKeyExist, setCheckKeyExist] = useState(false)
 
-  const translate = useTranslationFunction()
+  // const translate = useTranslationFunction()
 
-  const handleClose = () => {
-    setOpen(false)
-  }
+  // const handleClose = () => {
+  //   setOpen(false)
+  // }
 
-  const createResult = useApiCall<DictionaryKey, Record<keyof DictionaryKey, string>>({
-    callApi: () => postMethod(apiRoute.language.addNewDictionary, cookies.token, dictionaryState),
-    handleSuccess(message) {
-      toast.success(translate(message))
-      handleClose()
-      setLetCallList(true)
-      updateStoreLanguage()
-    },
-    handleError(status, message) {
-      if (status) toast.error(translate(message))
-    },
-  })
+  // const createResult = useApiCall<DictionaryKey, Record<keyof DictionaryKey, string>>({
+  //   callApi: () => postMethod(apiRoute.language.addNewDictionary, cookies.token, dictionaryState),
+  //   handleSuccess(message) {
+  //     toast.success(translate(message))
+  //     handleClose()
+  //     setLetCallList(true)
+  //     updateStoreLanguage()
+  //   },
+  //   handleError(status, message) {
+  //     if (status) toast.error(translate(message))
+  //   },
+  // })
 
-  useEffect(() => {
-    let newDictionaryState: DictionaryKey = {}
-    listKeyOfDictionary.forEach((key) => {
-      newDictionaryState = { ...newDictionaryState, [key]: '' }
-    })
-    setDictionaryState(newDictionaryState)
-  }, [listKeyOfDictionary])
+  // useEffect(() => {
+  //   let newDictionaryState: DictionaryKey = {}
+  //   listKeyOfDictionary.forEach((key) => {
+  //     newDictionaryState = { ...newDictionaryState, [key]: '' }
+  //   })
+  //   setDictionaryState(newDictionaryState)
+  // }, [listKeyOfDictionary])
 
-  const labelButton = useTranslation('createNewDict')
+  // const labelButton = useTranslation('createNewDict')
 
-  const cancel = useTranslation('cancel')
+  // const cancel = useTranslation('cancel')
 
-  const create = useTranslation('create')
+  // const create = useTranslation('create')
 
-  const keyExist = useTranslation('keyExist')
+  // const keyExist = useTranslation('keyExist')
 
   return (
     <>
-      <Button
+      {/* <Button
         onClick={() => {
           setOpen(true)
         }}
@@ -136,7 +125,11 @@ export const DictionaryCreatePopup = ({
             {create}
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
+      {setLetCallList}
+      {listKeyOfDictionary}
+      {updateStoreLanguage}
+      {listKeyExist}
     </>
   )
 }

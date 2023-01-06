@@ -9,7 +9,6 @@ import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { Modal403 } from '../modals'
 
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
@@ -155,10 +154,5 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [googleToken])
 
-  return (
-    <>
-      <Modal403 />
-      {children}
-    </>
-  )
+  return <>{children}</>
 }

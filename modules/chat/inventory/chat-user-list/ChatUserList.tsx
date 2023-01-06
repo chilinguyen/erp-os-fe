@@ -4,7 +4,6 @@ import { useApiCall, useEventSource } from '@/hooks'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { ChatRoom, UserOnlineResponse } from '@/types'
-import { Loading, useTheme } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
@@ -21,8 +20,6 @@ export const ChatUserList = ({ userChooseId, setUserChoose }: IChatUserList) => 
 
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
-  const { theme } = useTheme()
-
   const [hoverItem, setHover] = useState('')
 
   const event = useEventSource<UserOnlineResponse[]>({
@@ -36,8 +33,8 @@ export const ChatUserList = ({ userChooseId, setUserChoose }: IChatUserList) => 
   })
 
   const getBackGroundColor = (id: string) => {
-    if (userChooseId === id) return theme?.colors.blue500.value
-    if (id === hoverItem) return theme?.colors.accents1.value
+    if (userChooseId === id) return 'blue'
+    if (id === hoverItem) return 'black'
     return ''
   }
 
@@ -68,9 +65,7 @@ export const ChatUserList = ({ userChooseId, setUserChoose }: IChatUserList) => 
         }}
       >
         {getChatRooms.loading ? (
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-            <Loading />
-          </div>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>loading</div>
         ) : (
           getChatRooms.data &&
           getChatRooms.data?.result.map((user) => {

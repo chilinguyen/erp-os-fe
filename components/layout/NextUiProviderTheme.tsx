@@ -9,14 +9,11 @@ import {
   ShareStoreSelector,
 } from '@/redux/share-store'
 import { getMethod } from '@/services'
-import { DarkTheme, LightTheme } from '@/styles/themes'
 import { GeneralSettingsResponseSuccess, LanguageResponseSuccess } from '@/types'
-import { NextUIProvider } from '@nextui-org/react'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast, ToastContainer } from 'react-toastify'
-import { BackDropModal } from '../modals'
 
 export const NextUiProviderTheme = ({ children }: { children: React.ReactNode }) => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])
@@ -80,14 +77,14 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
   }, [languageKey])
 
   return (
-    <NextUIProvider theme={darkTheme ? DarkTheme : LightTheme}>
+    <>
       <ToastContainer
         autoClose={2000}
         position="top-center"
         theme={darkTheme ? 'dark' : 'light'}
         style={{ zIndex: 1000000 }}
       />
-      {children} <BackDropModal />
-    </NextUIProvider>
+      {children}
+    </>
   )
 }

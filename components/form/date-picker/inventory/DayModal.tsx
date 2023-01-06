@@ -1,4 +1,3 @@
-import { Divider, Text, useTheme } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { getDayString, getListDay } from './DatePicker.inventory'
 
@@ -24,7 +23,6 @@ export const DayModal = ({
   onChange,
 }: IDayModal) => {
   const [listDay, setListDay] = useState<number[]>(getListDay(month, year))
-  const { theme } = useTheme()
   const [hoverItem, setHoverItem] = useState(-1)
 
   useEffect(() => {
@@ -33,16 +31,18 @@ export const DayModal = ({
 
   const getColor = (item: number) => {
     if (day === item) {
-      return theme?.colors.blue400.value
+      return 'blue'
     }
     if (hoverItem === item) {
-      return theme?.colors.blue200.value
+      return 'black'
     }
     return ''
   }
 
   return (
     <>
+      {setMonth}
+      {setYear}
       <div
         style={{
           height: 40,
@@ -52,7 +52,7 @@ export const DayModal = ({
           alignItems: 'center',
         }}
       >
-        <Text
+        {/* <Text
           css={{ cursor: 'pointer' }}
           onClick={() => {
             setYear(year - 1)
@@ -100,10 +100,9 @@ export const DayModal = ({
         >
           {'>>'}
         </Text>
+        
+      <Divider /> */}
       </div>
-
-      <Divider />
-
       <div
         style={{
           display: 'grid',

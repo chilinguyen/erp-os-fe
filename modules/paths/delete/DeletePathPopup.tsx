@@ -1,12 +1,3 @@
-import { apiRoute } from '@/constants/apiRoutes'
-import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { putMethod } from '@/services'
-import { Button, Modal, Text } from '@nextui-org/react'
-import { useState } from 'react'
-import { useCookies } from 'react-cookie'
-import { toast } from 'react-toastify'
-
 interface IDeletePathPopup {
   deleteId: string[]
   setDeleteId: (id: string[]) => void
@@ -14,40 +5,40 @@ interface IDeletePathPopup {
 }
 
 export const DeletePathPopup = ({ deleteId, setDeleteId, setLetCallList }: IDeletePathPopup) => {
-  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  const [open, setOpen] = useState(false)
+  // const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
+  // const [open, setOpen] = useState(false)
 
-  const translate = useTranslationFunction()
+  // const translate = useTranslationFunction()
 
-  const handleClose = () => {
-    setOpen(false)
-  }
+  // const handleClose = () => {
+  //   setOpen(false)
+  // }
 
-  const deleteResult = useApiCall<string, string>({
-    callApi: () =>
-      putMethod(apiRoute.paths.deletePath, cookies.token, {
-        id: deleteId?.[0],
-      }),
-    handleError(status, message) {
-      if (status) {
-        toast.error(translate(message))
-      }
-    },
-    handleSuccess(message) {
-      toast.success(translate(message))
-      setDeleteId([])
-      handleClose()
-      setLetCallList(true)
-    },
-  })
+  // const deleteResult = useApiCall<string, string>({
+  //   callApi: () =>
+  //     putMethod(apiRoute.paths.deletePath, cookies.token, {
+  //       id: deleteId?.[0],
+  //     }),
+  //   handleError(status, message) {
+  //     if (status) {
+  //       toast.error(translate(message))
+  //     }
+  //   },
+  //   handleSuccess(message) {
+  //     toast.success(translate(message))
+  //     setDeleteId([])
+  //     handleClose()
+  //     setLetCallList(true)
+  //   },
+  // })
 
-  const deleteLabel = useTranslation('delete')
-  const cancel = useTranslation('cancel')
-  const deletePathNoti = useTranslation('deletePathNoti')
+  // const deleteLabel = useTranslation('delete')
+  // const cancel = useTranslation('cancel')
+  // const deletePathNoti = useTranslation('deletePathNoti')
 
   return (
     <>
-      <Button
+      {/* <Button
         onClick={() => {
           setOpen(true)
         }}
@@ -82,7 +73,10 @@ export const DeletePathPopup = ({ deleteId, setDeleteId, setLetCallList }: IDele
             {deleteLabel}
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
+      {deleteId}
+      {setDeleteId}
+      {setLetCallList}
     </>
   )
 }

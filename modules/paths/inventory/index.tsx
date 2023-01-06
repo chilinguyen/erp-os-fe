@@ -1,9 +1,8 @@
 import { useTranslation } from '@/hooks'
 import { PathTypeEnum } from '@/types'
-import { InputProps } from '@nextui-org/react'
 
 export const inputStylesPath = ({ error }: { error?: string }) => {
-  const initialValue: Partial<InputProps> = {
+  const initialValue: Partial<any> = {
     status: error ? 'error' : 'default',
     helperText: error || '',
     underlined: true,
