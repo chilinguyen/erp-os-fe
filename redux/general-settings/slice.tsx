@@ -2,7 +2,7 @@ import { GeneralSettingsStoreTypes } from '@/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initialState: GeneralSettingsStoreTypes = {
-  darkTheme: false,
+  darkTheme: 'dark',
   languageKey: 'en',
 }
 

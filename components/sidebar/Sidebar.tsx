@@ -1,3 +1,6 @@
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
+import { useSelector } from 'react-redux'
 import { NavBarItems } from './NavBarConstant'
 import { RenderItemSideBar } from './RenderItemSideBar'
 
@@ -8,6 +11,7 @@ interface ISideBar {
 }
 
 export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
   return (
     <>
       <div
@@ -34,7 +38,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           top: 76,
           left: 0,
           bottom: 0,
-          backgroundColor: 'white',
+          backgroundColor: themeValue[darkTheme].default.colors.backgroundContrast,
           zIndex: 900,
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           overflow: 'auto',

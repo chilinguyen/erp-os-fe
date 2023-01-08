@@ -56,8 +56,12 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
   const isDark = useGetDarkMode()
 
   useEffect(() => {
-    if (darkTheme !== isDark) {
-      dispatch(setGeneralSettings({ darkTheme: isDark }))
+    if (isDark) {
+      if (darkTheme === 'light') dispatch(setGeneralSettings({ darkTheme: 'dark' }))
+      document.documentElement.classList.add('dark')
+    } else {
+      if (darkTheme === 'dark') dispatch(setGeneralSettings({ darkTheme: 'light' }))
+      document.documentElement.classList.remove('dark')
     }
   }, [isDark])
 
@@ -81,7 +85,7 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
       <ToastContainer
         autoClose={2000}
         position="top-center"
-        theme={darkTheme ? 'dark' : 'light'}
+        theme={isDark ? 'dark' : 'light'}
         style={{ zIndex: 1000000 }}
       />
       {children}
