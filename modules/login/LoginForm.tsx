@@ -90,10 +90,7 @@ export const LoginForm = () => {
 
   return (
     <>
-      <div
-        className="text-lg pb-4"
-        style={{ color: themeValue[darkTheme].default.colors.foreground }}
-      >
+      <div className="text-lg pb-4" style={{ color: themeValue[darkTheme].colors.foreground }}>
         {signIn}
       </div>
       <Input

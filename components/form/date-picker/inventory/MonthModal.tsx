@@ -1,4 +1,7 @@
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { getListMonth } from './DatePicker.inventory'
 
 interface IMonthModal {
@@ -12,20 +15,20 @@ interface IMonthModal {
 export const MonthModal = ({ setMonth, month, setType, setYear, year }: IMonthModal) => {
   const [hoverItem, setHoverItem] = useState(-1)
 
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
+
   const getColor = (item: number) => {
     if (month === item) {
-      return 'blue'
+      return themeValue[darkTheme].colors.blue400
     }
     if (hoverItem === item) {
-      return 'black'
+      return themeValue[darkTheme].colors.blue200
     }
     return ''
   }
 
   return (
     <>
-      {setYear}
-      {year}
       <div
         style={{
           height: 40,
@@ -33,35 +36,45 @@ export const MonthModal = ({ setMonth, month, setType, setYear, year }: IMonthMo
           display: 'flex',
           justifyContent: 'space-around',
           alignItems: 'center',
+          position: 'relative',
         }}
       >
-        {/* <Text
-          css={{ cursor: 'pointer' }}
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setYear(year - 1)
           }}
         >
           {'<<'}
-        </Text>
-        <Text
-          css={{ cursor: 'pointer' }}
+        </div>
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setType('year')
           }}
         >
           {year}
-        </Text>
-        <Text
-          css={{ cursor: 'pointer' }}
+        </div>
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setYear(year + 1)
           }}
         >
           {'>>'}
-        </Text> */}
-      </div>
+        </div>
 
-      {/* <Divider /> */}
+        <hr
+          style={{
+            height: '1px',
+            backgroundColor: themeValue[darkTheme].colors.border,
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+            left: 0,
+          }}
+        />
+      </div>
 
       <div
         style={{
@@ -80,6 +93,7 @@ export const MonthModal = ({ setMonth, month, setType, setYear, year }: IMonthMo
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: getColor(item),
+              borderRadius: '12px',
             }}
             onMouseMove={() => setHoverItem(item)}
             onMouseOut={() => setHoverItem(-1)}

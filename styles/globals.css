@@ -37,6 +37,14 @@ h1 {
   margin-bottom: 0.625rem;
 }
 
+h2 {
+  letter-spacing: -0.05rem;
+  font-size: 2.25rem;
+  line-height: 1.5;
+  font-weight: 600;
+  margin-bottom: 0.625rem;
+}
+
 input:focus {
   outline: 0;
 }

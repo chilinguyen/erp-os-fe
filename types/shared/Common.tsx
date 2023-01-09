@@ -26,3 +26,4 @@ export type QueryParams = {
 } & { [key: string]: string | number }
 
 export type PseudoType = 'hover' | 'active' | 'focus' | 'disabled' | 'selected' | 'none'
+export type ColorType = 'primary' | 'success' | 'secondary' | 'warning' | 'error' | 'gradient'

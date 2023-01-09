@@ -1,9 +1,9 @@
-import * as DarkTheme from './dark-theme'
-import * as LightTheme from './light-theme'
+import { DarkThemeValue } from './dark-theme'
+import { LightThemeValue } from './light-theme'
 
 export const themeValue = {
-  dark: DarkTheme,
-  light: LightTheme,
+  dark: DarkThemeValue,
+  light: LightThemeValue,
 }
 
 export type ThemeKey = keyof typeof themeValue

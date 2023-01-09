@@ -28,7 +28,7 @@ export const Loading = ({ size = 24, color }: ILoading) => {
           borderLeft: `${Number(size) / 8}px solid transparent`,
           borderRight: `${Number(size) / 8}px solid transparent`,
           borderBottom: `${Number(size) / 8}px solid ${
-            color ?? themeValue[darkTheme].default.colors.blue600
+            color ?? themeValue[darkTheme].colors.primary
           }`,
           position: 'absolute',
           top: 0,
@@ -44,7 +44,7 @@ export const Loading = ({ size = 24, color }: ILoading) => {
           borderLeft: `${Number(size) / 8}px solid transparent`,
           borderRight: `${Number(size) / 8}px solid transparent`,
           borderBottom: `${Number(size) / 8}px dotted ${
-            color ?? themeValue[darkTheme].default.colors.blue600
+            color ?? themeValue[darkTheme].colors.primary
           }`,
           position: 'absolute',
           top: 0,

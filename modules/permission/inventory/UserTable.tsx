@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { CustomTable } from '@/components'
+import { useEffect, useState } from 'react'
+import { CustomTable, Pagination } from '@/components'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { useCookies } from 'react-cookie'
@@ -19,11 +19,11 @@ export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTa
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])
   const translate = useTranslationFunction()
 
-  // const [page, setPage] = useState<number>(1)
+  const [page, setPage] = useState<number>(1)
 
   const userResult = useApiCall<UserListSuccess, String>({
-    callApi: () => getMethod(apiRoute.user.getYourListUser, cookies.token, { page: '1' }),
-    // getMethod(apiRoute.user.getYourListUser, cookies.token, { page: page.toString() }),
+    callApi: () =>
+      getMethod(apiRoute.user.getYourListUser, cookies.token, { page: page.toString() }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -33,8 +33,7 @@ export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTa
 
   useEffect(() => {
     userResult.setLetCall(true)
-  }, [])
-  // }, [page])
+  }, [page])
 
   const listFunctionParseValues = listFunctionParseValue()
 
@@ -51,16 +50,16 @@ export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTa
       >
         <>{null}</>
       </CustomTable>
-      {/* {!userResult.loading && (
+      {!userResult.loading && (
         <Pagination
-          shadow
-          color="default"
-          total={getTotalPage(userResult?.data?.result.totalRows || 0, 10)}
+          // shadow
+          // color="default"
+          total={userResult?.data?.result?.totalRows ?? 0}
           onChange={(number) => setPage(number)}
           page={page}
-          css={{ marginTop: 20 }}
+          paginationStyle={{ marginTop: 20 }}
         />
-      )} */}
+      )}
     </div>
   )
 }

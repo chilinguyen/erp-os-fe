@@ -70,14 +70,3 @@ export const AccessStatus = () => {
 }
 
 export const formatDate = 'yyyy-MM-dd'
-
-export const colorObj = {
-  primary: '#0072F5',
-  secondary: '#7828C8',
-  success: '#17C964',
-  warning: '#F5A524',
-  error: '#31260',
-  gradient: 'linear-gradient(112deg, #06B7DB -63.59%, #FF4ECD -20.3%, #0072F5 70.46%)',
-  black: '#000',
-  white: '#fff',
-}

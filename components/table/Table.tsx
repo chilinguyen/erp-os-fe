@@ -79,13 +79,6 @@ export function CustomTable({
   }
 
   const handleChange = (event: MouseEvent<HTMLTableRowElement>) => {
-    // if (handleChangeSelection) {
-    //   if (keys === 'all') {
-    //     handleChangeSelection(body.map((item) => item?.id ?? ''))
-    //   } else {
-    //     handleChangeSelection(Array.from(keys))
-    //   }
-    // }
     const value = event.currentTarget.id
     if (handleChangeSelection) {
       switch (selectionMode) {
@@ -111,30 +104,32 @@ export function CustomTable({
 
   const getBackgroundColor = (itemId: string) => {
     if (!!selectedKeys?.find((item) => item === itemId)) {
-      return themeValue[darkTheme].default.colors.blue200
+      return themeValue[darkTheme].colors.blue200
     }
     if (hoverId === itemId) {
-      return themeValue[darkTheme].default.colors.gray50
+      return themeValue[darkTheme].colors.gray50
     }
     return undefined
   }
 
   const getTextColor = (itemId: string) => {
     if (!!selectedKeys?.find((item) => item === itemId)) {
-      return themeValue[darkTheme].default.colors.blue600
+      return themeValue[darkTheme].colors.primary
     }
-    return themeValue[darkTheme].default.colors.gray900
+    return themeValue[darkTheme].colors.gray900
   }
 
   if (loading)
     return (
-      <div style={{ marginTop: 20, textAlign: 'center' }}>
+      <div
+        style={{ marginTop: 20, textAlign: 'center', display: 'flex', justifyContent: 'center' }}
+      >
         <Loading />
       </div>
     )
 
   return (
-    <div style={{ width: '100%', overflow: 'auto', padding: '16px 12px' }}>
+    <div style={{ width: '100%', overflow: 'auto', padding: '16px 12px', marginTop: 20 }}>
       <table {...rest}>
         <thead>
           <tr>
@@ -144,7 +139,7 @@ export function CustomTable({
                 paddingLeft: '16px',
                 borderTopLeftRadius: '12px',
                 borderBottomLeftRadius: '12px',
-                backgroundColor: themeValue[darkTheme].default.colors.gray50,
+                backgroundColor: themeValue[darkTheme].colors.gray50,
               }}
             >
               {' '}
@@ -156,8 +151,8 @@ export function CustomTable({
                   borderTopRightRadius: index === header.length - 1 ? '12px' : undefined,
                   borderBottomRightRadius: index === header.length - 1 ? '12px' : undefined,
                   fontSize: '12px',
-                  backgroundColor: themeValue[darkTheme].default.colors.gray50,
-                  color: themeValue[darkTheme].default.colors.gray700,
+                  backgroundColor: themeValue[darkTheme].colors.gray50,
+                  color: themeValue[darkTheme].colors.gray700,
                 }}
                 key={itemHead.key}
               >
@@ -207,31 +202,4 @@ export function CustomTable({
       </table>
     </div>
   )
-
-  // return loading ? (
-  //   <Container css={{ textAlign: 'center', marginTop: 20 }} justify="center">
-  //     <Loading />
-  //   </Container>
-  // ) : (
-  //   <Table
-  //     aria-label="Example table with dynamic content"
-  //     onSelectionChange={handleChange}
-  //     {...props}
-  //   >
-  //     <Table.Header columns={[{ key: 'actions', label: '' }].concat(header)}>
-  //       {(column) => (
-  //         <Table.Column key={column.key}>
-  //           {column?.label ? translate(column.label) : ''}
-  //         </Table.Column>
-  //       )}
-  //     </Table.Header>
-  //     <Table.Body items={body}>
-  //       {(item) => (
-  //         <Table.Row key={item?.id}>
-  //           {(columnKey) => <Table.Cell>{renderCell(item, columnKey)}</Table.Cell>}
-  //         </Table.Row>
-  //       )}
-  //     </Table.Body>
-  //   </Table>
-  // )
 }

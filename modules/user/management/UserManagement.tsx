@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
@@ -8,13 +8,15 @@ import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
 import { listFunctionParseValue } from '@/modules/permission/inventory'
-import { Button, CustomTable } from '@/components'
+import { Button, CustomTable, Pagination } from '@/components'
+import { useSelector } from 'react-redux'
+import { ShareStoreSelector } from '@/redux/share-store'
 
 export const UserManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
 
-  // const [page, setPage] = useState<number>(1)
+  const [page, setPage] = useState<number>(1)
 
   const userManagementPascal = useTranslation('userManagementPascal')
 
@@ -22,9 +24,10 @@ export const UserManagement = () => {
 
   const router = useRouter()
 
+  const { breakPoint } = useSelector(ShareStoreSelector)
+
   const result = useApiCall<UserListSuccess, String>({
-    callApi: () => getMethod(apiRoute.user.getListUser, cookies.token, { page: '1' }),
-    // callApi: () => getMethod(apiRoute.user.getListUser, cookies.token, { page: page.toString() }),
+    callApi: () => getMethod(apiRoute.user.getListUser, cookies.token, { page: String(page) }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -36,23 +39,19 @@ export const UserManagement = () => {
 
   useEffect(() => {
     setLetCall(true)
-  }, [])
-  // }, [page])
+  }, [page])
 
   const listFunctionParseValues = listFunctionParseValue()
 
   return (
     <>
-      {/* <Text showIn="sm" h2>
-        {userManagementPascal}
-      </Text> */}
+      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{userManagementPascal}</h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>{userManagementPascal}</h1>
+        <h1 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{userManagementPascal}</h1>
         <Button
           onClick={() => {
             router.push('/user/create')
           }}
-          // size="sm"
           auto
         >
           {createUserPascal}
@@ -67,17 +66,14 @@ export const UserManagement = () => {
       >
         <>{null}</>
       </CustomTable>
-      {/* {!loading && (
+      {!loading && (
         <Pagination
-          shadow
-          color="default"
-          total={getTotalPage(data?.result.totalRows || 0, 10)}
+          total={data?.result?.totalRows ?? 0}
           onChange={(number) => setPage(number)}
           page={page}
-          css={{ marginTop: 20 }}
+          paginationStyle={{ marginTop: 20 }}
         />
-      )} */}
+      )}
     </>
   )
-  return null
 }

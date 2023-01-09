@@ -1,4 +1,7 @@
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { getDayString, getListDay } from './DatePicker.inventory'
 
 interface IDayModal {
@@ -25,16 +28,18 @@ export const DayModal = ({
   const [listDay, setListDay] = useState<number[]>(getListDay(month, year))
   const [hoverItem, setHoverItem] = useState(-1)
 
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
+
   useEffect(() => {
     setListDay(getListDay(month, year))
   }, [month, year])
 
   const getColor = (item: number) => {
     if (day === item) {
-      return 'blue'
+      return themeValue[darkTheme].colors.blue400
     }
     if (hoverItem === item) {
-      return 'black'
+      return themeValue[darkTheme].colors.blue200
     }
     return ''
   }
@@ -50,58 +55,68 @@ export const DayModal = ({
           display: 'flex',
           justifyContent: 'space-around',
           alignItems: 'center',
+          position: 'relative',
         }}
       >
-        {/* <Text
-          css={{ cursor: 'pointer' }}
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setYear(year - 1)
           }}
         >
           {'<<'}
-        </Text>
-        <Text
-          css={{ cursor: 'pointer' }}
+        </div>
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setMonth(month - 1)
           }}
         >
           {'<'}
-        </Text>
-        <Text
-          css={{ cursor: 'pointer' }}
+        </div>
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setType('month')
           }}
         >
           {month}
-        </Text>
-        <Text
-          css={{ cursor: 'pointer' }}
+        </div>
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setType('year')
           }}
         >
           {year}
-        </Text>
-        <Text
-          css={{ cursor: 'pointer' }}
+        </div>
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setMonth(month + 1)
           }}
         >
           {'>'}
-        </Text>
-        <Text
-          css={{ cursor: 'pointer' }}
+        </div>
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setYear(year + 1)
           }}
         >
           {'>>'}
-        </Text>
-        
-      <Divider /> */}
+        </div>
+
+        <hr
+          style={{
+            height: '1px',
+            backgroundColor: themeValue[darkTheme].colors.border,
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+            left: 0,
+          }}
+        />
       </div>
       <div
         style={{
@@ -120,6 +135,7 @@ export const DayModal = ({
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: getColor(item),
+              borderRadius: '12px',
             }}
             onMouseMove={() => setHoverItem(item)}
             onMouseOut={() => setHoverItem(-1)}

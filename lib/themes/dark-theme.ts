@@ -7,9 +7,13 @@ import {
   cyanDark,
   pinkDark,
   grayDark,
+  gray,
+  blue,
+  cyan,
+  pink,
 } from './colors'
 
-export default {
+export const DarkThemeValue = {
   colors: {
     // background
     background: 'black',
@@ -29,13 +33,20 @@ export default {
 
     // misc
     textLight: 'rgba(236, 237, 238, 10.2)',
-    text: '$gray900',
+    text: gray.gray900,
     linkLight: 'rgba(0, 114, 245, 0.2)',
-    link: '$blue700',
-    codeLight: '$cyan50',
-    code: '$cyan600',
-    selection: '$pink800',
+    link: blue.blue700,
+    codeLight: cyan.cyan50,
+    code: cyan.cyan600,
+    selection: pink.pink800,
     border: 'rgba(255, 255, 255, 0.15)',
+
+    primary: blueDark.blue600,
+    success: greenDark.green600,
+    secondary: purpleDark.purple700,
+    warning: yellowDark.yellow600,
+    error: redDark.red600,
+    gradient: `linear-gradient(112deg, ${cyanDark.cyan600} -63.59%, ${pinkDark.pink600} -20.3%, ${blueDark.blue600} 70.46%)`,
   },
   shadows: {
     xs: '0 2px 8px 1px rgb(0 0 0 / 0.07), 0 1px 1px -1px rgb(0 0 0 / 0.04)',

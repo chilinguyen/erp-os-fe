@@ -10,10 +10,11 @@ interface IInput extends InputHTMLAttributes<HTMLInputElement> {
   status?: string
   underlined?: boolean
   labelLeft?: string
+  label?: string
 }
 
 export const Input = forwardRef<HTMLInputElement, IInput>(
-  ({ helperText, labelLeft, status, clearable, underlined, ...rest }, ref) => {
+  ({ helperText, labelLeft, status, clearable, underlined, label, ...rest }, ref) => {
     const { darkTheme } = useSelector(GeneralSettingsSelector)
 
     const id = useId()
@@ -39,6 +40,7 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
           minWidth: 'content',
         }}
       >
+        {label ? <label htmlFor={id}>{label}</label> : undefined}
         <label
           htmlFor={id}
           style={{
@@ -53,9 +55,9 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
             <span
               ref={refLabelLeft}
               style={{
-                color: themeValue[darkTheme].default.colors.gray600,
+                color: themeValue[darkTheme].colors.gray600,
                 padding: '0 0.5rem',
-                borderRight: `1px solid ${themeValue[darkTheme].default.colors.gray600}`,
+                borderRight: `1px solid ${themeValue[darkTheme].colors.gray600}`,
                 height: 'min-content',
                 width: 'min-content',
                 fontWeight: 500,
@@ -70,7 +72,7 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
             id={id}
             style={{
               width: `calc(100% - ${refLabelLeft?.current?.offsetWidth ?? 0}px)`,
-              color: themeValue[darkTheme].default.colors.foreground,
+              color: themeValue[darkTheme].colors.foreground,
               height: '2.5rem',
               background: 'transparent',
               padding: '0 0.5rem',
@@ -83,7 +85,7 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
               <hr
                 style={{
                   transition: 'width 0.25s ease',
-                  backgroundColor: themeValue[darkTheme].default.colors.foreground,
+                  backgroundColor: themeValue[darkTheme].colors.foreground,
                   position: 'absolute',
                   bottom: 0,
                   right: '50%',
@@ -96,7 +98,7 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
               <hr
                 style={{
                   transition: 'opacity 0.25s ease',
-                  backgroundColor: themeValue[darkTheme].default.colors.border,
+                  backgroundColor: themeValue[darkTheme].colors.border,
                   position: 'absolute',
                   bottom: 0,
                   left: 0,

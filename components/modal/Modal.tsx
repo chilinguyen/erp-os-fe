@@ -55,8 +55,8 @@ export const Modal = ({
         style={{
           width: '90%',
           maxWidth: width ?? 400,
-          backgroundColor: themeValue[darkTheme].default.colors.backgroundContrast,
-          boxShadow: themeValue[darkTheme].default.shadows.lg,
+          backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
+          boxShadow: themeValue[darkTheme].shadows.lg,
           borderRadius: '12px',
           padding: '20px',
           display: 'flex',

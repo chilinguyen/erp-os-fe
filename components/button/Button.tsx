@@ -1,15 +1,15 @@
-import { colorObj, themeValue } from '@/lib'
+import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { ButtonHTMLAttributes, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 
 interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: keyof typeof colorObj
+  color?: 'primary' | 'success' | 'secondary' | 'warning' | 'error' | 'gradient'
   light?: boolean
   auto?: boolean
 }
 
-export const Button = ({ color, auto, light, disabled, onClick, ...rest }: IButton) => {
+export const Button = ({ color = 'primary', auto, light, disabled, onClick, ...rest }: IButton) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -20,13 +20,14 @@ export const Button = ({ color, auto, light, disabled, onClick, ...rest }: IButt
 
   const getBackgroundColor = useMemo(() => {
     if (light) return undefined
-    if (disabled) return themeValue[darkTheme].default.colors.gray400
-    return colorObj[color ?? 'primary']
+    if (disabled) return themeValue[darkTheme].colors.gray400
+    return themeValue[darkTheme].colors[color]
   }, [light, disabled, darkTheme, color])
 
   const getTextColor = useMemo(() => {
-    if (disabled) return themeValue[darkTheme].default.colors.gray900
-    if (light) return color ? colorObj[color] : themeValue[darkTheme].default.colors.gray900
+    if (disabled) return themeValue[darkTheme].colors.gray900
+    if (light)
+      return color ? themeValue[darkTheme].colors[color] : themeValue[darkTheme].colors.gray900
     return 'white'
   }, [color, light, disabled, darkTheme])
 

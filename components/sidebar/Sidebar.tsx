@@ -38,7 +38,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           top: 76,
           left: 0,
           bottom: 0,
-          backgroundColor: themeValue[darkTheme].default.colors.backgroundContrast,
+          backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
           zIndex: 900,
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           overflow: 'auto',
