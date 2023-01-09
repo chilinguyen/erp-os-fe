@@ -40,8 +40,9 @@ export const Button = ({ color, auto, light, disabled, onClick, ...rest }: IButt
         height: '40px',
         border: disabled ? '1px solid #D7DBDF' : undefined,
         cursor: disabled ? 'default' : 'pointer',
+        fontWeight: 500,
+        borderRadius: '12px',
       }}
-      className="font-medium rounded-xl"
       type="button"
       onClick={handleClick}
       {...rest}

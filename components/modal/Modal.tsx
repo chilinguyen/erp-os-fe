@@ -1,6 +1,6 @@
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
-import { ReactNode } from 'react'
+import { CSSProperties, ReactNode } from 'react'
 import { useSelector } from 'react-redux'
 
 interface IModal {
@@ -9,7 +9,7 @@ interface IModal {
   setOpen?: (v: boolean) => void
   preventClose?: boolean
   zIndex?: number
-  ModalClassName?: string
+  ModalStyle?: CSSProperties
   width?: number
 }
 
@@ -19,7 +19,7 @@ export const Modal = ({
   setOpen,
   preventClose,
   zIndex,
-  ModalClassName,
+  ModalStyle,
   width,
 }: IModal) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
@@ -31,20 +31,39 @@ export const Modal = ({
   return (
     <div
       onClick={handleClose}
-      className="fixed inset-0 overflow-auto bg-opacity-50 flex justify-center items-center"
-      style={{ zIndex: !open ? -1 : zIndex ?? undefined }}
+      style={{
+        zIndex: !open ? -1 : zIndex ?? undefined,
+        position: 'fixed',
+        inset: 0,
+        overflow: 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
     >
       <div
-        className="fixed inset-0 overflow-auto bg-opacity-50 bg-black"
-        style={{ zIndex: !open ? -1 : (zIndex ?? 0) - 1 }}
+        style={{
+          zIndex: !open ? -1 : (zIndex ?? 0) - 1,
+          position: 'fixed',
+          inset: 0,
+          overflow: 'auto',
+          backgroundColor: 'black',
+          opacity: '50%',
+        }}
       />
       <div
-        className={`rounded-2xl p-5 flex flex-col justify-center items-center ${ModalClassName}`}
         style={{
           width: '90%',
           maxWidth: width ?? 400,
           backgroundColor: themeValue[darkTheme].default.colors.backgroundContrast,
           boxShadow: themeValue[darkTheme].default.shadows.lg,
+          borderRadius: '12px',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          ...ModalStyle,
         }}
       >
         {children}

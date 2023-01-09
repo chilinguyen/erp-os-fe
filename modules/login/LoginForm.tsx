@@ -116,13 +116,7 @@ export const LoginForm = () => {
       </div>
       <div className="w-full flex justify-end pt-4">
         <Button disabled={loading} auto onClick={handleLogin}>
-          {loading ? (
-            <div className="text-blue">
-              <Loading />
-            </div>
-          ) : (
-            <>{signIn}</>
-          )}
+          {loading ? <Loading /> : <>{signIn}</>}
         </Button>
       </div>
     </>

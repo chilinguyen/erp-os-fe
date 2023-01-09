@@ -1,6 +1,7 @@
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
-import { InputHTMLAttributes, useId, forwardRef, useRef } from 'react'
+import { PseudoType } from '@/types'
+import { InputHTMLAttributes, useId, forwardRef, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 interface IInput extends InputHTMLAttributes<HTMLInputElement> {
@@ -18,16 +19,46 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
     const id = useId()
     const refLabelLeft = useRef<HTMLSpanElement>(null)
 
+    const [pseudo, setPseudo] = useState<PseudoType>('none')
+
+    const handleFocus = () => {
+      setPseudo('focus')
+    }
+
+    const handleBlur = () => {
+      setPseudo('none')
+    }
+
     return (
-      <div className="flex flex-col gap-1 w-full min-w-content">
-        <label htmlFor={id} className="relative flex justify-center items-center w-full">
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+          width: '100%',
+          minWidth: 'content',
+        }}
+      >
+        <label
+          htmlFor={id}
+          style={{
+            position: 'relative',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
           {labelLeft && (
             <span
               ref={refLabelLeft}
-              className="px-2 border-r h-min w-min font-medium"
               style={{
-                borderRightColor: themeValue[darkTheme].default.colors.gray600,
                 color: themeValue[darkTheme].default.colors.gray600,
+                padding: '0 0.5rem',
+                borderRight: `1px solid ${themeValue[darkTheme].default.colors.gray600}`,
+                height: 'min-content',
+                width: 'min-content',
+                fontWeight: 500,
               }}
             >
               {labelLeft}
@@ -36,27 +67,43 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
           <input
             ref={ref}
             {...rest}
-            className="focus:outline-none peer h-10 bg-transparent px-2"
             id={id}
             style={{
               width: `calc(100% - ${refLabelLeft?.current?.offsetWidth ?? 0}px)`,
               color: themeValue[darkTheme].default.colors.foreground,
+              height: '2.5rem',
+              background: 'transparent',
+              padding: '0 0.5rem',
             }}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
           {underlined ? (
             <>
               <hr
-                className="absolute bottom-0 right-1/2 translate-x-1/2 h-[3px] z-[1] peer-focus:w-full w-0"
                 style={{
                   transition: 'width 0.25s ease',
                   backgroundColor: themeValue[darkTheme].default.colors.foreground,
+                  position: 'absolute',
+                  bottom: 0,
+                  right: '50%',
+                  translate: '50% 0',
+                  height: '0.188rem',
+                  zIndex: 1,
+                  width: pseudo === 'focus' ? '100%' : '0',
                 }}
               />
               <hr
-                className="absolute bottom-0 left-0 right-0 h-[2px] z-[0]"
                 style={{
                   transition: 'opacity 0.25s ease',
                   backgroundColor: themeValue[darkTheme].default.colors.border,
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: '0.125rem',
+                  zIndex: 0,
+                  opacity: pseudo === 'focus' ? '0' : '100%',
                 }}
               />
             </>

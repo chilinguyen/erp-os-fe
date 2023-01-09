@@ -5,7 +5,7 @@ import { LoginForm } from '@/modules'
 const Login = () => {
   return (
     <LoginLayout>
-      <Modal open preventClose ModalClassName="gap-3">
+      <Modal open preventClose ModalStyle={{ gap: '0.75rem' }}>
         <LoginForm />
       </Modal>
     </LoginLayout>

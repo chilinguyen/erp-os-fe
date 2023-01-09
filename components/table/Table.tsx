@@ -1,4 +1,4 @@
-import { HTMLAttributes, useState } from 'react'
+import { HTMLAttributes, MouseEvent, useState } from 'react'
 import { useTranslation, useTranslationFunction } from '@/hooks'
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
@@ -15,7 +15,7 @@ interface ICustomTable extends HTMLAttributes<HTMLTableElement> {
   listFunctionParseValue?: { [key: string]: Function }
   handleChangeSelection?: Function
   loading?: boolean
-  selectionMode: 'single' | 'multiple' | 'none'
+  selectionMode?: 'single' | 'multiple' | 'none'
   selectedKeys?: string[]
 }
 
@@ -26,7 +26,8 @@ export function CustomTable({
   listActions,
   listFunctionParseValue,
   loading,
-  selectionMode,
+  selectionMode = 'none',
+  selectedKeys,
   ...rest
 }: ICustomTable) {
   const router = useRouter()
@@ -59,7 +60,7 @@ export function CustomTable({
             },
           ]
         ).map((action) => (
-          <div>
+          <div style={{ cursor: 'pointer' }}>
             {/* <Tooltip content={action.content}> */}
             <div
               onClick={(e) => {
@@ -77,15 +78,53 @@ export function CustomTable({
     }
   }
 
-  // const handleChange = (keys: 'all' | Set<React.Key>) => {
-  //   if (handleChangeSelection) {
-  //     if (keys === 'all') {
-  //       handleChangeSelection(body.map((item) => item?.id ?? ''))
-  //     } else {
-  //       handleChangeSelection(Array.from(keys))
-  //     }
-  //   }
-  // }
+  const handleChange = (event: MouseEvent<HTMLTableRowElement>) => {
+    // if (handleChangeSelection) {
+    //   if (keys === 'all') {
+    //     handleChangeSelection(body.map((item) => item?.id ?? ''))
+    //   } else {
+    //     handleChangeSelection(Array.from(keys))
+    //   }
+    // }
+    const value = event.currentTarget.id
+    if (handleChangeSelection) {
+      switch (selectionMode) {
+        case 'single':
+          if (selectedKeys?.[0] === value) {
+            handleChangeSelection([])
+          } else {
+            handleChangeSelection([value])
+          }
+          break
+        case 'multiple':
+          if (!!selectedKeys?.find((item) => item === value)) {
+            handleChangeSelection(selectedKeys.filter((item) => item !== value))
+          } else {
+            handleChangeSelection([...(selectedKeys ?? []), value])
+          }
+          break
+        default:
+          handleChangeSelection(body.map((item) => item?.id ?? ''))
+      }
+    }
+  }
+
+  const getBackgroundColor = (itemId: string) => {
+    if (!!selectedKeys?.find((item) => item === itemId)) {
+      return themeValue[darkTheme].default.colors.blue200
+    }
+    if (hoverId === itemId) {
+      return themeValue[darkTheme].default.colors.gray50
+    }
+    return undefined
+  }
+
+  const getTextColor = (itemId: string) => {
+    if (!!selectedKeys?.find((item) => item === itemId)) {
+      return themeValue[darkTheme].default.colors.blue600
+    }
+    return themeValue[darkTheme].default.colors.gray900
+  }
 
   if (loading)
     return (
@@ -131,11 +170,9 @@ export function CustomTable({
           {body.map((itemBody) => (
             <tr
               style={{
-                color: themeValue[darkTheme].default.colors.gray900,
-                backgroundColor:
-                  hoverId === itemBody?.id
-                    ? themeValue[darkTheme].default.colors.gray50
-                    : undefined,
+                color: getTextColor(itemBody?.id),
+                backgroundColor: getBackgroundColor(itemBody?.id),
+                cursor: 'default',
               }}
               onMouseEnter={() => {
                 setHoverId(itemBody?.id)
@@ -144,6 +181,8 @@ export function CustomTable({
                 setHoverId('')
               }}
               key={itemBody?.id}
+              onClick={handleChange}
+              id={itemBody?.id}
             >
               {[{ key: 'actions', label: '' }, ...header].map((itemHead, index) => (
                 <td
