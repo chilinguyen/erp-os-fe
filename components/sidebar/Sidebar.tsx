@@ -27,7 +27,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           backgroundColor: 'black',
           opacity: pixel < 960 && isOpenSideBar ? '20%' : 0,
           inset: 0,
-          zIndex: 899,
+          zIndex: pixel >= 960 ? 1 : 9999,
           transition: 'opacity 0.2s linear',
         }}
       />
@@ -39,7 +39,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           left: 0,
           bottom: 0,
           backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
-          zIndex: 900,
+          zIndex: pixel >= 960 ? 2 : 10000,
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           overflow: 'auto',
           fontWeight: 500,

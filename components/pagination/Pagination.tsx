@@ -32,7 +32,7 @@ export const Pagination = ({
   total,
   siblingCount = 1,
   page,
-  pageSize = 1,
+  pageSize = 10,
   previousIcon,
   nextIcon,
   firstIcon,
@@ -51,9 +51,6 @@ export const Pagination = ({
   })
 
   const router = useRouter()
-  if (page === 0 || paginationRange.length < 2) {
-    return null
-  }
 
   const onNext = () => {
     onChange(page + 1)

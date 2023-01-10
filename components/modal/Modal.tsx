@@ -32,9 +32,13 @@ export const Modal = ({
     <div
       onClick={handleClose}
       style={{
-        zIndex: !open ? -1 : zIndex ?? undefined,
+        zIndex: zIndex ?? 10,
         position: 'fixed',
-        inset: 0,
+        top: 0,
+        left: 0,
+        right: open ? 0 : undefined,
+        bottom: open ? 0 : undefined,
+        width: !open ? 0 : undefined,
         overflow: 'auto',
         display: 'flex',
         justifyContent: 'center',
@@ -43,9 +47,13 @@ export const Modal = ({
     >
       <div
         style={{
-          zIndex: !open ? -1 : (zIndex ?? 0) - 1,
+          zIndex: (zIndex ?? 10) - 1,
           position: 'fixed',
-          inset: 0,
+          top: 0,
+          left: 0,
+          right: open ? 0 : undefined,
+          bottom: open ? 0 : undefined,
+          width: !open ? 0 : undefined,
           overflow: 'auto',
           backgroundColor: 'black',
           opacity: '50%',
@@ -53,6 +61,7 @@ export const Modal = ({
       />
       <div
         style={{
+          zIndex: zIndex ?? 10,
           width: '90%',
           maxWidth: width ?? 400,
           backgroundColor: themeValue[darkTheme].colors.backgroundContrast,

@@ -107,7 +107,11 @@ export const LoginForm = () => {
         onFocus={handleReset}
       />
       <div className="w-full flex justify-end">
-        <Button disabled={loading} light onClick={() => resultForgotPassword.setLetCall(true)}>
+        <Button
+          disabled={loading}
+          styleType="light"
+          onClick={() => resultForgotPassword.setLetCall(true)}
+        >
           {forgotPassword}?
         </Button>
       </div>
