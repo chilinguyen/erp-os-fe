@@ -1,7 +1,7 @@
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { PseudoType } from '@/types'
-import { InputHTMLAttributes, useId, forwardRef, useRef, useState } from 'react'
+import { InputHTMLAttributes, useId, forwardRef, useRef, useState, FocusEvent } from 'react'
 import { useSelector } from 'react-redux'
 
 interface IInput extends InputHTMLAttributes<HTMLInputElement> {
@@ -14,7 +14,21 @@ interface IInput extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = forwardRef<HTMLInputElement, IInput>(
-  ({ helperText, labelLeft, status, clearable, underlined, label, ...rest }, ref) => {
+  (
+    {
+      helperText,
+      labelLeft,
+      status,
+      clearable,
+      underlined,
+      label,
+      style,
+      onFocus,
+      onBlur,
+      ...rest
+    },
+    ref
+  ) => {
     const { darkTheme } = useSelector(GeneralSettingsSelector)
 
     const id = useId()
@@ -22,12 +36,18 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
 
     const [pseudo, setPseudo] = useState<PseudoType>('none')
 
-    const handleFocus = () => {
+    const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
       setPseudo('focus')
+      if (onFocus) {
+        onFocus(event)
+      }
     }
 
-    const handleBlur = () => {
+    const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
       setPseudo('none')
+      if (onBlur) {
+        onBlur(event)
+      }
     }
 
     return (
@@ -76,6 +96,7 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
               height: '2.5rem',
               background: 'transparent',
               padding: '0 0.5rem',
+              ...style,
             }}
             onFocus={handleFocus}
             onBlur={handleBlur}

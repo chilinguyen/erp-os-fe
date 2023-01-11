@@ -55,7 +55,7 @@ export function CustomTable({
               content: detail,
               icon: <AiOutlineEye size={20} fill="#979797" />,
               func: (id: string, router: NextRouter) => {
-                router.push(`/user/${id}`)
+                router.push(`/${router.pathname.split('/')?.[1] ?? ''}/${id}`)
               },
             },
           ]
@@ -122,14 +122,14 @@ export function CustomTable({
   if (loading)
     return (
       <div
-        style={{ marginTop: 20, textAlign: 'center', display: 'flex', justifyContent: 'center' }}
+        style={{ paddingTop: 20, textAlign: 'center', display: 'flex', justifyContent: 'center' }}
       >
         <Loading />
       </div>
     )
 
   return (
-    <div style={{ width: '100%', overflow: 'auto', padding: '16px 12px', marginTop: 20 }}>
+    <div style={{ width: '100%', overflow: 'auto', padding: '16px 12px', paddingTop: 20 }}>
       <table {...rest}>
         <thead>
           <tr>

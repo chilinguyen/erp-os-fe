@@ -1,40 +1,54 @@
+import { Button, Loading } from '@/components'
+import { apiRoute } from '@/constants/apiRoutes'
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
+import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { getListEditAble } from '@/lib'
+import { ShareStoreSelector } from '@/redux/share-store'
+import { postMethod } from '@/services'
+import { PermissionRequest, PermissionRequestFailure } from '@/types'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { useCookies } from 'react-cookie'
+import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import { ModifierPermission, PermissionRequestDefault } from '../inventory'
+
 export const PermissionCreate = () => {
-  // const [cookies] = useCookies([TOKEN_AUTHENTICATION])
-  // const router = useRouter()
-  // const translate = useTranslationFunction()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
+  const router = useRouter()
+  const translate = useTranslationFunction()
 
-  // const [permissionState, setPermissionState] =
-  //   useState<PermissionRequest>(PermissionRequestDefault)
+  const [permissionState, setPermissionState] =
+    useState<PermissionRequest>(PermissionRequestDefault)
 
-  // const createResult = useApiCall<PermissionRequest, PermissionRequestFailure>({
-  //   callApi: () => postMethod(apiRoute.permissions.addPermission, cookies.token, permissionState),
-  //   handleError(status, message) {
-  //     if (status) {
-  //       toast.error(translate(message))
-  //     }
-  //   },
-  //   handleSuccess(message) {
-  //     toast.success(translate(message))
-  //     router.push('/permission/management')
-  //   },
-  // })
+  const createResult = useApiCall<PermissionRequest, PermissionRequestFailure>({
+    callApi: () => postMethod(apiRoute.permissions.addPermission, cookies.token, permissionState),
+    handleError(status, message) {
+      if (status) {
+        toast.error(translate(message))
+      }
+    },
+    handleSuccess(message) {
+      toast.success(translate(message))
+      router.push('/permission/management')
+    },
+  })
 
-  // const handleChangeState = (NewUpdate: Partial<PermissionRequest>) => {
-  //   const newState = { ...permissionState, ...NewUpdate }
-  //   setPermissionState(newState)
-  // }
+  const handleChangeState = (NewUpdate: Partial<PermissionRequest>) => {
+    const newState = { ...permissionState, ...NewUpdate }
+    setPermissionState(newState)
+  }
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
-  // const cancelLabel = useTranslation('cancel')
+  const cancelLabel = useTranslation('cancel')
 
-  // const saveLabel = useTranslation('save')
+  const saveLabel = useTranslation('save')
 
-  // const createPermission = useTranslation('permissionCreatePascal')
+  const createPermission = useTranslation('permissionCreatePascal')
 
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
-      {/* <Text h2 showIn="sm">
-        {createPermission}
-      </Text>
+      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{createPermission}</h2>
       <div
         style={{
           display: 'flex',
@@ -43,9 +57,7 @@ export const PermissionCreate = () => {
           marginBottom: 10,
         }}
       >
-        <Text h1 hideIn="sm">
-          {createPermission}
-        </Text>
+        <h1 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{createPermission}</h1>
         <div
           style={{
             display: 'flex',
@@ -84,7 +96,7 @@ export const PermissionCreate = () => {
         permissionState={permissionState}
         handleChangeState={handleChangeState}
         errorState={createResult?.error?.result}
-      /> */}
+      />
     </div>
   )
 }

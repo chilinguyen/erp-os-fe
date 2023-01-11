@@ -57,7 +57,7 @@ export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTa
           total={userResult?.data?.result?.totalRows ?? 0}
           onChange={(number) => setPage(number)}
           page={page}
-          paginationStyle={{ marginTop: 20 }}
+          paginationStyle={{ paddingTop: 20 }}
         />
       )}
     </div>

@@ -45,7 +45,6 @@ export const SelectCustom = <T,>({
     }
     return ''
   }
-
   return (
     <div ref={divRef} style={{ width: '100%', position: 'relative' }}>
       <Input
@@ -62,11 +61,13 @@ export const SelectCustom = <T,>({
             position: 'absolute',
             top: divRef?.current?.clientHeight,
             left: 0,
-            width: 375,
+            width: '100%',
+            maxWidth: 375,
             backgroundColor: themeValue[darkTheme].colors.gray200,
             boxShadow: themeValue[darkTheme].shadows.lg,
             zIndex: 101,
             borderRadius: 10,
+            overflow: 'hidden',
           }}
         >
           {options.map((item) => (

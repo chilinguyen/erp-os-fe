@@ -1,6 +1,6 @@
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
-import { ColorType } from '@/types'
+import { ColorType, SizeType } from '@/types'
 import { ButtonHTMLAttributes, CSSProperties, useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -8,7 +8,7 @@ interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: ColorType
   styleType?: 'flat' | 'light' | 'ghost' | 'default'
   auto?: boolean
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: SizeType
 }
 
 export const Button = ({
@@ -30,19 +30,6 @@ export const Button = ({
       onClick(event)
     }
   }
-
-  // const getBackgroundColor = useMemo(() => {
-  //   if (light) return undefined
-  //   if (disabled) return themeValue[darkTheme].colors.gray400
-  //   return themeValue[darkTheme].colors[color]
-  // }, [light, disabled, darkTheme, color])
-
-  // const getTextColor = useMemo(() => {
-  //   if (disabled) return themeValue[darkTheme].colors.gray900
-  //   if (light)
-  //     return color ? themeValue[darkTheme].colors[color] : themeValue[darkTheme].colors.gray900
-  //   return 'white'
-  // }, [color, light, disabled, darkTheme])
 
   const getColor = (): CSSProperties => {
     const disableColor = themeValue[darkTheme].colors.gray400
@@ -96,11 +83,11 @@ export const Button = ({
   const getSize = (): CSSProperties => {
     switch (size) {
       case 'md':
-        return { height: '2.5rem', padding: '0 0.375rem', fontSize: '0.875rem' }
+        return { height: '2.5rem', padding: '0 0.875rem', fontSize: '0.875rem' }
       case 'sm':
         return { height: '2rem', padding: '0 0.625rem', fontSize: '0.875rem' }
       case 'xs':
-        return { height: '1.5rem', padding: '0 0.875rem', fontSize: '0.75rem' }
+        return { height: '1.5rem', padding: '0 0.375rem', fontSize: '0.75rem' }
       case 'lg':
         return { height: '3rem', padding: '0 1.25rem', fontSize: '1rem' }
       default:
