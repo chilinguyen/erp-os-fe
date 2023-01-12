@@ -74,6 +74,10 @@ export const Modal = ({
           alignItems: 'center',
           ...ModalStyle,
         }}
+        onClick={(e) => {
+          e.stopPropagation()
+          e.preventDefault()
+        }}
       >
         {children}
       </div>

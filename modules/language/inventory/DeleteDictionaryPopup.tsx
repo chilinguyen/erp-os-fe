@@ -48,31 +48,44 @@ export const DeleteDictionaryPopup = ({
 
   return (
     <>
-      <TiDelete style={{ cursor: 'pointer' }} size={25} color="red" onClick={() => {}} />
-      {dictionaryKey}
-      {updateStoreLanguage}
-      {setLetCallList}
-      <Modal open={open} setOpen={handleClose}>
+      <TiDelete
+        style={{ cursor: 'pointer' }}
+        size={25}
+        color="red"
+        onClick={() => {
+          setOpen(true)
+        }}
+      />
+      <Modal open={open} setOpen={handleClose} ModalStyle={{ gap: 10 }}>
         <h2>
           {deleteLabel} {dictionaryKey}
         </h2>
 
         {deleteKeyLabel}
 
-        <Button disabled={deleteResult.loading} auto color="warning" onClick={handleClose}>
-          {cancel}
-        </Button>
-
-        <Button
-          disabled={deleteResult.loading}
-          auto
-          color="success"
-          onClick={() => {
-            deleteResult.setLetCall(true)
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+            gap: 40,
+            padding: '0 40px',
           }}
         >
-          {deleteLabel}
-        </Button>
+          <Button disabled={deleteResult.loading} auto color="warning" onClick={handleClose}>
+            {cancel}
+          </Button>
+          <Button
+            disabled={deleteResult.loading}
+            auto
+            color="success"
+            onClick={() => {
+              deleteResult.setLetCall(true)
+            }}
+          >
+            {deleteLabel}
+          </Button>
+        </div>
       </Modal>
     </>
   )
