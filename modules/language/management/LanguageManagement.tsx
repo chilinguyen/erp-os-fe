@@ -1,4 +1,4 @@
-import { Loading } from '@/components'
+import { Collapse, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import { DictionaryCreatePopup } from '../inventory/DictionaryCreatePopup'
 import { IOCsvLanguage } from '../inventory/IOCsvLanguage'
 import { LanguageCreatePopup } from '../inventory/LanguageCreatePopup'
+import { OneLanguage } from './OneLanguage'
 
 export const LanguageManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -89,24 +90,23 @@ export const LanguageManagement = () => {
         </div>
       </div>
 
-      {
-        viewLanguageresult.loading ? (
-          <div style={{ marginTop: 20, display: 'flex', justifyContent: 'center' }}>
-            <Loading />
-          </div>
-        ) : null
-        // <Collapse.Group>
-        //   {viewLanguageresult.data?.result.data.map((language) => (
-        //     <Collapse title={language.language}>
-        //       <OneLanguage
-        //         updateStoreLanguage={updateStoreLanguage}
-        //         language={language}
-        //         setLetCallList={viewLanguageresult.setLetCall}
-        //       />
-        //     </Collapse>
-        //   ))}
-        // </Collapse.Group>
-      }
+      {viewLanguageresult.loading ? (
+        <div style={{ marginTop: 20, display: 'flex', justifyContent: 'center' }}>
+          <Loading />
+        </div>
+      ) : (
+        <>
+          {viewLanguageresult.data?.result.data.map((language) => (
+            <Collapse title={language.language}>
+              <OneLanguage
+                updateStoreLanguage={updateStoreLanguage}
+                language={language}
+                setLetCallList={viewLanguageresult.setLetCall}
+              />
+            </Collapse>
+          ))}
+        </>
+      )}
     </>
   )
 }
