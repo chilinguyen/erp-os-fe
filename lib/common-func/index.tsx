@@ -54,3 +54,15 @@ export const getTotalPage = (totalRows: number, pageSize: number) => {
   if (totalRows <= pageSize) return 1
   return Math.round(totalRows / pageSize)
 }
+
+export const addClassBody = (className: string) => {
+  if (typeof window !== undefined) {
+    document.body.classList.add(className)
+  }
+}
+
+export const removeClassBody = (className: string) => {
+  if (typeof window !== undefined) {
+    document.body.classList.remove(className)
+  }
+}
