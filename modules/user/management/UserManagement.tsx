@@ -1,70 +1,79 @@
+import { useEffect, useState } from 'react'
+import { apiRoute } from '@/constants/apiRoutes'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
+import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { getMethod } from '@/services'
+import { UserListSuccess } from '@/types'
+import { useRouter } from 'next/router'
+import { useCookies } from 'react-cookie'
+import { toast } from 'react-toastify'
+import { listFunctionParseValue } from '@/modules/permission/inventory'
+import { Button, CustomTable, Pagination } from '@/components'
+import { useSelector } from 'react-redux'
+import { ShareStoreSelector } from '@/redux/share-store'
+
 export const UserManagement = () => {
-  // const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  // const translate = useTranslationFunction()
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
+  const translate = useTranslationFunction()
 
-  // const [page, setPage] = useState<number>(1)
+  const [page, setPage] = useState<number>(1)
 
-  // const userManagementPascal = useTranslation('userManagementPascal')
+  const userManagementPascal = useTranslation('userManagementPascal')
 
-  // const createUserPascal = useTranslation('createUserPascal')
+  const createUserPascal = useTranslation('createUserPascal')
 
-  // const router = useRouter()
+  const router = useRouter()
 
-  // const result = useApiCall<UserListSuccess, String>({
-  //   callApi: () => getMethod(apiRoute.user.getListUser, cookies.token, { page: page.toString() }),
-  //   handleError(status, message) {
-  //     if (status) {
-  //       toast.error(translate(message))
-  //     }
-  //   },
-  // })
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
-  // const { data, loading, setLetCall } = result
+  const result = useApiCall<UserListSuccess, String>({
+    callApi: () => getMethod(apiRoute.user.getListUser, cookies.token, { page: String(page) }),
+    handleError(status, message) {
+      if (status) {
+        toast.error(translate(message))
+      }
+    },
+  })
 
-  // useEffect(() => {
-  //   setLetCall(true)
-  // }, [page])
+  const { data, loading, setLetCall } = result
 
-  // const listFunctionParseValues = listFunctionParseValue()
+  useEffect(() => {
+    setLetCall(true)
+  }, [page])
 
-  // return (
-  //   <>
-  //     <Text showIn="sm" h2>
-  //       {userManagementPascal}
-  //     </Text>
-  //     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-  //       <Text hideIn="sm" h1>
-  //         {userManagementPascal}
-  //       </Text>
-  //       <Button
-  //         onClick={() => {
-  //           router.push('/user/create')
-  //         }}
-  //         size="sm"
-  //       >
-  //         {createUserPascal}
-  //       </Button>
-  //     </div>
-  //     <CustomTable
-  //       header={data?.viewPoints ?? [{ key: '', label: '' }]}
-  //       body={data ? data.result.data : []}
-  //       selectionMode="single"
-  //       listFunctionParseValue={listFunctionParseValues}
-  //       loading={loading}
-  //     >
-  //       <>{null}</>
-  //     </CustomTable>
-  //     {!loading && (
-  //       <Pagination
-  //         shadow
-  //         color="default"
-  //         total={getTotalPage(data?.result.totalRows || 0, 10)}
-  //         onChange={(number) => setPage(number)}
-  //         page={page}
-  //         css={{ marginTop: 20 }}
-  //       />
-  //     )}
-  //   </>
-  // )
-  return null
+  const listFunctionParseValues = listFunctionParseValue()
+
+  return (
+    <>
+      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{userManagementPascal}</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{userManagementPascal}</h1>
+        <Button
+          onClick={() => {
+            router.push('/user/create')
+          }}
+          auto
+        >
+          {createUserPascal}
+        </Button>
+      </div>
+      <CustomTable
+        header={data?.viewPoints ?? [{ key: '', label: '' }]}
+        body={data ? data.result.data : []}
+        selectionMode="single"
+        listFunctionParseValue={listFunctionParseValues}
+        loading={loading}
+      >
+        <>{null}</>
+      </CustomTable>
+      {!loading && (
+        <Pagination
+          total={data?.result?.totalRows ?? 0}
+          onChange={(number) => setPage(number)}
+          page={page}
+          paginationStyle={{ marginTop: 20 }}
+        />
+      )}
+    </>
+  )
 }

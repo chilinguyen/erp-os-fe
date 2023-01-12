@@ -1,4 +1,6 @@
+import { ThemeKey } from '@/lib'
+
 export type GeneralSettingsStoreTypes = {
-  darkTheme: boolean
+  darkTheme: ThemeKey
   languageKey: string
 }

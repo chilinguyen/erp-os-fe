@@ -4,7 +4,7 @@ import type { NextPage } from 'next'
 
 const Dashboard: NextPage = () => {
   return (
-    <DefaultLayout useNavbar>
+    <DefaultLayout>
       <HomeModule />
     </DefaultLayout>
   )

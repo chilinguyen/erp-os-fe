@@ -1,6 +1,8 @@
+import { Input } from '@/components'
 import { useTranslation } from '@/hooks'
 import { DictionaryKey } from '@/types'
 import { DeleteDictionaryPopup } from './DeleteDictionaryPopup'
+import { inputStylesLanguage } from './Language.inventory'
 
 interface ILanguageTable {
   dictionaryList: DictionaryKey
@@ -42,12 +44,12 @@ export const LanguageTable = ({
                   alignItems: 'center',
                 }}
               >
-                {/* <Input
-                  css={{ width: '100%' }}
+                <Input
+                  style={{ width: '100%' }}
                   value={dictionaryKey}
                   readOnly
                   {...inputStylesLanguage({})}
-                /> */}
+                />
                 <DeleteDictionaryPopup
                   updateStoreLanguage={updateStoreLanguage}
                   dictionaryKey={dictionaryKey}
@@ -55,8 +57,8 @@ export const LanguageTable = ({
                 />
               </div>
               <div style={{ gridColumn: 'span 1 / span 1' }}>
-                {/* <Input
-                  css={{ width: '100%' }}
+                <Input
+                  style={{ width: '100%' }}
                   value={dictionaryList[dictionaryKey]}
                   onChange={(event) => {
                     handleChangeState({
@@ -65,7 +67,7 @@ export const LanguageTable = ({
                     })
                   }}
                   {...inputStylesLanguage({})}
-                /> */}
+                />
               </div>
             </>
           )

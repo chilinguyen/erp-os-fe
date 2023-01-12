@@ -24,3 +24,7 @@ export type QueryParams = {
   keySort?: string
   sortField?: string
 } & { [key: string]: string | number }
+
+export type PseudoType = 'hover' | 'active' | 'focus' | 'disabled' | 'selected' | 'none'
+export type ColorType = 'primary' | 'success' | 'secondary' | 'warning' | 'error' | 'gradient'
+export type SizeType = 'xs' | 'sm' | 'md' | 'lg' | 'xl'

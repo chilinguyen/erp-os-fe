@@ -1,4 +1,7 @@
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { getListYear } from './DatePicker.inventory'
 
 interface IYearModal {
@@ -12,12 +15,14 @@ interface IYearModal {
 export const YearModal = ({ year, setYear, setYearRange, yearRange, setType }: IYearModal) => {
   const [hoverItem, setHoverItem] = useState(-1)
 
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
+
   const getColor = (item: number) => {
     if (year === item) {
-      return 'blue'
+      return themeValue[darkTheme].colors.blue400
     }
     if (hoverItem === item) {
-      return 'black'
+      return themeValue[darkTheme].colors.blue200
     }
     return ''
   }
@@ -32,30 +37,40 @@ export const YearModal = ({ year, setYear, setYearRange, yearRange, setType }: I
           display: 'flex',
           justifyContent: 'space-around',
           alignItems: 'center',
+          position: 'relative',
         }}
       >
-        {/* <Text
-          css={{ cursor: 'pointer' }}
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setYearRange(yearRange - 10)
           }}
         >
           {'<<'}
-        </Text>
-        <Text>
+        </div>
+        <div>
           {yearRange} - {yearRange + 9}
-        </Text>
-        <Text
-          css={{ cursor: 'pointer' }}
+        </div>
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             setYearRange(yearRange + 10)
           }}
         >
           {'>>'}
-        </Text> */}
-      </div>
+        </div>
 
-      {/* <Divider /> */}
+        <hr
+          style={{
+            height: '1px',
+            backgroundColor: themeValue[darkTheme].colors.border,
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+            left: 0,
+          }}
+        />
+      </div>
 
       <div
         style={{

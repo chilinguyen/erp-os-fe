@@ -1,34 +1,45 @@
-// interface IUserTablePermission {
-//   setListUser: Function
-//   listUser: string[]
-//   editAble?: boolean
-// }
+import { useEffect, useState } from 'react'
+import { CustomTable, Pagination } from '@/components'
+import { TOKEN_AUTHENTICATION } from '@/constants/auth'
+import { useApiCall, useTranslationFunction } from '@/hooks'
+import { useCookies } from 'react-cookie'
+import { UserListSuccess } from '@/types'
+import { getMethod } from '@/services'
+import { apiRoute } from '@/constants/apiRoutes'
+import { toast } from 'react-toastify'
+import { listFunctionParseValue } from './permission.inventory'
 
-export const UserTablePermission = () => {
-  // const [cookies] = useCookies([TOKEN_AUTHENTICATION])
-  // const translate = useTranslationFunction()
+interface IUserTablePermission {
+  setListUser: Function
+  listUser: string[]
+  editAble?: boolean
+}
 
-  // const [page, setPage] = useState<number>(1)
+export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTablePermission) => {
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
+  const translate = useTranslationFunction()
 
-  // const userResult = useApiCall<UserListSuccess, String>({
-  //   callApi: () =>
-  //     getMethod(apiRoute.user.getYourListUser, cookies.token, { page: page.toString() }),
-  //   handleError(status, message) {
-  //     if (status) {
-  //       toast.error(translate(message))
-  //     }
-  //   },
-  // })
+  const [page, setPage] = useState<number>(1)
 
-  // useEffect(() => {
-  //   userResult.setLetCall(true)
-  // }, [page])
+  const userResult = useApiCall<UserListSuccess, String>({
+    callApi: () =>
+      getMethod(apiRoute.user.getYourListUser, cookies.token, { page: page.toString() }),
+    handleError(status, message) {
+      if (status) {
+        toast.error(translate(message))
+      }
+    },
+  })
 
-  // const listFunctionParseValues = listFunctionParseValue()
+  useEffect(() => {
+    userResult.setLetCall(true)
+  }, [page])
+
+  const listFunctionParseValues = listFunctionParseValue()
 
   return (
     <div>
-      {/* <CustomTable
+      <CustomTable
         header={userResult?.data?.viewPoints ?? []}
         body={userResult?.data?.result?.data ?? []}
         selectionMode={editAble ? 'multiple' : 'none'}
@@ -41,15 +52,14 @@ export const UserTablePermission = () => {
       </CustomTable>
       {!userResult.loading && (
         <Pagination
-          shadow
-          color="default"
-          total={getTotalPage(userResult?.data?.result.totalRows || 0, 10)}
+          // shadow
+          // color="default"
+          total={userResult?.data?.result?.totalRows ?? 0}
           onChange={(number) => setPage(number)}
           page={page}
-          css={{ marginTop: 20 }}
+          paginationStyle={{ paddingTop: 20 }}
         />
-      )} */}
-      {null}
+      )}
     </div>
   )
 }

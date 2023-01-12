@@ -1,11 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
+import { HTMLAttributes, useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Input } from '../input'
 import { DayModal, getDayString, MonthModal, YearModal } from './inventory'
 
 interface IDatePicker {
   value?: Date | string
   onChange: Function
   label: string
-  buttonProps: Partial<any>
+  buttonProps: HTMLAttributes<HTMLInputElement>
   disable?: boolean
 }
 
@@ -19,6 +23,8 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
   const divRef = useRef<HTMLDivElement>(null)
 
   const [yearRange, setYearRange] = useState(year - (year % 10))
+
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const handleChaneMonth = (newMonth: number) => {
     if (newMonth > 0 && newMonth < 13) {
@@ -72,7 +78,6 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
 
   return (
     <>
-      {buttonProps}
       {type !== '' && (
         <div
           style={{
@@ -98,14 +103,12 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
         ref={divRef}
         style={{ width: '100%', position: 'relative', zIndex: 101 }}
       >
-        {/* <Input
-          css={{ width: '100%' }}
+        <Input
           value={getDayString(nowDay.getDate(), nowDay.getMonth() + 1, nowDay.getFullYear())}
           label={label}
           readOnly
           {...buttonProps}
-        /> */}
-        {label}
+        />
         <div
           onClick={(event) => {
             event.stopPropagation()
@@ -115,8 +118,8 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
             top: divRef?.current?.clientHeight,
             left: 0,
             width: 375,
-            backgroundColor: 'blue',
-            boxShadow: type !== '' ? 'black' : '',
+            backgroundColor: themeValue[darkTheme].colors.gray200,
+            boxShadow: type !== '' ? themeValue[darkTheme].shadows.lg : '',
             zIndex: 101,
             borderRadius: 10,
           }}
