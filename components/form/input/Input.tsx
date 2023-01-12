@@ -69,6 +69,7 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%',
+            ...style,
           }}
         >
           {labelLeft && (
@@ -96,7 +97,6 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
               height: '2.5rem',
               background: 'transparent',
               padding: '0 0.5rem',
-              ...style,
             }}
             onFocus={handleFocus}
             onBlur={handleBlur}
