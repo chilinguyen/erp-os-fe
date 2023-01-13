@@ -1,9 +1,9 @@
-import { HTMLAttributes, MouseEvent, useState } from 'react'
 import { useTranslation, useTranslationFunction } from '@/hooks'
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { ActionType, ViewPointType } from '@/types'
 import { NextRouter, useRouter } from 'next/router'
+import { HTMLAttributes, MouseEvent, useState } from 'react'
 import { AiOutlineEye } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
 import { Loading } from '../loading'
@@ -136,7 +136,6 @@ export function CustomTable({
             <th
               style={{
                 padding: '1px 1px 1px 16px',
-                paddingLeft: '16px',
                 borderTopLeftRadius: '12px',
                 borderBottomLeftRadius: '12px',
                 backgroundColor: themeValue[darkTheme].colors.gray50,
@@ -147,7 +146,7 @@ export function CustomTable({
             {header.map((itemHead, index) => (
               <th
                 style={{
-                  padding: `1px ${index === header.length - 1 ? '16px' : '1px'} 1px 1px`,
+                  padding: '4px 16px',
                   borderTopRightRadius: index === header.length - 1 ? '12px' : undefined,
                   borderBottomRightRadius: index === header.length - 1 ? '12px' : undefined,
                   fontSize: '12px',
@@ -182,9 +181,7 @@ export function CustomTable({
                 <td
                   style={{
                     whiteSpace: 'nowrap',
-                    padding: `10px ${index === header.length ? '16px' : '10px'} 10px ${
-                      index === 0 ? '16px' : '1px'
-                    }`,
+                    padding: '10px 16px',
                     borderTopLeftRadius: index === 0 ? '12px' : undefined,
                     borderBottomLeftRadius: index === 0 ? '12px' : undefined,
                     borderTopRightRadius: index === header.length ? '12px' : undefined,

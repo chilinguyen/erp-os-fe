@@ -3,6 +3,7 @@ import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { useSelector } from 'react-redux'
 import { NavBarItems } from './NavBarConstant'
 import { RenderItemSideBar } from './RenderItemSideBar'
+import { SideIconItem } from './SideIconItem'
 
 interface ISideBar {
   isOpenSideBar: boolean
@@ -33,27 +34,44 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
       />
       <div
         style={{
+          display: 'flex',
           width: pixel >= 960 || isOpenSideBar ? 300 : 0,
           position: 'fixed',
-          top: 76,
+          top: 60,
           left: 0,
           bottom: 0,
-          backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
           zIndex: pixel >= 960 ? 2 : 10000,
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
-          overflow: 'auto',
           fontWeight: 500,
           transition: 'all 0.2s linear',
         }}
       >
-        {NavBarItems().map((item, index) => (
-          <RenderItemSideBar
-            key={item.path}
-            item={item}
-            hasDivide={index + 1 < NavBarItems().length}
-            level={1}
-          />
-        ))}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '60px',
+            backgroundColor: themeValue[darkTheme].colors.primaryLight,
+          }}
+        >
+          <SideIconItem />
+        </div>
+        <div
+          style={{
+            overflow: 'auto',
+            backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
+            width: 'calc(100% - 60px)',
+          }}
+        >
+          {NavBarItems().map((item, index) => (
+            <RenderItemSideBar
+              key={item.path}
+              item={item}
+              hasDivide={index + 1 < NavBarItems().length}
+              level={1}
+            />
+          ))}
+        </div>
       </div>
     </>
   )

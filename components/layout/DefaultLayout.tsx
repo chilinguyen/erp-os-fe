@@ -1,5 +1,6 @@
 import { useResponsive } from '@/hooks'
 import { useState } from 'react'
+import { NavbarInternal } from '../navbar'
 import { SideBar } from '../sidebar'
 
 const DefaultLayout = ({
@@ -17,13 +18,15 @@ const DefaultLayout = ({
       {(!useNavbar || isOpenSideBar) && (
         <SideBar isOpenSideBar={isOpenSideBar} setOpenSideBar={setOpenSideBar} pixel={pixel} />
       )}
+      <NavbarInternal />
       <div
         style={{
           width: !useNavbar && pixel >= 960 ? 'calc(100% - 300px)' : '100%',
           marginLeft: 'auto',
+          marginTop: '3.75rem',
         }}
       >
-        <div style={{ padding: '0 24px', margin: 'auto' }}>{children}</div>
+        <div style={{ padding: '0px 24px' }}>{children}</div>
       </div>
     </>
   )
