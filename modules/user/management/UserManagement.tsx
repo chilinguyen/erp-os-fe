@@ -52,7 +52,6 @@ export const UserManagement = () => {
           onClick={() => {
             router.push('/user/create')
           }}
-          auto
         >
           {createUserPascal}
         </Button>

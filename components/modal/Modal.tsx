@@ -11,6 +11,7 @@ interface IModal {
   zIndex?: number
   ModalStyle?: CSSProperties
   width?: number
+  notBlur?: boolean
 }
 
 export const Modal = ({
@@ -21,6 +22,7 @@ export const Modal = ({
   zIndex,
   ModalStyle,
   width,
+  notBlur,
 }: IModal) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
@@ -55,8 +57,9 @@ export const Modal = ({
           bottom: open ? 0 : undefined,
           width: !open ? 0 : undefined,
           overflow: 'auto',
-          backgroundColor: 'black',
-          opacity: '50%',
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          backdropFilter: !notBlur ? 'blur(15px)' : undefined,
+          WebkitBackdropFilter: !notBlur ? 'blur(15px)' : undefined,
         }}
       />
       <div

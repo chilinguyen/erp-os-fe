@@ -90,7 +90,13 @@ export const LoginForm = () => {
 
   return (
     <>
-      <div className="text-lg pb-4" style={{ color: themeValue[darkTheme].colors.foreground }}>
+      <div
+        style={{
+          color: themeValue[darkTheme].colors.foreground,
+          fontSize: '1.125rem',
+          paddingBottom: '1rem',
+        }}
+      >
         {signIn}
       </div>
       <Input
@@ -106,7 +112,7 @@ export const LoginForm = () => {
         labelLeft={passwordLabel}
         onFocus={handleReset}
       />
-      <div className="w-full flex justify-end">
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'end' }}>
         <Button
           disabled={loading}
           styleType="light"
@@ -115,7 +121,7 @@ export const LoginForm = () => {
           {forgotPassword}?
         </Button>
       </div>
-      <div className="w-full flex justify-end pt-4">
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'end', paddingTop: '1rem' }}>
         <Button disabled={loading} onClick={handleLogin}>
           {loading ? <Loading /> : <>{signIn}</>}
         </Button>

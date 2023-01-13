@@ -1,8 +1,8 @@
-import { Button, Loading } from '@/components'
+import { Button, Dropdown, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { getListEditAble, lostOddProps } from '@/lib'
+import { getListEditAble, lostOddProps, StatusList } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod, putMethod } from '@/services'
 import { UserRequest, UserRequestFailure, UserResponseSuccess } from '@/types'
@@ -57,22 +57,22 @@ export const UserDetail = () => {
     },
   })
 
-  // const changeStatus = useApiCall<UserResponseSuccess, string>({
-  //   callApi: () => {
-  //     return putMethod(apiRoute.user.changeStatus, cookies.token, {
-  //       id: router?.query?.id?.toString() ?? '1',
-  //     })
-  //   },
-  //   handleError: (status, message) => {
-  //     if (status) {
-  //       toast.error(translate(message))
-  //     }
-  //   },
-  //   handleSuccess: (message) => {
-  //     toast.success(translate(message))
-  //     viewResult.setLetCall(true)
-  //   },
-  // })
+  const changeStatus = useApiCall<UserResponseSuccess, string>({
+    callApi: () => {
+      return putMethod(apiRoute.user.changeStatus, cookies.token, {
+        id: router?.query?.id?.toString() ?? '1',
+      })
+    },
+    handleError: (status, message) => {
+      if (status) {
+        toast.error(translate(message))
+      }
+    },
+    handleSuccess: (message) => {
+      toast.success(translate(message))
+      viewResult.setLetCall(true)
+    },
+  })
 
   useEffect(() => {
     if (router?.query?.id) {
@@ -95,7 +95,7 @@ export const UserDetail = () => {
 
   const userEdit = useTranslation('userEdit')
 
-  // const statusList = StatusList()
+  const statusList = StatusList()
 
   if (viewResult.loading)
     return (
@@ -151,6 +151,14 @@ export const UserDetail = () => {
                 ))}
             </Dropdown.Menu>
           </Dropdown> */}
+          <Dropdown
+            button={statusList.find((item) => item.value === UserState.deleted)?.label ?? ''}
+            color={UserState.deleted === 0 ? 'success' : 'warning'}
+            onClick={() => {
+              changeStatus.setLetCall(true)
+            }}
+            options={statusList}
+          />
           <div style={{ display: 'flex', gap: 10 }}>
             {type === 'read' ? (
               <>

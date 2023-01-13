@@ -56,5 +56,4 @@ export const Loading = ({ size = 24, color }: ILoading) => {
       />
     </div>
   )
-  // return <AiOutlineLoading size={size ?? 24} className="animate-spin" />
 }

@@ -166,7 +166,6 @@ export function CustomTable({
             <tr
               style={{
                 color: getTextColor(itemBody?.id),
-                backgroundColor: getBackgroundColor(itemBody?.id),
                 cursor: 'default',
               }}
               onMouseEnter={() => {
@@ -190,6 +189,7 @@ export function CustomTable({
                     borderBottomLeftRadius: index === 0 ? '12px' : undefined,
                     borderTopRightRadius: index === header.length ? '12px' : undefined,
                     borderBottomRightRadius: index === header.length ? '12px' : undefined,
+                    backgroundColor: getBackgroundColor(itemBody?.id),
                   }}
                   key={itemHead.key}
                 >

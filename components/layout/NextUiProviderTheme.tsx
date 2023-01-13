@@ -58,11 +58,7 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
   useEffect(() => {
     if (isDark) {
       if (darkTheme === 'light') dispatch(setGeneralSettings({ darkTheme: 'dark' }))
-      document.documentElement.classList.add('dark')
-    } else {
-      if (darkTheme === 'dark') dispatch(setGeneralSettings({ darkTheme: 'light' }))
-      document.documentElement.classList.remove('dark')
-    }
+    } else if (darkTheme === 'dark') dispatch(setGeneralSettings({ darkTheme: 'light' }))
   }, [isDark])
 
   useEffect(() => {
