@@ -58,6 +58,7 @@ export const HomeModule = () => {
             gap: 32,
           }}
           onHandleChangeTab={setCurrentTab}
+          underline
         />
       </CardsWithTitle>
 

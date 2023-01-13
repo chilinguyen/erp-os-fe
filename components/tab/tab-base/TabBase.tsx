@@ -7,10 +7,19 @@ export interface TabBaseProps {
   tabStyle?: CSSProperties
   tabItemStyle?: CSSProperties
   onHandleChangeTab?: Function
+  underline?: boolean
 }
 
 export default function TabBase(props: TabBaseProps) {
-  const { tabData, tabItem, tabStyle, tabContainerStyle, tabItemStyle, onHandleChangeTab } = props
+  const {
+    tabData,
+    tabItem,
+    tabStyle,
+    tabContainerStyle,
+    tabItemStyle,
+    onHandleChangeTab,
+    underline,
+  } = props
   const [tab, setTab] = useState(tabData[0])
   if (!onHandleChangeTab) return null
 
@@ -27,7 +36,9 @@ export default function TabBase(props: TabBaseProps) {
               key={index}
               style={{
                 ...tabStyle,
-                borderBottom: `${tab === item ? '2px solid rgb(83, 146, 249)' : 'none'}`,
+                borderBottom: `${
+                  tab === item && underline ? '2px solid rgb(83, 146, 249)' : 'none'
+                }`,
                 cursor: 'pointer',
               }}
               onClick={() => handleSetTab(item)}
