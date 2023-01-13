@@ -132,11 +132,7 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
             </>
           ) : null}
         </label>
-        {helperText && (
-          <div className="pl-1" style={{ fontSize: '10px' }}>
-            {helperText}
-          </div>
-        )}
+        {helperText && <div style={{ fontSize: '10px', paddingLeft: '4px' }}>{helperText}</div>}
       </div>
     )
   }

@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 html,
 body {
   padding: 0;
@@ -55,6 +51,15 @@ h2 {
 
 input:focus {
   outline: 0;
+}
+
+input {
+  outline: 0;
+  border: 0;
+}
+
+button {
+  border: 0;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
