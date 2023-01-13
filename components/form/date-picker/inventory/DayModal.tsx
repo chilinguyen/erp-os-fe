@@ -46,8 +46,6 @@ export const DayModal = ({
 
   return (
     <>
-      {setMonth}
-      {setYear}
       <div
         style={{
           height: 40,

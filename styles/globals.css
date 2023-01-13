@@ -96,6 +96,10 @@ input:focus {
   -webkit-box-orient: vertical;
 }
 
+.overflow {
+  overflow: hidden;
+}
+
 /* Safari */
 @-webkit-keyframes spin {
   0% {

@@ -1,4 +1,4 @@
-import { themeValue } from '@/lib'
+import { addClassBody, removeClassBody, themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { HTMLAttributes, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -26,6 +26,8 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
 
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
+  const refChild = useRef<HTMLDivElement>(null)
+
   const handleChaneMonth = (newMonth: number) => {
     if (newMonth > 0 && newMonth < 13) {
       setMonth(newMonth)
@@ -42,6 +44,30 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
     }
   }, [value])
 
+  const getPositionY = () => {
+    if (typeof window !== 'undefined' && divRef.current && refChild.current) {
+      const positionParent = divRef.current.getBoundingClientRect().top
+      const windowHeight = window.innerHeight
+      const heightParent = divRef.current.getBoundingClientRect().height
+      const heightChild = refChild.current.getBoundingClientRect().height
+      if (positionParent + heightParent + heightChild < windowHeight) {
+        return positionParent + heightParent
+      }
+
+      return positionParent - heightChild
+    }
+    return 0
+  }
+
+  const handleSetType = (v: 'day' | 'month' | 'year' | '') => {
+    setType(v)
+    if (v === '') {
+      removeClassBody('overflow')
+    } else {
+      addClassBody('overflow')
+    }
+  }
+
   const obj = {
     year: (
       <YearModal
@@ -49,7 +75,7 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
         yearRange={yearRange}
         setYear={setYear}
         setYearRange={setYearRange}
-        setType={setType}
+        setType={handleSetType}
       />
     ),
     month: (
@@ -58,7 +84,7 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
         setYear={setYear}
         month={month}
         setMonth={handleChaneMonth}
-        setType={setType}
+        setType={handleSetType}
       />
     ),
     day: (
@@ -67,7 +93,7 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
         setYear={setYear}
         month={month}
         setMonth={handleChaneMonth}
-        setType={setType}
+        setType={handleSetType}
         day={day}
         setDay={setDay}
         onChange={onChange}
@@ -90,14 +116,14 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
             zIndex: 101,
           }}
           onClick={() => {
-            setType('')
+            handleSetType('')
           }}
         />
       )}
       <div
         onClick={() => {
           if (!disable) {
-            setType('day')
+            handleSetType('day')
           }
         }}
         ref={divRef}
@@ -114,15 +140,17 @@ export const DatePicker = ({ value, label, onChange, buttonProps, disable }: IDa
             event.stopPropagation()
           }}
           style={{
-            position: 'absolute',
-            top: divRef?.current?.clientHeight,
-            left: 0,
-            width: 375,
+            position: 'fixed',
+            top: getPositionY(),
+            left: divRef.current?.getBoundingClientRect()?.left ?? 0,
+            width: type !== '' ? 375 : 0,
             backgroundColor: themeValue[darkTheme].colors.gray200,
             boxShadow: type !== '' ? themeValue[darkTheme].shadows.lg : '',
             zIndex: 101,
             borderRadius: 10,
+            minHeight: 260,
           }}
+          ref={refChild}
         >
           {obj[type]}
         </div>
