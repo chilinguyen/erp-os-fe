@@ -10,7 +10,7 @@ export const NavbarInternal = () => {
   return (
     <div
       style={{
-        backgroundColor: themeValue[darkTheme].colors.primaryLight,
+        backgroundColor: themeValue[darkTheme].colors.gray200,
         height: '3.75rem',
         display: 'flex',
         position: 'fixed',

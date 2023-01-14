@@ -1,5 +1,5 @@
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
-import { setIsForbidden, setIsLoggedIn } from '@/redux/authentication'
+import { setIsLoggedIn } from '@/redux/authentication'
 import { CommonResponseType } from '@/types'
 import { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
@@ -53,7 +53,7 @@ export const useApiCall = <T, E>({
           router.push('/login')
         }
         if (statusCode === 403) {
-          dispatch(setIsForbidden(true))
+          router.push('/403')
         }
       }
     } finally {

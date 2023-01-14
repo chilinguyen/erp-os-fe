@@ -3,6 +3,7 @@ export interface PathResponse {
   label: string
   path: string
   type: PathTypeEnum
+  icon: string
 }
 
 export interface PathRequest {
@@ -14,4 +15,11 @@ export interface PathRequest {
 export enum PathTypeEnum {
   INTERNAL = 'INTERNAL',
   EXTERNAL = 'EXTERNAL',
+}
+
+export interface PathListResponse {
+  data: PathResponse[]
+  page: number
+  pageSize: number
+  totalRows: number
 }
