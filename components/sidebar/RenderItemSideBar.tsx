@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react'
-import { useRouter } from 'next/router'
+import { useTranslation } from '@/hooks'
 import { NavBarItemType } from '@/types'
+import { useRouter } from 'next/router'
+import { useRef, useState } from 'react'
 import { MdOutlineArrowBackIosNew } from 'react-icons/md'
 
 interface IRenderItemSideBar {
@@ -13,6 +14,8 @@ export const RenderItemSideBar = ({ item, hasDivide, level }: IRenderItemSideBar
   const router = useRouter()
   const [isShowCollapse, setShowCollapse] = useState(false)
   const refDiv = useRef<HTMLDivElement>(null)
+
+  const thisLabel = useTranslation(item.label)
 
   if (item?.children?.length) {
     return (
@@ -33,7 +36,7 @@ export const RenderItemSideBar = ({ item, hasDivide, level }: IRenderItemSideBar
             setShowCollapse(!isShowCollapse)
           }}
         >
-          {item.label}
+          {thisLabel}
           <div
             style={{
               transform: isShowCollapse ? 'rotate(-90deg)' : 'rotate(0deg)',
@@ -73,7 +76,7 @@ export const RenderItemSideBar = ({ item, hasDivide, level }: IRenderItemSideBar
         router.push(item.path)
       }}
     >
-      {item.label}
+      {thisLabel}
     </div>
   )
 }

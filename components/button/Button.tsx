@@ -101,7 +101,7 @@ export const Button = ({
         width: auto ? '100%' : 'max-content',
         padding: '0 20px',
         cursor: disabled ? 'default' : 'pointer',
-        fontWeight: 500,
+        fontWeight: 600,
         borderRadius: '12px',
         ...getSize(),
         ...getColor(),

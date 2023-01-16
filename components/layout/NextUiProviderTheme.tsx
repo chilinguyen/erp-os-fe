@@ -2,25 +2,21 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useGetDarkMode, useTranslationFunction } from '@/hooks'
 import { GeneralSettingsSelector, setGeneralSettings } from '@/redux/general-settings'
-import {
-  setLanguage,
-  setLoadingLanguage,
-  setLoadingSettings,
-  ShareStoreSelector,
-} from '@/redux/share-store'
+import { setLanguage, setLoading, ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { GeneralSettingsResponseSuccess, LanguageResponseSuccess } from '@/types'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast, ToastContainer } from 'react-toastify'
+import { BackDropLoading } from '../backdrop'
 
 export const NextUiProviderTheme = ({ children }: { children: React.ReactNode }) => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])
 
   const { darkTheme, languageKey } = useSelector(GeneralSettingsSelector)
 
-  const { breakPoint } = useSelector(ShareStoreSelector)
+  const { breakPoint, loading } = useSelector(ShareStoreSelector)
 
   const dispatch = useDispatch()
 
@@ -67,10 +63,11 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
     }
   }, [cookies.token])
 
+  const callLoading = result.loading || getLanguage.loading
+
   useEffect(() => {
-    dispatch(setLoadingSettings(result.loading))
-    dispatch(setLoadingLanguage(getLanguage.loading))
-  }, [result.loading, getLanguage.loading])
+    dispatch(setLoading(callLoading))
+  }, [callLoading])
 
   useEffect(() => {
     getLanguage.setLetCall(true)
@@ -85,6 +82,7 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
         style={{ zIndex: 1000000 }}
       />
       {children}
+      <BackDropLoading isOpen={loading} />
     </>
   )
 }

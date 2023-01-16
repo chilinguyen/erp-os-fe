@@ -57,7 +57,11 @@ export const apiRoute = {
   },
   paths: {
     getPathList: 'paths/get-path-list',
+    getPathDetail: 'paths/get-path-detail',
     addNewPath: 'paths/add-new-path',
     deletePath: 'paths/delete-path',
+  },
+  navbar: {
+    getNavbarDetailName: 'navbar/get-navbar-detail-name',
   },
 }

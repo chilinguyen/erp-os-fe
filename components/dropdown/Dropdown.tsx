@@ -1,4 +1,4 @@
-import { removeClassBody, themeValue } from '@/lib'
+import { addClassBody, removeClassBody, themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { ColorType, OptionsType } from '@/types'
 import { useRef, useState } from 'react'
@@ -33,6 +33,7 @@ export const Dropdown = <T,>({
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const handleOpen = () => {
+    addClassBody('overflow')
     setOpen(true)
   }
 

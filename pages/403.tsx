@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 
-const Page404 = () => {
+const Page403 = () => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const router = useRouter()
@@ -23,9 +23,9 @@ const Page404 = () => {
       }}
     >
       <div style={{ width: '20%', position: 'relative', aspectRatio: '1/1' }}>
-        <Image layout="fill" src="/undraw_void_-3-ggu.svg" />
+        <Image layout="fill" src="/undraw_access_denied_re_awnf.svg" />
       </div>
-      <div style={{ fontSize: 50, color: themeValue[darkTheme].colors.gray900 }}>NOT FOUND</div>
+      <div style={{ fontSize: 50, color: themeValue[darkTheme].colors.gray900 }}>ACCESS DENIED</div>
       <Button
         onClick={() => {
           router.push('/')
@@ -37,4 +37,4 @@ const Page404 = () => {
   )
 }
 
-export default Page404
+export default Page403

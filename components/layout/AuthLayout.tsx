@@ -2,6 +2,7 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { authenticationSelector, resetSignUpRequest, setIsLoggedIn } from '@/redux/authentication'
+import { setLoading } from '@/redux/share-store'
 import { postMethod } from '@/services'
 import { LoginResponseSuccess, TypeAccount } from '@/types'
 import { useRouter } from 'next/router'
@@ -153,6 +154,12 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       loginWithGoogle.setLetCall(true)
     }
   }, [googleToken])
+
+  const { loading } = loginWithGoogle
+
+  useEffect(() => {
+    dispatch(setLoading(loading))
+  }, [loading])
 
   return <>{children}</>
 }
