@@ -64,7 +64,10 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
         isShow={pixel < 960 && isOpenSideBar}
         zIndex={49}
         style={{
-          opacity: pixel < 960 && isOpenSideBar ? '20%' : 0,
+          top: 60,
+          backdropFilter: 'blur(15px)',
+          WebkitBackdropFilter: 'blur(15px)',
+          backgroundColor: 'transparent',
         }}
         onClick={() => {
           setOpenSideBar(false)

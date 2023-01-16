@@ -1,10 +1,17 @@
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import Image from 'next/image'
+import React from 'react'
+import { AiOutlineMenu } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
 import { Search } from '../search'
 
-export const NavbarInternal = () => {
+interface INavbarInternal {
+  setOpenSideBar: React.MouseEventHandler<HTMLDivElement>
+  pixel: number
+}
+
+export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   return (
@@ -21,7 +28,21 @@ export const NavbarInternal = () => {
         padding: '10px',
       }}
     >
-      <div style={{ width: 'fit-content' }}>icon</div>
+      <div
+        style={{
+          width: 'fit-content',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+        }}
+      >
+        {pixel < 960 && (
+          <div onClick={setOpenSideBar} style={{ width: 'fit-content', height: 'fit-content' }}>
+            <AiOutlineMenu size={25} />
+          </div>
+        )}
+        <div>icon</div>
+      </div>
       <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Search />
       </div>

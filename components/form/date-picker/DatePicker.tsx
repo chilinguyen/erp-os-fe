@@ -107,7 +107,7 @@ export const DatePicker = ({
           }
         }}
         ref={divRef}
-        style={{ width: '100%', position: 'relative', zIndex: zIndex ?? 10 }}
+        style={{ width: '100%' }}
       >
         <Input
           value={getDayString(nowDay.getDate(), nowDay.getMonth() + 1, nowDay.getFullYear())}
@@ -115,17 +115,17 @@ export const DatePicker = ({
           readOnly
           {...buttonProps}
         />
-        <DropdownBase
-          onClick={(event) => {
-            event.stopPropagation()
-          }}
-          open={type !== ''}
-          refParent={divRef}
-          zIndex={zIndex}
-        >
-          <div style={{ height: 'fit-content', width: 300 }}>{obj[type]}</div>
-        </DropdownBase>
       </div>
+      <DropdownBase
+        onClick={(event) => {
+          event.stopPropagation()
+        }}
+        open={type !== ''}
+        refParent={divRef}
+        zIndex={zIndex}
+      >
+        <div style={{ height: 'fit-content', width: 300 }}>{obj[type]}</div>
+      </DropdownBase>
     </>
   )
 }

@@ -15,8 +15,8 @@ export const Backdrop = ({ style, zIndex, isShow, ...props }: IBackdrop) => {
         right: 0,
         height: isShow ? '100vh' : 0,
         zIndex: zIndex ?? 10,
-        backgroundColor: 'transparent',
         transition: 'all 0.2s linear',
+        backgroundColor: 'rgba(0,0,0,0.5)',
         ...style,
       }}
       {...props}

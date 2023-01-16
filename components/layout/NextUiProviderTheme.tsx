@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast, ToastContainer } from 'react-toastify'
-import { BackDropLoading } from '../backdrop'
+import { BackdropLoading } from '../backdrop'
 
 export const NextUiProviderTheme = ({ children }: { children: React.ReactNode }) => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])
@@ -82,7 +82,7 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
         style={{ zIndex: 1000000 }}
       />
       {children}
-      <BackDropLoading isOpen={loading} />
+      <BackdropLoading isOpen={loading} />
     </>
   )
 }

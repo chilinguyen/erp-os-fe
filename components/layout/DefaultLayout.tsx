@@ -13,12 +13,16 @@ const DefaultLayout = ({
   const pixel = useResponsive()
   const [isOpenSideBar, setOpenSideBar] = useState(false)
 
+  const toggleSideBar = () => {
+    setOpenSideBar(!isOpenSideBar)
+  }
+
   return (
     <>
       {(!useNavbar || isOpenSideBar) && (
         <SideBar isOpenSideBar={isOpenSideBar} setOpenSideBar={setOpenSideBar} pixel={pixel} />
       )}
-      <NavbarInternal />
+      <NavbarInternal setOpenSideBar={toggleSideBar} pixel={pixel} />
       <div
         style={{
           width: !useNavbar && pixel >= 960 ? 'calc(100% - 300px)' : '100%',
