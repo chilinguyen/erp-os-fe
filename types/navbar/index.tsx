@@ -1,6 +1,9 @@
+import { PathResponse } from '../paths'
+
 export interface NavbarResponseSuccess {
   id: string
   name: string
   userIds: string[]
-  content: string[]
+  mainSidebar: PathResponse[]
+  childrenSidebar: PathResponse[]
 }

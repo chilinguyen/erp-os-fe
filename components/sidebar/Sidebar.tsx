@@ -5,12 +5,11 @@ import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { setLoading } from '@/redux/share-store'
 import { getMethod } from '@/services'
-import { NavbarResponseSuccess, PathListResponse, PathResponse } from '@/types'
+import { NavbarResponseSuccess, PathResponse } from '@/types'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { NavBarItems } from './NavBarConstant'
 import { RenderItemSideBar } from './RenderItemSideBar'
 import { SideIconItem } from './SideIconItem'
 
@@ -23,8 +22,10 @@ interface ISideBar {
 export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  const [pathIds, setPathIds] = useState<string[]>([])
-  const [pathContent, setPathContent] = useState<PathResponse[]>([])
+  const [pathContent, setPathContent] = useState<{
+    mainSidebar: PathResponse[]
+    childrenSidebar: PathResponse[]
+  }>({ mainSidebar: [], childrenSidebar: [] })
 
   const dispatch = useDispatch()
 
@@ -36,37 +37,21 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
         name: 'side-bar-icon',
       }),
     handleSuccess(message, data) {
-      setPathIds(data.content)
+      setPathContent({
+        mainSidebar: data.mainSidebar,
+        childrenSidebar: data.childrenSidebar,
+      })
     },
     handleError(status, message) {
       if (status) toast.error(translate(message))
     },
   })
 
-  const getPathsList = useApiCall<PathListResponse, string>({
-    callApi: () =>
-      getMethod(apiRoute.paths.getPathList, cookies.token, {
-        _id: String(pathIds),
-      }),
-    handleSuccess(message, data) {
-      setPathContent(data.data)
-    },
-    handleError(status, message) {
-      if (status) toast.error(translate(message))
-    },
-  })
-
-  const loading = getPathsList.loading || getDetailSidebar.loading
+  const { loading } = getDetailSidebar
 
   useEffect(() => {
     getDetailSidebar.setLetCall(true)
   }, [])
-
-  useEffect(() => {
-    if (pathIds.length > 0) {
-      getPathsList.setLetCall(true)
-    }
-  }, [pathIds])
 
   useEffect(() => {
     dispatch(setLoading(loading))
@@ -110,11 +95,12 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
             display: 'flex',
             flexDirection: 'column',
             width: pixel >= 960 || isOpenSideBar ? '60px' : 0,
-            backgroundColor: themeValue[darkTheme].colors.gray200,
+            backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
             alignItems: 'center',
+            borderRight: `1px solid ${themeValue[darkTheme].colors.border}`,
           }}
         >
-          {pathContent.map((item) => (
+          {pathContent.mainSidebar.map((item) => (
             <SideIconItem link={item.path} image={item.icon} />
           ))}
         </div>
@@ -125,11 +111,11 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
             width: 'calc(100% - 60px)',
           }}
         >
-          {NavBarItems().map((item, index) => (
+          {pathContent.childrenSidebar.map((item, index) => (
             <RenderItemSideBar
               key={item.path}
               item={item}
-              hasDivide={index + 1 < NavBarItems().length}
+              hasDivide={index + 1 < pathContent.childrenSidebar.length}
               level={1}
             />
           ))}

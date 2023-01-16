@@ -7,7 +7,7 @@ interface BackDropLoadingProp {
 
 export const BackDropLoading = ({ isOpen }: BackDropLoadingProp) => {
   return (
-    <Modal open={isOpen} preventClose>
+    <Modal open={isOpen} preventClose zIndex={100000}>
       <Loading size={100} />
     </Modal>
   )

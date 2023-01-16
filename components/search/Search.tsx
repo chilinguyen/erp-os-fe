@@ -16,15 +16,17 @@ export const Search = ({ placeholder = 'search cl', children }: SearchProps) => 
       htmlFor="search-content"
       style={{
         width: '30%',
-        backgroundColor: 'white',
+        backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
         height: '90%',
         borderRadius: '30px',
         display: 'flex',
         padding: '0px 15px',
         alignItems: 'center',
+        border: `1px solid ${themeValue[darkTheme].colors.foreground}`,
+        boxShadow: themeValue[darkTheme].shadows.md,
       }}
     >
-      <BiSearch size={20} color={themeValue[darkTheme].colors.gray700} />
+      <BiSearch size={20} color={themeValue[darkTheme].colors.foreground} />
       <div style={{ flexGrow: 1 }}>
         <input
           id="search-content"
@@ -32,9 +34,10 @@ export const Search = ({ placeholder = 'search cl', children }: SearchProps) => 
             paddingLeft: 5,
             fontWeight: 400,
             width: '100%',
-            color: themeValue[darkTheme].colors.gray700,
+            color: themeValue[darkTheme].colors.foreground,
             fontSize: 20,
             lineHeight: 0,
+            backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
           }}
           placeholder={placeholder}
         />
