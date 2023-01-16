@@ -6,6 +6,7 @@ import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { setLoading } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { NavbarResponseSuccess, PathResponse } from '@/types'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,10 +24,14 @@ interface ISideBar {
 export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  const [pathContent, setPathContent] = useState<{
-    mainSidebar: PathResponse[]
-    childrenSidebar: PathResponse[]
-  }>({ mainSidebar: [], childrenSidebar: [] })
+  const [pathContent, setPathContent] = useState<
+    {
+      mainItem: PathResponse
+      childrenItem: PathResponse[]
+    }[]
+  >([])
+
+  const router = useRouter()
 
   const dispatch = useDispatch()
 
@@ -38,10 +43,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
         name: 'side-bar-icon',
       }),
     handleSuccess(message, data) {
-      setPathContent({
-        mainSidebar: data.mainSidebar,
-        childrenSidebar: data.childrenSidebar,
-      })
+      setPathContent(data.content)
     },
     handleError(status, message) {
       if (status) toast.error(translate(message))
@@ -57,6 +59,11 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   useEffect(() => {
     dispatch(setLoading(loading))
   }, [loading])
+
+  const childrenList =
+    pathContent.find((item) => router.asPath.includes(item.mainItem.path))?.childrenItem || []
+
+  const lengthSidebar = childrenList.length > 0 ? 300 : 60
 
   return (
     <>
@@ -76,7 +83,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
       <div
         style={{
           display: 'flex',
-          width: pixel >= 960 || isOpenSideBar ? 300 : 0,
+          width: pixel >= 960 || isOpenSideBar ? lengthSidebar : 0,
           position: 'fixed',
           top: 60,
           left: 0,
@@ -97,8 +104,8 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
             borderRight: `1px solid ${themeValue[darkTheme].colors.border}`,
           }}
         >
-          {pathContent.mainSidebar.map((item) => (
-            <SideIconItem link={item.path} image={item.icon} />
+          {pathContent.map((item) => (
+            <SideIconItem link={item.mainItem.path} image={item.mainItem.icon} />
           ))}
         </div>
         <div
@@ -108,14 +115,15 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
             width: 'calc(100% - 60px)',
           }}
         >
-          {pathContent.childrenSidebar.map((item, index) => (
-            <RenderItemSideBar
-              key={item.path}
-              item={item}
-              hasDivide={index + 1 < pathContent.childrenSidebar.length}
-              level={1}
-            />
-          ))}
+          {childrenList.length > 0 &&
+            childrenList.map((item, index) => (
+              <RenderItemSideBar
+                key={item.path}
+                item={item}
+                hasDivide={index + 1 < childrenList.length}
+                level={1}
+              />
+            ))}
         </div>
       </div>
     </>

@@ -4,6 +4,8 @@ export interface NavbarResponseSuccess {
   id: string
   name: string
   userIds: string[]
-  mainSidebar: PathResponse[]
-  childrenSidebar: PathResponse[]
+  content: {
+    mainItem: PathResponse
+    childrenItem: PathResponse[]
+  }[]
 }
