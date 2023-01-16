@@ -1,5 +1,6 @@
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { setIsLoggedIn } from '@/redux/authentication'
+import { setLoading as setLoadingRedux } from '@/redux/share-store'
 import { CommonResponseType } from '@/types'
 import { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
@@ -39,6 +40,7 @@ export const useApiCall = <T, E>({
         }
       } else {
         const { statusCode } = response.data
+        dispatch(setLoadingRedux(false))
         if (statusCode === 400) {
           setData(undefined)
           setError(response.data)
@@ -57,6 +59,7 @@ export const useApiCall = <T, E>({
         }
       }
     } finally {
+      dispatch(setLoadingRedux(false))
       setLoading(false)
       setLetCall(false)
     }
