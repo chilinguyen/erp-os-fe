@@ -10,7 +10,7 @@ interface IModal {
   preventClose?: boolean
   zIndex?: number
   ModalStyle?: CSSProperties
-  width?: number | string
+  width?: number
   notBlur?: boolean
   justifyContent?: 'start' | 'end' | 'center'
   alignItems?: 'start' | 'end' | 'center'
