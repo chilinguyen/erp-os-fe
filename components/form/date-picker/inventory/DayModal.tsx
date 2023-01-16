@@ -126,7 +126,6 @@ export const DayModal = ({
         {listDay.map((item) => (
           <div
             style={{
-              width: '100%',
               height: 40,
               cursor: 'pointer',
               display: 'flex',
@@ -134,6 +133,7 @@ export const DayModal = ({
               alignItems: 'center',
               backgroundColor: getColor(item),
               borderRadius: '12px',
+              aspectRatio: '1',
             }}
             onMouseMove={() => setHoverItem(item)}
             onMouseOut={() => setHoverItem(-1)}

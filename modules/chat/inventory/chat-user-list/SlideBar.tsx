@@ -47,7 +47,7 @@ export const SlideBar = ({ userList }: ISlideBar) => {
             justifyContent: 'center',
             alignItems: 'center',
             fontSize: '30px',
-            zIndex: 101,
+            zIndex: 5,
             cursor: index > 0 ? 'pointer' : 'default',
             opacity: index > 0 ? 1 : 0.5,
           }}
@@ -102,7 +102,7 @@ export const SlideBar = ({ userList }: ISlideBar) => {
             justifyContent: 'center',
             alignItems: 'center',
             fontSize: '30px',
-            zIndex: 101,
+            zIndex: 5,
             cursor: index < userList.length - 2 ? 'pointer' : 'default',
             opacity: index < userList.length - 2 ? 1 : 0.5,
           }}

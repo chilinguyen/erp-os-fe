@@ -1,3 +1,4 @@
+import { DropdownBase } from '@/components/dropdown/DropdownBase'
 import { addClassBody, removeClassBody, themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { OptionsType } from '@/types'
@@ -30,8 +31,6 @@ export const SelectCustom = <T,>({
 
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
-  const refChild = useRef<HTMLDivElement>(null)
-
   const handleOpen = () => {
     setOpen(true)
     addClassBody('overflow')
@@ -52,22 +51,6 @@ export const SelectCustom = <T,>({
     return ''
   }
 
-  const getPositionY = () => {
-    if (typeof window !== 'undefined' && divRef.current && refChild.current) {
-      const positionParent = divRef.current.getBoundingClientRect().top
-      const windowHeight = window.innerHeight
-      const heightParent = divRef.current.getBoundingClientRect().height
-      const heightChild = refChild.current.getBoundingClientRect().height
-
-      if (positionParent + heightParent + heightChild < windowHeight) {
-        return positionParent + heightParent
-      }
-
-      return positionParent - heightChild
-    }
-    return 0
-  }
-
   return (
     <div ref={divRef} style={{ width: '100%' }}>
       <Input
@@ -78,21 +61,7 @@ export const SelectCustom = <T,>({
         onBlur={handleClose}
         {...buttonProps}
       />
-      <div
-        style={{
-          position: 'fixed',
-          top: getPositionY(),
-          left: divRef.current?.getBoundingClientRect()?.left ?? 0,
-          width: !disabled && open ? '100%' : 0,
-          backgroundColor: themeValue[darkTheme].colors.gray200,
-          boxShadow: themeValue[darkTheme].shadows.lg,
-          zIndex: zIndex ?? 50,
-          borderRadius: 10,
-          overflow: 'hidden',
-          maxHeight: '30vh',
-        }}
-        ref={refChild}
-      >
+      <DropdownBase open={!disabled && open} refParent={divRef} zIndex={zIndex} typeWidth="full">
         {options.map((item) => (
           <div
             style={{
@@ -116,7 +85,7 @@ export const SelectCustom = <T,>({
             {item.label}
           </div>
         ))}
-      </div>
+      </DropdownBase>
     </div>
   )
 }

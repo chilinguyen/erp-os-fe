@@ -28,7 +28,7 @@ export const OneUser = ({ user, isOnline }: IOneUser) => {
               height: 15,
               bottom: 5,
               right: 5,
-              zIndex: 100,
+              zIndex: 5,
               border: '2px solid white',
             }}
           />

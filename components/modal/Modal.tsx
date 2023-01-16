@@ -12,6 +12,8 @@ interface IModal {
   ModalStyle?: CSSProperties
   width?: number
   notBlur?: boolean
+  justifyContent?: 'start' | 'end' | 'center'
+  alignItems?: 'start' | 'end' | 'center'
 }
 
 export const Modal = ({
@@ -23,6 +25,8 @@ export const Modal = ({
   ModalStyle,
   width,
   notBlur,
+  justifyContent = 'center',
+  alignItems = 'center',
 }: IModal) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
@@ -43,8 +47,8 @@ export const Modal = ({
         width: !open ? 0 : undefined,
         overflow: 'auto',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent,
+        alignItems,
       }}
     >
       <div

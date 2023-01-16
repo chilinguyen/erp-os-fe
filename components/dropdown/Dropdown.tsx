@@ -4,7 +4,9 @@ import { ColorType, OptionsType } from '@/types'
 import { useRef, useState } from 'react'
 import { MdArrowDropDown } from 'react-icons/md'
 import { useSelector } from 'react-redux'
+import { Backdrop } from '../backdrop'
 import { Button } from '../button'
+import { DropdownBase } from './DropdownBase'
 
 interface IDropdown<T> {
   disabled?: boolean
@@ -27,7 +29,6 @@ export const Dropdown = <T,>({
 }: IDropdown<T>) => {
   const [open, setOpen] = useState(false)
   const divRef = useRef<HTMLDivElement>(null)
-  const refChild = useRef<HTMLDivElement>(null)
   const [hoverItem, setHoverItem] = useState<T>()
 
   const { darkTheme } = useSelector(GeneralSettingsSelector)
@@ -49,35 +50,9 @@ export const Dropdown = <T,>({
     return ''
   }
 
-  const getPositionY = () => {
-    if (typeof window !== 'undefined' && divRef.current && refChild.current) {
-      const positionParent = divRef.current.getBoundingClientRect().top
-      const windowHeight = window.innerHeight
-      const heightParent = divRef.current.getBoundingClientRect().height
-      const heightChild = refChild.current.getBoundingClientRect().height
-
-      if (positionParent + heightParent + heightChild < windowHeight) {
-        return positionParent + heightParent
-      }
-
-      return positionParent - heightChild
-    }
-    return 0
-  }
-
   return (
     <div ref={divRef}>
-      <div
-        onClick={handleClose}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: !disabled && open ? '100vw' : 0,
-          zIndex: zIndex ?? 49,
-        }}
-      />
+      <Backdrop onClick={handleClose} isShow={!disabled && open} zIndex={(zIndex ?? 10) - 1} />
       <Button
         color={color}
         styleType={styleType}
@@ -93,22 +68,7 @@ export const Dropdown = <T,>({
         {button}
         <MdArrowDropDown />
       </Button>
-      <div
-        style={{
-          position: 'fixed',
-          top: getPositionY(),
-          left: divRef.current?.getBoundingClientRect()?.left ?? 0,
-          width: !disabled && open ? 'max-content' : 0,
-          backgroundColor: themeValue[darkTheme].colors.gray200,
-          boxShadow: themeValue[darkTheme].shadows.lg,
-          zIndex: zIndex ?? 50,
-          borderRadius: 10,
-          overflow: 'hidden',
-          maxHeight: '30vh',
-          minWidth: 200,
-        }}
-        ref={refChild}
-      >
+      <DropdownBase zIndex={zIndex} refParent={divRef} open={!disabled && open}>
         {options.map((item) => (
           <div
             style={{
@@ -132,7 +92,7 @@ export const Dropdown = <T,>({
             {item.label}
           </div>
         ))}
-      </div>
+      </DropdownBase>
     </div>
   )
 }
