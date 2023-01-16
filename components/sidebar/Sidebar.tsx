@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import { Backdrop } from '../backdrop'
 import { RenderItemSideBar } from './RenderItemSideBar'
 import { SideIconItem } from './SideIconItem'
 
@@ -59,21 +60,14 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
 
   return (
     <>
-      <div
+      <Backdrop
+        isShow={pixel < 960 && isOpenSideBar}
+        zIndex={49}
+        style={{
+          opacity: pixel < 960 && isOpenSideBar ? '20%' : 0,
+        }}
         onClick={() => {
           setOpenSideBar(false)
-        }}
-        style={{
-          position: pixel < 960 && isOpenSideBar ? 'fixed' : 'static',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'black',
-          opacity: pixel < 960 && isOpenSideBar ? '20%' : 0,
-          inset: 0,
-          zIndex: pixel >= 960 ? 1 : 9999,
-          transition: 'opacity 0.2s linear',
         }}
       />
       <div
@@ -84,7 +78,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           top: 60,
           left: 0,
           bottom: 0,
-          zIndex: pixel >= 960 ? 2 : 10000,
+          zIndex: pixel >= 960 ? 2 : 50,
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           fontWeight: 500,
           transition: 'all 0.2s linear',
