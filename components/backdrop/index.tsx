@@ -1,2 +1,2 @@
 export * from './Backdrop'
-export * from './BackdropLoading'
+export * from './BackDropOfLoading'
