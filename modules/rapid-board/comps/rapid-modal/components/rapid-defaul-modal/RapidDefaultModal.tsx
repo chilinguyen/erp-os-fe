@@ -3,7 +3,7 @@ import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { CSSProperties, ReactNode } from 'react'
 import { useSelector } from 'react-redux'
 
-interface IModal {
+interface IRapidDefaultModal {
   children: ReactNode
   open: boolean
   setOpen?: (v: boolean) => void
@@ -12,11 +12,9 @@ interface IModal {
   ModalStyle?: CSSProperties
   width?: number | string
   notBlur?: boolean
-  justifyContent?: 'start' | 'end' | 'center'
-  alignItems?: 'start' | 'end' | 'center'
 }
 
-export const Modal = ({
+export const RapidDefaultModal = ({
   children,
   open,
   setOpen,
@@ -25,9 +23,7 @@ export const Modal = ({
   ModalStyle,
   width,
   notBlur,
-  justifyContent = 'center',
-  alignItems = 'center',
-}: IModal) => {
+}: IRapidDefaultModal) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const handleClose = () => {
@@ -47,8 +43,8 @@ export const Modal = ({
         width: !open ? 0 : undefined,
         overflow: 'auto',
         display: 'flex',
-        justifyContent,
-        alignItems,
+        justifyContent: 'end',
+        alignItems: 'center',
       }}
     >
       <div
@@ -69,16 +65,13 @@ export const Modal = ({
       <div
         style={{
           zIndex: zIndex ?? 10,
-          width: '90%',
+          width: '80%',
           maxWidth: width ?? 400,
           backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
           boxShadow: themeValue[darkTheme].shadows.lg,
           borderRadius: '12px',
-          padding: '20px',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
           ...ModalStyle,
         }}
         onClick={(e) => {

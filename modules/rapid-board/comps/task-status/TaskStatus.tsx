@@ -1,3 +1,6 @@
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
+import { useSelector } from 'react-redux'
 import { TaskCard } from '../task-card/TaskCard'
 
 interface ITaskStatus {
@@ -12,6 +15,7 @@ interface ITaskStatus {
     step: number
   }[]
   setListTaskState: Function
+  opentModalDetail: Function
 }
 
 export const TaskStatus = ({
@@ -20,16 +24,22 @@ export const TaskStatus = ({
   isDragOver,
   listTaskState,
   setListTaskState,
+  opentModalDetail,
 }: ITaskStatus) => {
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
+
   return (
     <div
       style={{
-        border: '1px solid #cccccc',
+        border: `1px solid ${themeValue[darkTheme].colors.border}`,
         borderRadius: 5,
         padding: 10,
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: isDragOver === progress.step ? 'red' : 'rgb(246, 248, 250)',
+        backgroundColor:
+          isDragOver === progress.step
+            ? themeValue[darkTheme].colors.background
+            : themeValue[darkTheme].colors.background,
       }}
       onDragOver={(event) => {
         event.preventDefault()
@@ -61,7 +71,14 @@ export const TaskStatus = ({
       >
         {listTaskState.map((task) => {
           if (task.step === progress.step) {
-            return <TaskCard key={task.name} task={task} setDragOver={setDragOver} />
+            return (
+              <TaskCard
+                key={task.name}
+                task={task}
+                setDragOver={setDragOver}
+                onClickTask={opentModalDetail}
+              />
+            )
           }
           return null
         })}

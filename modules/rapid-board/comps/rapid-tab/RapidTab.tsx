@@ -25,6 +25,7 @@ export default function RapidTab(props: RapidTabProps) {
   } = props
   const [tab, setTab] = useState(tabData[0])
   const [openModal, setOpenModal] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0)
   if (!onHandleChangeTab) return null
   const handleSetTab = (item: string) => {
     onHandleChangeTab(item)
@@ -39,19 +40,37 @@ export default function RapidTab(props: RapidTabProps) {
   const handleToggleView = (view: string) => {
     if (onHandleToggleView) {
       onHandleToggleView(view)
+      handleBlurModal()
     }
+  }
+  const handleChangeCurrentTab = (tab: string, index: number) => {
+    handleSetTab(tab)
+    setCurrentIndex(index)
   }
   return (
     <div>
       <div style={{ ...tabContainerStyle }}>
+        <div
+          onClick={handleBlurModal}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: openModal ? '100vw' : 0,
+            zIndex: 9,
+          }}
+        />
+
         {tabData.map((item: string, index: number) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <div
                 key={index}
                 style={{
-                  ...tabStyle,
-                  border: `${tab === item ? '1px solid rgb(48,54,61)' : 'none'}`,
+                  borderTop: `${tab === item ? '1px solid rgb(48,54,61)' : 'none'}`,
+                  borderLeft: `${tab === item ? '1px solid rgb(48,54,61)' : 'none'}`,
+                  borderRight: `${tab === item ? '1px solid rgb(48,54,61)' : 'none'}`,
                   borderTopRightRadius: `${tab === item ? '6px' : 'none'}`,
                   borderTopLeftRadius: `${tab === item ? '6px' : 'none'}`,
                   backgroundColor: `${tab === item ? 'rgb(13, 17, 23)' : 'black'}`,
@@ -61,8 +80,10 @@ export default function RapidTab(props: RapidTabProps) {
                   justifyContent: 'center',
                   gap: 5,
                   position: 'relative',
+                  marginBottom: -1,
+                  ...tabStyle,
                 }}
-                onClick={() => handleSetTab(item)}
+                onClick={() => handleChangeCurrentTab(item, index)}
               >
                 <div>{item}</div>
                 {tab === item && (
@@ -127,7 +148,9 @@ export default function RapidTab(props: RapidTabProps) {
                   </div>
                 )}
               </div>
-              {tab !== item && <hr style={{ border: '1px solid rgb(48,54,61)', height: 20 }} />}
+              {tab !== item && index !== currentIndex - 1 && (
+                <hr style={{ border: '1px solid rgb(48,54,61)', height: 20 }} />
+              )}
             </div>
           )
         })}

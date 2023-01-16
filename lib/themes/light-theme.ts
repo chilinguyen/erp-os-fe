@@ -7,6 +7,7 @@ export const LightThemeValue = {
     backgroundAlpha: 'rgba(255, 255, 255, 0.8)',
     foreground: 'black',
     backgroundContrast: 'white',
+    rapidBackgroundItem: 'rgb(13, 17, 23)',
 
     // semantic colors
     ...blue,

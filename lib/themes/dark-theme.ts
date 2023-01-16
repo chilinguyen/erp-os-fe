@@ -20,7 +20,7 @@ export const DarkThemeValue = {
     backgroundAlpha: 'rgba(0, 0, 0, 0.6)',
     foreground: 'white',
     backgroundContrast: grayDark.gray50,
-
+    rapidBackgroundItem: 'rgb(13, 17, 23)',
     // semantic colors
     ...blueDark,
     ...purpleDark,
