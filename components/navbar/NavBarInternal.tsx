@@ -1,6 +1,7 @@
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
@@ -13,6 +14,8 @@ interface INavbarInternal {
 
 export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
+
+  const router = useRouter()
 
   return (
     <div
@@ -41,7 +44,14 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
             <AiOutlineMenu size={25} />
           </div>
         )}
-        <div>icon</div>
+        <div
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            router.push('/')
+          }}
+        >
+          icon
+        </div>
       </div>
       <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Search />

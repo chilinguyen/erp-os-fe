@@ -94,14 +94,27 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           fontWeight: 500,
           transition: 'all 0.2s linear',
+          overflow: 'hidden',
+          backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
         }}
       >
+        {pixel < 960 && !isOpenSideBar ? (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundColor: 'transparent',
+              backdropFilter: 'blur(15px)',
+              WebkitBackdropFilter: 'blur(15px)',
+              zIndex: 1,
+            }}
+          />
+        ) : null}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             width: pixel >= 960 || isOpenSideBar ? lengthSidebar : 0,
-            backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
             alignItems: 'center',
           }}
         >
@@ -118,7 +131,6 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           <div
             style={{
               overflow: 'auto',
-              backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
               width: 'calc(100% - 60px)',
               borderLeft: `1px solid ${themeValue[darkTheme].colors.border}`,
             }}
