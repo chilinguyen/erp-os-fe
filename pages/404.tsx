@@ -28,7 +28,7 @@ const Page404 = () => {
       <div style={{ fontSize: 50, color: themeValue[darkTheme].colors.gray900 }}>NOT FOUND</div>
       <Button
         onClick={() => {
-          router.push('/')
+          router.push('/dashboard')
         }}
       >
         Back to dashboard

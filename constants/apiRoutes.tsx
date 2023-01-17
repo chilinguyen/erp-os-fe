@@ -60,6 +60,7 @@ export const apiRoute = {
     getPathDetail: 'paths/get-path-detail',
     addNewPath: 'paths/add-new-path',
     deletePath: 'paths/delete-path',
+    getAccessPath: 'paths/get-path-access',
   },
   navbar: {
     getNavbarDetailName: 'navbar/get-navbar-detail-name',

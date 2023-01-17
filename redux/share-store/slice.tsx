@@ -2,7 +2,7 @@ import { ShareStoreTypes } from '@/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initialState: ShareStoreTypes = {
-  loading: false,
+  loading: 0,
   breakPoint: 1,
   language: {},
 }
@@ -12,7 +12,13 @@ const ShareStoreSlice = createSlice({
   initialState,
   reducers: {
     setLoading: (state, actions: PayloadAction<boolean>) => {
-      state.loading = actions.payload
+      if (actions.payload) {
+        return { ...state, loading: state.loading + 1 }
+      }
+      if (state.loading > 0) {
+        return { ...state, loading: state.loading - 1 }
+      }
+      return state
     },
     setLanguage: (state, actions: PayloadAction<{ [key: string]: string }>) => {
       state.language = actions.payload
@@ -20,10 +26,14 @@ const ShareStoreSlice = createSlice({
     setBreakPoint: (state, actions: PayloadAction<number>) => {
       state.breakPoint = actions.payload
     },
+    resetLoading: (state) => {
+      return { ...state, loading: 0 }
+    },
     resetShareStore: () => initialState,
   },
 })
 
-export const { resetShareStore, setLoading, setLanguage, setBreakPoint } = ShareStoreSlice.actions
+export const { resetShareStore, setLoading, setLanguage, setBreakPoint, resetLoading } =
+  ShareStoreSlice.actions
 
 export default ShareStoreSlice

@@ -3,13 +3,12 @@ import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
-import { setLoading } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { NavbarResponseSuccess, PathResponse } from '@/types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { Backdrop } from '../backdrop'
 import { RenderItemSideBar } from './RenderItemSideBar'
@@ -33,8 +32,6 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
 
   const router = useRouter()
 
-  const dispatch = useDispatch()
-
   const translate = useTranslationFunction()
 
   const getDetailSidebar = useApiCall<NavbarResponseSuccess, string>({
@@ -50,21 +47,15 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
     },
   })
 
-  const { loading } = getDetailSidebar
-
   useEffect(() => {
     if (pathContent.length === 0) {
       getDetailSidebar.setLetCall(true)
     }
   }, [])
 
-  useEffect(() => {
-    dispatch(setLoading(loading))
-  }, [loading])
-
   const childrenList =
     pathContent.find((item) =>
-      item.childrenItem.find((childItem) => childItem.path === router.asPath)
+      item.childrenItem.find((childItem) => childItem.path.includes(router.pathname.split('/')[1]))
     )?.childrenItem || []
 
   const lengthSidebar = childrenList.length === 0 ? 300 : 60

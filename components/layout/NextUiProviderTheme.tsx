@@ -2,7 +2,7 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useGetDarkMode, useTranslationFunction } from '@/hooks'
 import { GeneralSettingsSelector, setGeneralSettings } from '@/redux/general-settings'
-import { setLanguage, setLoading, ShareStoreSelector } from '@/redux/share-store'
+import { setLanguage, ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { GeneralSettingsResponseSuccess, LanguageResponseSuccess } from '@/types'
 import { useEffect } from 'react'
@@ -63,12 +63,6 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
     }
   }, [cookies.token])
 
-  const callLoading = result.loading || getLanguage.loading
-
-  useEffect(() => {
-    dispatch(setLoading(callLoading))
-  }, [callLoading])
-
   useEffect(() => {
     getLanguage.setLetCall(true)
   }, [languageKey])
@@ -82,7 +76,7 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
         style={{ zIndex: 1000000 }}
       />
       {children}
-      <BackdropLoading isOpen={loading} />
+      <BackdropLoading isOpen={!!loading} />
     </>
   )
 }
