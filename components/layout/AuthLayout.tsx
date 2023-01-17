@@ -2,7 +2,6 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { authenticationSelector, setIsLoggedIn } from '@/redux/authentication'
-import { setLoading } from '@/redux/share-store'
 import { getMethod, postMethod } from '@/services'
 import { LoginResponseSuccess, TypeAccount } from '@/types'
 import { useRouter } from 'next/router'
@@ -122,11 +121,13 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     if (router && !isFirstRender) {
       if (isLoggedIn && !!ignoreAccessPath.find((localPath) => router.asPath.includes(localPath))) {
         router.push('/dashboard')
-        getAccessPath.setLetCall(true)
         return
       }
       if (!isLoggedIn && !ignoreAccessPath.find((localPath) => router.asPath.includes(localPath))) {
         router.push('/login')
+      }
+      if (isLoggedIn) {
+        getAccessPath.setLetCall(true)
       }
     }
   }, [isLoggedIn, isFirstRender, router])
@@ -143,7 +144,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     /* global google */
     /* @ts-ignore */
-    if (google && !isLoggedIn && !isFirstRender) {
+    if (typeof google !== undefined && !isLoggedIn && !isFirstRender) {
       /* @ts-ignore */
       google.accounts.id.initialize({
         client_id: process.env.NEXT_PUBLIC_AUTH_GOOGLE_KEY,
@@ -169,12 +170,6 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       loginWithGoogle.setLetCall(true)
     }
   }, [googleToken])
-
-  const loading = loginWithGoogle.loading || getAccessPath.loading
-
-  useEffect(() => {
-    dispatch(setLoading(loading))
-  }, [loading])
 
   return <>{resultAuthentication()}</>
 }

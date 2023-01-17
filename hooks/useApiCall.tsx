@@ -3,7 +3,6 @@ import { setIsLoggedIn } from '@/redux/authentication'
 import { setLoading as setLoadingRedux } from '@/redux/share-store'
 import { CommonResponseType } from '@/types'
 import { AxiosResponse } from 'axios'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch } from 'react-redux'
@@ -12,10 +11,12 @@ export const useApiCall = <T, E>({
   callApi,
   handleError,
   handleSuccess,
+  preventLoadingGlobal,
 }: {
   callApi: () => Promise<AxiosResponse<any, any>>
   handleError?: (status: number, message: string) => void
   handleSuccess?: (message: string, data: T) => void
+  preventLoadingGlobal?: boolean
 }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<CommonResponseType<T>>()
@@ -25,8 +26,6 @@ export const useApiCall = <T, E>({
   const dispatch = useDispatch()
 
   const [, , removeCookie] = useCookies([TOKEN_AUTHENTICATION])
-
-  const router = useRouter()
 
   const getData = async () => {
     try {
@@ -40,7 +39,6 @@ export const useApiCall = <T, E>({
         }
       } else {
         const { statusCode } = response.data
-        dispatch(setLoadingRedux(false))
         if (statusCode === 400) {
           setData(undefined)
           setError(response.data)
@@ -51,17 +49,17 @@ export const useApiCall = <T, E>({
         if (statusCode === 401) {
           removeCookie(TOKEN_AUTHENTICATION)
           dispatch(setIsLoggedIn(false))
-
-          router.push('/login')
         }
-        if (statusCode === 403) {
-          router.push('/403')
-        }
+        // if (statusCode === 403) {
+        //   router.push('/403')
+        // }
       }
     } finally {
-      // dispatch(setLoadingRedux(false))
       setLoading(false)
       setLetCall(false)
+      if (!preventLoadingGlobal) {
+        dispatch(setLoadingRedux(false))
+      }
     }
   }
 
@@ -69,6 +67,7 @@ export const useApiCall = <T, E>({
     if (letCall) {
       setLoading(true)
       getData()
+      if (!preventLoadingGlobal) dispatch(setLoadingRedux(true))
     }
   }, [letCall])
 
