@@ -53,7 +53,9 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   const { loading } = getDetailSidebar
 
   useEffect(() => {
-    getDetailSidebar.setLetCall(true)
+    if (pathContent.length === 0) {
+      getDetailSidebar.setLetCall(true)
+    }
   }, [])
 
   useEffect(() => {
@@ -63,7 +65,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   const childrenList =
     pathContent.find((item) => router.asPath.includes(item.mainItem.path))?.childrenItem || []
 
-  const lengthSidebar = childrenList.length > 0 ? 300 : 60
+  const lengthSidebar = childrenList.length === 0 ? 300 : 60
 
   return (
     <>
@@ -83,7 +85,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
       <div
         style={{
           display: 'flex',
-          width: pixel >= 960 || isOpenSideBar ? lengthSidebar : 0,
+          width: pixel >= 960 || isOpenSideBar ? 300 : 0,
           position: 'fixed',
           top: 60,
           left: 0,
@@ -98,25 +100,30 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            width: pixel >= 960 || isOpenSideBar ? '60px' : 0,
+            width: pixel >= 960 || isOpenSideBar ? lengthSidebar : 0,
             backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
             alignItems: 'center',
-            borderRight: `1px solid ${themeValue[darkTheme].colors.border}`,
           }}
         >
           {pathContent.map((item) => (
-            <SideIconItem link={item.mainItem.path} image={item.mainItem.icon} />
+            <SideIconItem
+              link={item.mainItem.path}
+              image={item.mainItem.icon}
+              label={item.mainItem.label}
+              isLabel={childrenList.length === 0}
+            />
           ))}
         </div>
-        <div
-          style={{
-            overflow: 'auto',
-            backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
-            width: 'calc(100% - 60px)',
-          }}
-        >
-          {childrenList.length > 0 &&
-            childrenList.map((item, index) => (
+        {childrenList.length > 0 && (
+          <div
+            style={{
+              overflow: 'auto',
+              backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
+              width: 'calc(100% - 60px)',
+              borderLeft: `1px solid ${themeValue[darkTheme].colors.border}`,
+            }}
+          >
+            {childrenList.map((item, index) => (
               <RenderItemSideBar
                 key={item.path}
                 item={item}
@@ -124,7 +131,8 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
                 level={1}
               />
             ))}
-        </div>
+          </div>
+        )}
       </div>
     </>
   )

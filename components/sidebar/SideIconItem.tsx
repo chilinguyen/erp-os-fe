@@ -1,31 +1,71 @@
+import { useTranslationFunction } from '@/hooks'
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 interface SidebarIconProps {
   link: string
   image: string
+  label: string
+  isLabel: boolean
 }
 
 export const SideIconItem = (props: SidebarIconProps) => {
-  const { link, image } = props
+  const [hover, setHover] = useState(false)
+
+  const { link, image, label, isLabel } = props
+
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
+
+  const translate = useTranslationFunction()
 
   const router = useRouter()
   return (
     <div
       style={{
-        width: '70%',
-        aspectRatio: '1',
+        width: isLabel ? '100%' : '60px',
+        height: '60px',
+        aspectRatio: '1/1',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: isLabel ? 'left' : 'center',
+        gap: isLabel ? 20 : 0,
+        padding: isLabel ? '0px 20px' : '',
         cursor: 'pointer',
         position: 'relative',
+        borderBottom: isLabel ? `1px solid ${themeValue[darkTheme].colors.border}` : '',
+        boxShadow: hover ? themeValue[darkTheme].shadows.md : undefined,
+        border: hover
+          ? `1px solid ${themeValue[darkTheme].colors.border}`
+          : `1px solid ${themeValue[darkTheme].colors.backgroundContrast}`,
+      }}
+      onMouseEnter={() => {
+        setHover(true)
+      }}
+      onMouseLeave={() => {
+        setHover(false)
       }}
       onClick={() => {
         router.push(link)
       }}
     >
-      <Image layout="fill" src={image} />
+      <div
+        style={{
+          height: '70%',
+          aspectRatio: '1/1',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          position: 'relative',
+        }}
+      >
+        <Image layout="fill" src={image} />
+      </div>
+      {isLabel && <div>{translate(label)}</div>}
     </div>
   )
 }
