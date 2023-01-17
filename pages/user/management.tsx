@@ -1,12 +1,13 @@
 import { DefaultLayout } from '@/components'
 import { UserManagement } from '@/modules'
+import { ReactElement } from 'react'
+import { NextPageWithLayout } from '../_app'
 
-const UserManagementPage = () => {
-  return (
-    <DefaultLayout>
-      <UserManagement />
-    </DefaultLayout>
-  )
+const UserManagementPage: NextPageWithLayout = () => {
+  return <UserManagement />
 }
 
+UserManagementPage.getLayout = function getLayout(page: ReactElement) {
+  return <DefaultLayout>{page}</DefaultLayout>
+}
 export default UserManagementPage
