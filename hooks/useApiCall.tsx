@@ -59,7 +59,7 @@ export const useApiCall = <T, E>({
         }
       }
     } finally {
-      dispatch(setLoadingRedux(false))
+      // dispatch(setLoadingRedux(false))
       setLoading(false)
       setLetCall(false)
     }
