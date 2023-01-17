@@ -63,7 +63,9 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   }, [loading])
 
   const childrenList =
-    pathContent.find((item) => router.asPath.includes(item.mainItem.path))?.childrenItem || []
+    pathContent.find((item) =>
+      item.childrenItem.find((childItem) => childItem.path === router.asPath)
+    )?.childrenItem || []
 
   const lengthSidebar = childrenList.length === 0 ? 300 : 60
 
