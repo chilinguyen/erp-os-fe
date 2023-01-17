@@ -6,7 +6,7 @@ import { encodeBase64, themeValue } from '@/lib'
 import { setIsLoggedIn } from '@/redux/authentication'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { postMethod } from '@/services'
-import { LoginRequest, LoginResponseFailure, LoginResponseSuccess, TypeAccount } from '@/types'
+import { LoginRequest, LoginResponseFailure, LoginResponseSuccess } from '@/types'
 import { useRouter } from 'next/router'
 import { useRef } from 'react'
 import { useCookies } from 'react-cookie'
@@ -62,12 +62,12 @@ export const LoginForm = () => {
           expires: new Date(new Date().setDate(new Date().getDate() + 7)),
         })
         dispatch(setIsLoggedIn(true))
-        if (data.type === TypeAccount.INTERNAL) {
-          router.push('/')
-        }
-        if (data.type === TypeAccount.EXTERNAL) {
-          router.push('/home')
-        }
+        // if (data.type === TypeAccount.INTERNAL) {
+        //   router.push('/dashboard')
+        // }
+        // if (data.type === TypeAccount.EXTERNAL) {
+        //   router.push('/')
+        // }
       }
     },
     handleError(status, message) {

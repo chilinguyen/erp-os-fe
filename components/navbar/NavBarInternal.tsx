@@ -47,7 +47,7 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
         <div
           style={{ cursor: 'pointer' }}
           onClick={() => {
-            router.push('/')
+            router.push('/dashboard')
           }}
         >
           icon

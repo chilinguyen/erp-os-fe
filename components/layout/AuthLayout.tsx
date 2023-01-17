@@ -1,9 +1,9 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
-import { authenticationSelector, resetSignUpRequest, setIsLoggedIn } from '@/redux/authentication'
+import { authenticationSelector, setIsLoggedIn } from '@/redux/authentication'
 import { setLoading } from '@/redux/share-store'
-import { postMethod } from '@/services'
+import { getMethod, postMethod } from '@/services'
 import { LoginResponseSuccess, TypeAccount } from '@/types'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -18,6 +18,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const translate = useTranslationFunction()
   const [googleToken, setGoogleToken] = useState('')
   const [isFirstRender, setIsFirstRender] = useState(true)
+  const [accessPath, setAccessPath] = useState<String[]>([])
   const { isLoggedIn } = useSelector(authenticationSelector)
   const dispatch = useDispatch()
 
@@ -52,13 +53,23 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           expires: new Date(new Date().setDate(new Date().getDate() + 7)),
         })
         if (data.type === TypeAccount.INTERNAL) {
-          router.push('/')
+          router.push('/dashboard')
         }
         if (data.type === TypeAccount.EXTERNAL) {
-          router.push('/home')
+          router.push('/')
         }
         dispatch(setIsLoggedIn(true))
       }
+    },
+  })
+
+  const getAccessPath = useApiCall<string[], {}>({
+    callApi: () => getMethod(apiRoute.paths.getAccessPath, cookies.token, undefined),
+    handleError(status, message) {
+      toast.error(translate(message))
+    },
+    handleSuccess(message, data) {
+      setAccessPath(data)
     },
   })
 
@@ -90,31 +101,35 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isLoggedIn, router, isFirstRender])
 
+  const ignoreAccessPath = ['login', 'forgot-password', 'verify']
+
+  const resultAuthentication = () => {
+    if (!isFirstRender && router) {
+      if (!isLoggedIn) {
+        if (!!ignoreAccessPath.find((localPath) => router.asPath.includes(localPath)))
+          return children
+        return null
+      }
+      if (!!accessPath.find((pathItem) => router.asPath === pathItem)) {
+        return children
+      }
+      return <>403</>
+    }
+    return <>logo</>
+  }
+
   useEffect(() => {
-    if (
-      router &&
-      !router.asPath.includes('login') &&
-      !router.asPath.includes('forgot-password') &&
-      !router.asPath.includes('sign-up') &&
-      !router.asPath.includes('verify')
-    ) {
-      if (!isLoggedIn && !isFirstRender) {
+    if (router && !isFirstRender) {
+      if (isLoggedIn && !!ignoreAccessPath.find((localPath) => router.asPath.includes(localPath))) {
+        router.push('/dashboard')
+        getAccessPath.setLetCall(true)
+        return
+      }
+      if (!isLoggedIn && !ignoreAccessPath.find((localPath) => router.asPath.includes(localPath))) {
         router.push('/login')
       }
     }
-
-    if (
-      (router && router.asPath.includes('login')) ||
-      router.asPath.includes('forgot-password') ||
-      router.asPath.includes('sign-up') ||
-      router.asPath.includes('verify')
-    ) {
-      if (isLoggedIn) {
-        router.push('/')
-      }
-      dispatch(resetSignUpRequest())
-    }
-  }, [router, isLoggedIn, isFirstRender])
+  }, [isLoggedIn, isFirstRender, router])
 
   useEffect(() => {
     if (cookies.token) {
@@ -155,11 +170,11 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [googleToken])
 
-  const { loading } = loginWithGoogle
+  const loading = loginWithGoogle.loading || getAccessPath.loading
 
   useEffect(() => {
     dispatch(setLoading(loading))
   }, [loading])
 
-  return <>{children}</>
+  return <>{resultAuthentication()}</>
 }

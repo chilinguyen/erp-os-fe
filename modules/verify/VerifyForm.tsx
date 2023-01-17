@@ -4,7 +4,7 @@ import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { setIsLoggedIn } from '@/redux/authentication'
 import { postMethod } from '@/services'
-import { LoginResponseSuccess, TypeAccount } from '@/types'
+import { LoginResponseSuccess } from '@/types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -64,12 +64,12 @@ export const VerifyForm = () => {
         expires: new Date(new Date().setDate(new Date().getDate() + 7)),
       })
       dispatch(setIsLoggedIn(true))
-      if (data.type === TypeAccount.INTERNAL) {
-        router.push('/')
-      }
-      if (data.type === TypeAccount.EXTERNAL) {
-        router.push('/home')
-      }
+      // if (data.type === TypeAccount.INTERNAL) {
+      //   router.push('/dashboard')
+      // }
+      // if (data.type === TypeAccount.EXTERNAL) {
+      //   router.push('/home')
+      // }
     },
   })
 
