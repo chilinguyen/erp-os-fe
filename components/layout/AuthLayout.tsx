@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import { Component403 } from '../403'
 
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
@@ -104,26 +105,38 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
   const resultAuthentication = () => {
     if (!isFirstRender && router) {
+      if (router.pathname.includes('403')) {
+        return <Component403 />
+      }
+      if (router.pathname.includes('404')) {
+        return children
+      }
       if (!isLoggedIn) {
-        if (!!ignoreAccessPath.find((localPath) => router.asPath.includes(localPath)))
+        if (!!ignoreAccessPath.find((localPath) => router.pathname.includes(localPath)))
           return children
         return null
       }
-      if (!!accessPath.find((pathItem) => router.asPath === pathItem)) {
+      if (!!accessPath.find((pathItem) => router.pathname === pathItem)) {
         return children
       }
-      return <>403</>
+      return <Component403 />
     }
     return <>logo</>
   }
 
   useEffect(() => {
     if (router && !isFirstRender) {
-      if (isLoggedIn && !!ignoreAccessPath.find((localPath) => router.asPath.includes(localPath))) {
+      if (
+        isLoggedIn &&
+        !!ignoreAccessPath.find((localPath) => router.pathname.includes(localPath))
+      ) {
         router.push('/dashboard')
         return
       }
-      if (!isLoggedIn && !ignoreAccessPath.find((localPath) => router.asPath.includes(localPath))) {
+      if (
+        !isLoggedIn &&
+        !ignoreAccessPath.find((localPath) => router.pathname.includes(localPath))
+      ) {
         router.push('/login')
       }
       if (isLoggedIn) {

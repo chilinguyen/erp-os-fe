@@ -3,6 +3,7 @@ import { setIsLoggedIn } from '@/redux/authentication'
 import { setLoading as setLoadingRedux } from '@/redux/share-store'
 import { CommonResponseType } from '@/types'
 import { AxiosResponse } from 'axios'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch } from 'react-redux'
@@ -24,6 +25,8 @@ export const useApiCall = <T, E>({
   const [letCall, setLetCall] = useState<boolean>(false)
 
   const dispatch = useDispatch()
+
+  const router = useRouter()
 
   const [, , removeCookie] = useCookies([TOKEN_AUTHENTICATION])
 
@@ -50,9 +53,9 @@ export const useApiCall = <T, E>({
           removeCookie(TOKEN_AUTHENTICATION)
           dispatch(setIsLoggedIn(false))
         }
-        // if (statusCode === 403) {
-        //   router.push('/403')
-        // }
+        if (statusCode === 403) {
+          router.push('/403')
+        }
       }
     } finally {
       setLoading(false)
