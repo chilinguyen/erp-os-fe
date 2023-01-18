@@ -20,8 +20,13 @@ export const DarkThemeValue = {
     backgroundAlpha: 'rgba(0, 0, 0, 0.6)',
     foreground: 'white',
     backgroundContrast: grayDark.gray50,
-
+    rapidBackgroundItem: 'rgb(13, 17, 23)',
     // semantic colors
+    backGroundTabRapid: 'black',
+    backgroundSelectedTab: 'rgb(13, 17, 23)',
+    backgroundModal: 'rgb(22, 27, 34)',
+    backgroundReopen: 'rgb(33, 38, 45)',
+
     ...blueDark,
     ...purpleDark,
     ...greenDark,

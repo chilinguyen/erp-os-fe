@@ -7,7 +7,11 @@ export const LightThemeValue = {
     backgroundAlpha: 'rgba(255, 255, 255, 0.8)',
     foreground: 'black',
     backgroundContrast: 'white',
-
+    rapidBackgroundItem: 'rgb(255, 255, 255)',
+    backGroundTabRapid: gray.gray50,
+    backgroundSelectedTab: 'white',
+    backgroundModal: 'white',
+    backgroundReopen: gray.gray50,
     // semantic colors
     ...blue,
     ...purple,
