@@ -1,11 +1,11 @@
-import { Button } from '@/components'
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
+import { Button } from '../button'
 
-const Page403 = () => {
+export const Component403 = () => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const router = useRouter()
@@ -36,5 +36,3 @@ const Page403 = () => {
     </div>
   )
 }
-
-export default Page403
