@@ -59,7 +59,6 @@ export const UserManagement = () => {
       <CustomTable
         header={data?.viewPoints ?? [{ key: '', label: '' }]}
         body={data ? data.result.data : []}
-        selectionMode="single"
         listFunctionParseValue={listFunctionParseValues}
         loading={loading}
       >

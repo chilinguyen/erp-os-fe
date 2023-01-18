@@ -7,6 +7,7 @@ import { HTMLAttributes, MouseEvent, useState } from 'react'
 import { AiOutlineEye } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
 import { Loading } from '../loading'
+import { Checkbox } from '../form'
 
 interface ICustomTable extends HTMLAttributes<HTMLTableElement> {
   header: ViewPointType[]
@@ -73,6 +74,8 @@ export function CustomTable({
             {/* </Tooltip> */}
           </div>
         ))
+      case 'select':
+        return <Checkbox isReadOnly isSelected={!!selectedKeys?.find((item) => item === data.id)} />
       default:
         return data[columnKey]?.toString()
     }
@@ -133,11 +136,23 @@ export function CustomTable({
       <table {...rest}>
         <thead>
           <tr>
+            {selectionMode !== 'none' ? (
+              <th
+                style={{
+                  padding: '1px 1px 1px 16px',
+                  borderTopLeftRadius: '12px',
+                  borderBottomLeftRadius: '12px',
+                  backgroundColor: themeValue[darkTheme].colors.gray50,
+                }}
+              >
+                {' '}
+              </th>
+            ) : null}
             <th
               style={{
                 padding: '1px 1px 1px 16px',
-                borderTopLeftRadius: '12px',
-                borderBottomLeftRadius: '12px',
+                borderTopLeftRadius: selectionMode === 'none' ? '12px' : undefined,
+                borderBottomLeftRadius: selectionMode === 'none' ? '12px' : undefined,
                 backgroundColor: themeValue[darkTheme].colors.gray50,
               }}
             >
@@ -177,22 +192,29 @@ export function CustomTable({
               onClick={handleChange}
               id={itemBody?.id}
             >
-              {[{ key: 'actions', label: '' }, ...header].map((itemHead, index) => (
-                <td
-                  style={{
-                    whiteSpace: 'nowrap',
-                    padding: '10px 16px',
-                    borderTopLeftRadius: index === 0 ? '12px' : undefined,
-                    borderBottomLeftRadius: index === 0 ? '12px' : undefined,
-                    borderTopRightRadius: index === header.length ? '12px' : undefined,
-                    borderBottomRightRadius: index === header.length ? '12px' : undefined,
-                    backgroundColor: getBackgroundColor(itemBody?.id),
-                  }}
-                  key={itemHead.key}
-                >
-                  {renderCell(itemBody, itemHead.key)}
-                </td>
-              ))}
+              {[{ key: 'select', label: '' }, { key: 'actions', label: '' }, ...header].map(
+                (itemHead, index) => {
+                  if (selectionMode === 'none' && itemHead.key === 'select') return null
+                  return (
+                    <td
+                      style={{
+                        whiteSpace: 'nowrap',
+                        padding: '10px 16px',
+                        borderTopLeftRadius: index === 0 ? '12px' : undefined,
+                        borderBottomLeftRadius: index === 0 ? '12px' : undefined,
+                        borderTopRightRadius:
+                          itemHead.key === header.at(-1)?.key ? '12px' : undefined,
+                        borderBottomRightRadius:
+                          itemHead.key === header.at(-1)?.key ? '12px' : undefined,
+                        backgroundColor: getBackgroundColor(itemBody?.id),
+                      }}
+                      key={itemHead.key}
+                    >
+                      {renderCell(itemBody, itemHead.key)}
+                    </td>
+                  )
+                }
+              )}
             </tr>
           ))}
         </tbody>

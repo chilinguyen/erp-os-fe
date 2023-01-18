@@ -36,9 +36,7 @@ export const ViewPointPermission = ({
           style={{ gridColumn: 'span 1 / span 1', display: 'flex', alignItems: 'center', gap: 10 }}
         >
           <Checkbox
-            isSelected={
-              listViewChecked?.find((viewChecked) => viewChecked.key === viewPoint.key) && true
-            }
+            isSelected={!!listViewChecked?.find((viewChecked) => viewChecked.key === viewPoint.key)}
             onChange={() => {
               if (listViewChecked.find((viewChecked) => viewChecked.key === viewPoint.key)) {
                 setListViewPoint({

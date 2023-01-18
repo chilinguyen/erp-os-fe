@@ -60,7 +60,6 @@ export const PermissionManagement = () => {
       <CustomTable
         header={data?.viewPoints ?? []}
         body={data ? data.result.data : []}
-        selectionMode="single"
         listFunctionParseValue={{}}
         loading={loading}
       >

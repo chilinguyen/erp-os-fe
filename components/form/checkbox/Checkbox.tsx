@@ -71,7 +71,7 @@ export const Checkbox = ({
       <input
         checked={isSelected}
         type="checkbox"
-        readOnly={isReadOnly}
+        disabled={isReadOnly || disabled}
         style={{ display: 'none' }}
         {...rest}
       />
