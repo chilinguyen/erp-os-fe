@@ -38,8 +38,8 @@ export const TaskStatus = ({
         flexDirection: 'column',
         backgroundColor:
           isDragOver === progress.step
-            ? themeValue[darkTheme].colors.background
-            : themeValue[darkTheme].colors.background,
+            ? themeValue[darkTheme].colors.gray200
+            : themeValue[darkTheme].colors.gray50,
       }}
       onDragOver={(event) => {
         event.preventDefault()

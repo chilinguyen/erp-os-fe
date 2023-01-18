@@ -1,4 +1,7 @@
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { listTask, progressList } from '../../inventory'
 import RapidModal from '../rapid-modal/RapidModal'
 import { TaskStatus } from '../task-status/TaskStatus'
@@ -7,6 +10,7 @@ export default function BoardView() {
   const [isDragOver, setDragOver] = useState(-1)
   const [listTaskState, setListTask] = useState(listTask)
   const [openModal, setOpenModal] = useState(false)
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   return (
     <div
@@ -17,7 +21,7 @@ export default function BoardView() {
         paddingTop: 20,
         height: '90vh',
         width: '100%',
-        backgroundColor: 'rgb(13, 17, 23)',
+        backgroundColor: themeValue[darkTheme].colors.backgroundSelectedTab,
       }}
     >
       <RapidModal openModal={openModal} setOpenModal={setOpenModal} />

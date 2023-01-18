@@ -1,6 +1,9 @@
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { Rapid } from '@/types/rapidboard/Rapid'
 import { useState } from 'react'
 import { MdFilterList } from 'react-icons/md'
+import { useSelector } from 'react-redux'
 import { listTaskTable } from '../../inventory'
 import RapidModal from '../rapid-modal/RapidModal'
 
@@ -10,10 +13,12 @@ export interface TableViewProps {
 
 export default function TableView() {
   const [openModal, setOpenModal] = useState(false)
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const handleGetTask = () => {
     setOpenModal(true)
   }
+
   return (
     <>
       <RapidModal openModal={openModal} setOpenModal={setOpenModal} />
@@ -22,7 +27,8 @@ export default function TableView() {
           display: 'grid',
           gridTemplateColumns: `repeat(12, minmax(0, 1fr))`,
           height: '100%',
-          backgroundColor: 'rgb(13, 17, 23)',
+          backgroundColor: themeValue[darkTheme].colors.backgroundSelectedTab,
+          borderCollapse: 'collapse',
         }}
       >
         {listTaskTable.map((item, index) =>
@@ -30,8 +36,7 @@ export default function TableView() {
             <div
               style={{
                 gridColumn: `span ${task.colspan} / span ${task.colspan}`,
-                borderTop: `${index2 !== 0 ? '1px solid rgb(48,54,61)' : 'none'}`,
-                borderLeft: '1px solid rgb(48,54,61)',
+                borderLeft: `${index2 === 0 ? '1px solid rgb(48,54,61)' : 'none'}`,
                 borderRight: '1px solid rgb(48,54,61)',
                 borderBottom: '1px solid rgb(48,54,61)',
                 padding: 12,

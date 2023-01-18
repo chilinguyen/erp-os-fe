@@ -20,18 +20,21 @@ export const progressList = [
 ]
 
 export const listTask = [
-  { name: 'test 1', step: 1 },
-  { name: 'test 2', step: 2 },
-  { name: 'test 3', step: 3 },
-  { name: 'test 4', step: 4 },
-  { name: 'test 5', step: 2 },
-  { name: 'test 6', step: 2 },
-  { name: 'test 7', step: 3 },
+  { name: 'Implement documentation 1', step: 1 },
+  { name: 'Implement documentation 2', step: 2 },
+  { name: 'Implement documentation 3', step: 3 },
+  { name: 'Implement documentation 4', step: 4 },
+  { name: 'Implement documentation 5', step: 2 },
+  { name: 'Implement documentation 6', step: 2 },
+  { name: 'Implement documentation 7', step: 3 },
+  { name: 'Implement documentation 8', step: 3 },
+  { name: 'Implement documentation 9', step: 3 },
+  { name: 'Implement documentation 10', step: 3 },
 ]
 
-const dataRow = [...Array(10)].map(() => [
+const dataRow = [...Array(10)].map((index: number) => [
   {
-    title: 'Implement documentation',
+    title: `Implement documentation ${index}`,
     colspan: '7',
     value: '',
   },

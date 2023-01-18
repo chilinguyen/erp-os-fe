@@ -1,4 +1,6 @@
 import { Button, Input } from '@/components'
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
 import {
   AiOutlineClose,
   AiOutlineLink,
@@ -11,36 +13,36 @@ import { FiEye } from 'react-icons/fi'
 import { MdDeleteOutline, MdOpenInNew } from 'react-icons/md'
 import { RiFileCopyLine } from 'react-icons/ri'
 import { VscIssueReopened } from 'react-icons/vsc'
+import { useSelector } from 'react-redux'
 import { RapidDefaultModal } from './components/rapid-defaul-modal/RapidDefaultModal'
 
 export interface RapidModalProps {
-  openModal?: boolean
-  setOpenModal?: (v: boolean) => void
+  openModal: boolean
+  setOpenModal: (v: boolean) => void
 }
 
 export default function RapidModal({ openModal, setOpenModal }: RapidModalProps) {
-  if (!openModal) return null
-  if (!setOpenModal) return null
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
   return (
     <div>
       <RapidDefaultModal
         open={openModal}
         setOpen={setOpenModal}
-        ModalStyle={{ height: '100%', border: '1px solid rgba(240, 246, 252, 0.1)' }}
+        ModalStyle={{ height: '100%' }}
         width="100%"
       >
         <div
           style={{
             paddingTop: 20,
             paddingBottom: 20,
-            backgroundColor: 'rgb(22, 24, 26)',
+            backgroundColor: themeValue[darkTheme].colors.backgroundSelectedTab,
             height: '100%',
             overflow: 'hidden',
           }}
         >
           <div
             style={{
-              borderBottom: '1px solid rgba(240, 246, 252, 0.1)',
+              borderBottom: `1px solid ${themeValue[darkTheme].colors.border}`,
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
@@ -51,7 +53,7 @@ export default function RapidModal({ openModal, setOpenModal }: RapidModalProps)
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                color: 'rgb(201, 209, 217)',
+                color: themeValue[darkTheme].colors.gray500,
                 paddingLeft: 20,
                 paddingRight: 20,
               }}
@@ -64,7 +66,7 @@ export default function RapidModal({ openModal, setOpenModal }: RapidModalProps)
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                color: 'white',
+                color: themeValue[darkTheme].colors.foreground,
                 paddingLeft: 20,
                 paddingRight: 20,
                 fontSize: 24,
@@ -73,8 +75,9 @@ export default function RapidModal({ openModal, setOpenModal }: RapidModalProps)
               <div>Implement documentation</div>
               <Button
                 style={{
-                  border: '1px solid rgba(240, 246, 252, 0.1)',
-                  backgroundColor: 'rgb(33, 38, 45)',
+                  border: `1px solid ${themeValue[darkTheme].colors.border}`,
+                  backgroundColor: themeValue[darkTheme].colors.backgroundReopen,
+                  color: themeValue[darkTheme].colors.foreground,
                 }}
               >
                 Edit
@@ -90,7 +93,7 @@ export default function RapidModal({ openModal, setOpenModal }: RapidModalProps)
               }}
             >
               AdenTroy
-              <p style={{ color: 'rgb(201, 209, 217)' }}>opened 19 days ago</p>
+              <p style={{ color: themeValue[darkTheme].colors.gray500 }}>opened 19 days ago</p>
             </div>
           </div>
           <div style={{ display: 'flex', height: '100%' }}>
@@ -100,8 +103,8 @@ export default function RapidModal({ openModal, setOpenModal }: RapidModalProps)
                   paddingLeft: 20,
                   paddingRight: 20,
                   paddingBottom: 20,
-                  borderRight: '1px solid rgba(240, 246, 252, 0.1)',
-                  borderBottom: '1px solid rgba(240, 246, 252, 0.1)',
+                  borderRight: `1px solid ${themeValue[darkTheme].colors.border}`,
+                  borderBottom: `1px solid ${themeValue[darkTheme].colors.border}`,
                 }}
               >
                 <div
@@ -120,11 +123,11 @@ export default function RapidModal({ openModal, setOpenModal }: RapidModalProps)
                     }}
                   >
                     AdenTroy
-                    <p style={{ color: 'rgb(201, 209, 217)' }}>19 days ago</p>
+                    <p style={{ color: themeValue[darkTheme].colors.gray500 }}>19 days ago</p>
                   </div>
                   <div>Edit</div>
                 </div>
-                <div style={{ color: 'rgb(139, 148, 158)', fontStyle: 'italic' }}>
+                <div style={{ color: themeValue[darkTheme].colors.gray500, fontStyle: 'italic' }}>
                   No description provided
                 </div>
                 <div style={{ marginTop: 20 }}>
@@ -133,17 +136,17 @@ export default function RapidModal({ openModal, setOpenModal }: RapidModalProps)
               </div>
               <div
                 style={{
-                  backgroundColor: 'rgb(22, 27, 34)',
-                  borderRight: '1px solid rgba(240, 246, 252, 0.1)',
+                  backgroundColor: themeValue[darkTheme].colors.backgroundModal,
+                  borderRight: `1px solid ${themeValue[darkTheme].colors.border}`,
                   padding: '30px 20px 30px 20px',
                   height: '100%',
                 }}
               >
                 <div
                   style={{
-                    border: '1px solid rgba(240, 246, 252, 0.1)',
+                    border: `1px solid ${themeValue[darkTheme].colors.border}`,
                     borderRadius: '6px',
-                    backgroundColor: 'rgb(22, 24, 26)',
+                    backgroundColor: themeValue[darkTheme].colors.backgroundSelectedTab,
                     padding: 8,
                   }}
                 >
@@ -210,19 +213,21 @@ export default function RapidModal({ openModal, setOpenModal }: RapidModalProps)
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                         <Button
                           style={{
-                            border: '1px solid rgba(240, 246, 252, 0.1)',
-                            backgroundColor: 'rgb(33, 38, 45)',
+                            border: `1px solid ${themeValue[darkTheme].colors.border}`,
+                            backgroundColor: themeValue[darkTheme].colors.backgroundReopen,
                             display: 'flex',
                             alignItems: 'center',
                             gap: 5,
                           }}
                         >
                           <VscIssueReopened style={{ color: 'rgba(35, 134, 54, 0.6)' }} />
-                          <div>Reopen</div>
+                          <div style={{ color: themeValue[darkTheme].colors.foreground }}>
+                            Reopen
+                          </div>
                         </Button>
                         <Button
                           style={{
-                            border: '1px solid rgba(240, 246, 252, 0.1)',
+                            border: `1px solid ${themeValue[darkTheme].colors.border}`,
                             backgroundColor: 'rgba(35, 134, 54, 0.6)',
                           }}
                         >
@@ -246,7 +251,7 @@ export default function RapidModal({ openModal, setOpenModal }: RapidModalProps)
                   flexDirection: 'column',
                   gap: 20,
                   padding: 20,
-                  borderBottom: '1px solid rgba(240, 246, 252, 0.1)',
+                  borderBottom: `1px solid ${themeValue[darkTheme].colors.border}`,
                 }}
               >
                 <div

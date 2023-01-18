@@ -2,6 +2,9 @@ import { AiFillCaretDown } from 'react-icons/ai'
 import { TbTable } from 'react-icons/tb'
 import { CiViewBoard } from 'react-icons/ci'
 import { CSSProperties, ReactNode, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
+import { themeValue } from '@/lib'
 
 export interface RapidTabProps {
   tabData: string[]
@@ -26,6 +29,8 @@ export default function RapidTab(props: RapidTabProps) {
   const [tab, setTab] = useState(tabData[0])
   const [openModal, setOpenModal] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
+
   if (!onHandleChangeTab) return null
   const handleSetTab = (item: string) => {
     onHandleChangeTab(item)
@@ -73,7 +78,11 @@ export default function RapidTab(props: RapidTabProps) {
                   borderRight: `${tab === item ? '1px solid rgb(48,54,61)' : 'none'}`,
                   borderTopRightRadius: `${tab === item ? '6px' : 'none'}`,
                   borderTopLeftRadius: `${tab === item ? '6px' : 'none'}`,
-                  backgroundColor: `${tab === item ? 'rgb(13, 17, 23)' : 'black'}`,
+                  backgroundColor: `${
+                    tab === item
+                      ? themeValue[darkTheme].colors.backgroundSelectedTab
+                      : themeValue[darkTheme].colors.backGroundTabRapid
+                  }`,
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
@@ -101,7 +110,7 @@ export default function RapidTab(props: RapidTabProps) {
                       border: '1px solid rgb(48,54,61)',
                       borderRadius: 6,
                       padding: 20,
-                      background: 'rgb(15,18,22)',
+                      background: themeValue[darkTheme].colors.backgroundSelectedTab,
                       width: 320,
                     }}
                   >
