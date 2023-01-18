@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import { Backdrop } from '../backdrop'
 import { RenderItemSideBar } from './RenderItemSideBar'
 import { SideIconItem } from './SideIconItem'
+import { SignOutButton } from './SignOutButton'
 
 interface ISideBar {
   isOpenSideBar: boolean
@@ -119,6 +120,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
               isLabel={childrenList.length === 0}
             />
           ))}
+          <SignOutButton isLabel={childrenList.length === 0} />
         </div>
         {childrenList.length > 0 && (
           <div
