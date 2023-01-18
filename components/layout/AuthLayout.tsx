@@ -112,8 +112,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       if (!!accessPath.find((pathItem) => router.asPath === pathItem)) {
         return children
       }
-      // return <>403</>
-      return children
+      return <>403</>
     }
     return <>logo</>
   }
