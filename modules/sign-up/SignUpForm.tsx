@@ -9,14 +9,17 @@ export const SignUpForm = () => {
 
   // const { error, loading, setLetCall } = useApiCall<String, SignUpFailure>({
   //   callApi: () =>
-  //     postMethod<SignUpRequest>(apiRoute.auth.signUp, undefined, {
-  //       username: signUpRequest.username,
-  //       password: encodeBase64(signUpRequest.password),
-  //       firstName: signUpRequest.firstName,
-  //       lastName: signUpRequest.lastName,
-  //       phone: signUpRequest.phone,
-  //       email: signUpRequest.email,
-  //       address: signUpRequest.address,
+  //     postMethod<SignUpRequest>({
+  //       pathName: apiRoute.auth.signUp,
+  //       request: {
+  //         username: signUpRequest.username,
+  //         password: encodeBase64(signUpRequest.password),
+  //         firstName: signUpRequest.firstName,
+  //         lastName: signUpRequest.lastName,
+  //         phone: signUpRequest.phone,
+  //         email: signUpRequest.email,
+  //         address: signUpRequest.address,
+  //       },
   //     }),
   //   handleError(status, message) {
   //     toast.error(translate(message))

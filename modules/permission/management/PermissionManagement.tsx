@@ -27,7 +27,11 @@ export const PermissionManagement = () => {
 
   const result = useApiCall<CommonListResultType<PermissionResponse>, String>({
     callApi: () =>
-      getMethod(apiRoute.permissions.getListPermission, cookies.token, { page: page.toString() }),
+      getMethod({
+        pathName: apiRoute.permissions.getListPermission,
+        token: cookies.token,
+        params: { page: page.toString() },
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

@@ -23,17 +23,20 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch()
 
   const outChatRoom = useApiCall({
-    callApi: () => postMethod(apiRoute.message.outChatRoom, cookies.token),
+    callApi: () => postMethod({ pathName: apiRoute.message.outChatRoom, token: cookies.token }),
   })
 
   const inChatRoom = useApiCall({
-    callApi: () => postMethod(apiRoute.message.toChatRoom, cookies.token),
+    callApi: () => postMethod({ pathName: apiRoute.message.toChatRoom, token: cookies.token }),
   })
 
   const loginWithGoogle = useApiCall<LoginResponseSuccess, {}>({
     callApi: () =>
-      postMethod(apiRoute.auth.loginWithGoogle, undefined, undefined, {
-        idToken: googleToken,
+      postMethod({
+        pathName: apiRoute.auth.loginWithGoogle,
+        params: {
+          idToken: googleToken,
+        },
       }),
     handleError(status, message) {
       toast.error(translate(message))
@@ -64,7 +67,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   })
 
   const getAccessPath = useApiCall<string[], {}>({
-    callApi: () => getMethod(apiRoute.paths.getAccessPath, cookies.token, undefined),
+    callApi: () => getMethod({ pathName: apiRoute.paths.getAccessPath, token: cookies.token }),
     handleError(status, message) {
       toast.error(translate(message))
     },

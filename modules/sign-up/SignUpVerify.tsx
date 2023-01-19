@@ -9,9 +9,12 @@ export const SignUpVerify = () => {
 
   // const { loading, setLetCall } = useApiCall({
   //   callApi: () =>
-  //     postMethod(apiRoute.auth.verifySignUp, undefined, undefined, {
-  //       email: signUpRequest.email,
-  //       code: codeRef.current?.value || '',
+  //     postMethod({
+  //       pathName: apiRoute.auth.verifySignUp,
+  //       params: {
+  //         email: signUpRequest.email,
+  //         code: codeRef.current?.value || '',
+  //       },
   //     }),
   //   handleError(status, message) {
   //     if (status === 400) {
@@ -26,8 +29,11 @@ export const SignUpVerify = () => {
 
   // const resultResend = useApiCall({
   //   callApi: () =>
-  //     postMethod(`${apiRoute.auth.verifySignUp}/resend`, undefined, undefined, {
-  //       email: signUpRequest.email,
+  //     postMethod({
+  //       pathName: `${apiRoute.auth.verifySignUp}/resend`,
+  //       params: {
+  //         email: signUpRequest.email,
+  //       },
   //     }),
   //   handleError(status, message) {
   //     if (status) {

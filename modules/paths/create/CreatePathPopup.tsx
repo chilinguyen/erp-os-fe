@@ -33,7 +33,8 @@ export const CreatePathPopup = ({ callList }: ICreatePathPopup) => {
   }
 
   const createResult = useApiCall<PathRequest, PathRequest>({
-    callApi: () => postMethod(apiRoute.paths.addNewPath, cookies.token, pathState),
+    callApi: () =>
+      postMethod({ pathName: apiRoute.paths.addNewPath, token: cookies.token, request: pathState }),
     handleSuccess(message) {
       toast.success(translate(message))
       callList(true)

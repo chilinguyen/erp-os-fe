@@ -23,10 +23,14 @@ export const UpdatePassword = () => {
 
   const updateResult = useApiCall<string, UpdatePasswordPayload>({
     callApi: () =>
-      putMethod(apiRoute.settings.updatePassword, cookies.token, undefined, {
-        oldPassword: encodeBase64(oldPasswordState),
-        newPassword: encodeBase64(newPasswordState),
-        confirmNewPassword: encodeBase64(confirmPasswordState),
+      putMethod({
+        pathName: apiRoute.settings.updatePassword,
+        token: cookies.token,
+        request: {
+          oldPassword: encodeBase64(oldPasswordState),
+          newPassword: encodeBase64(newPasswordState),
+          confirmNewPassword: encodeBase64(confirmPasswordState),
+        },
       }),
     handleError: (status, message) => {
       if (status) {

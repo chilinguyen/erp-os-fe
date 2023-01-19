@@ -44,9 +44,12 @@ export const VerifyForm = () => {
 
   const verify2FACall = useApiCall<LoginResponseSuccess, string>({
     callApi: () =>
-      postMethod(apiRoute.auth.verify2FA, undefined, undefined, {
-        email,
-        code,
+      postMethod({
+        pathName: apiRoute.auth.verify2FA,
+        params: {
+          email,
+          code,
+        },
       }),
     handleError(status, message) {
       if (status) {
@@ -75,9 +78,12 @@ export const VerifyForm = () => {
 
   const verifyEmail = useApiCall<string, string>({
     callApi: () =>
-      postMethod(apiRoute.auth.verifySignUp, undefined, undefined, {
-        email,
-        code,
+      postMethod({
+        pathName: apiRoute.auth.verifySignUp,
+        params: {
+          email,
+          code,
+        },
       }),
     handleError(status, message) {
       if (status === 400) {
@@ -92,7 +98,7 @@ export const VerifyForm = () => {
 
   const resultResendEmail = useApiCall<string, string>({
     callApi: () =>
-      postMethod(`${apiRoute.auth.verifySignUp}/resend`, undefined, undefined, { email }),
+      postMethod({ pathName: `${apiRoute.auth.verifySignUp}/resend`, params: { email } }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -107,8 +113,7 @@ export const VerifyForm = () => {
   })
 
   const resultResend2FA = useApiCall<string, string>({
-    callApi: () =>
-      postMethod(`${apiRoute.auth.verifySignUp}/resend`, undefined, undefined, { email }),
+    callApi: () => postMethod({ pathName: `${apiRoute.auth.verify2FA}/resend`, params: { email } }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

@@ -22,7 +22,7 @@ export const SignOutButton = (props: { isLabel: boolean }) => {
   const dispatch = useDispatch()
 
   const signOutAction = useApiCall<string, string>({
-    callApi: () => postMethod(apiRoute.auth.logout, cookies.token, undefined, undefined),
+    callApi: () => postMethod({ pathName: apiRoute.auth.logout, token: cookies.token }),
     handleSuccess(message) {
       toast.success(message)
       removeCookie(TOKEN_AUTHENTICATION)

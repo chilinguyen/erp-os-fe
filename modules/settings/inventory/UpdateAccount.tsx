@@ -17,7 +17,12 @@ export const UpdateAccount = () => {
   const [userState, setUserState] = useState<UserResponseSuccess>(DefaultUser)
 
   const viewResult = useApiCall<UserResponseSuccess, string>({
-    callApi: () => getMethod(apiRoute.user.getDetailUser, cookies.token, { id: cookies.userId }),
+    callApi: () =>
+      getMethod({
+        pathName: apiRoute.user.getDetailUser,
+        token: cookies.token,
+        params: { id: cookies.userId },
+      }),
     handleSuccess: (message, data) => {
       setUserState(data)
     },
@@ -30,12 +35,11 @@ export const UpdateAccount = () => {
 
   const updateResult = useApiCall<UpdateAccountRequest, UpdateAccountFailure>({
     callApi: () =>
-      putMethod<UpdateAccountRequest>(
-        apiRoute.settings.updateAccountSettings,
-        cookies.token,
-        undefined,
-        lostOddProps<UpdateAccountRequest>(userState, viewResult?.data?.editable)
-      ),
+      putMethod<UpdateAccountRequest>({
+        pathName: apiRoute.settings.updateAccountSettings,
+        token: cookies.token,
+        request: lostOddProps<UpdateAccountRequest>(userState, viewResult?.data?.editable),
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

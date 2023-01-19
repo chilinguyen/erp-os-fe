@@ -23,7 +23,8 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
   const translate = useTranslationFunction()
 
   const result = useApiCall<GeneralSettingsResponseSuccess, string>({
-    callApi: () => getMethod(apiRoute.settings.getGeneralSettings, cookies.token),
+    callApi: () =>
+      getMethod({ pathName: apiRoute.settings.getGeneralSettings, token: cookies.token }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -38,7 +39,11 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
 
   const getLanguage = useApiCall<LanguageResponseSuccess, string>({
     callApi: () =>
-      getMethod(apiRoute.language.getLanguageByKey, cookies.token, { key: languageKey }),
+      getMethod({
+        pathName: apiRoute.language.getLanguageByKey,
+        token: cookies.token,
+        params: { key: languageKey },
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

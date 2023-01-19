@@ -25,16 +25,16 @@ export const OneLanguage = ({ language, setLetCallList, updateStoreLanguage }: I
 
   const updateResult = useApiCall<LanguageRequest, Record<keyof LanguageRequest, string>>({
     callApi: () =>
-      putMethod<LanguageRequest>(
-        apiRoute.language.updateLanguage,
-        cookies.token,
-        { id: language.id },
-        {
+      putMethod<LanguageRequest>({
+        pathName: apiRoute.language.updateLanguage,
+        token: cookies.token,
+        params: { id: language.id },
+        request: {
           key: language.key,
           language: language.language,
           dictionary: dictionaryList,
-        }
-      ),
+        },
+      }),
     handleSuccess(message) {
       toast.success(translate(message))
       setLetCallList(true)

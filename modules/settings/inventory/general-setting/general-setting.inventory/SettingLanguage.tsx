@@ -26,7 +26,8 @@ export const SettingLanguage = ({ disabled, languageKey, setLetCallUpdate }: ISe
   const [languageOptions, setLanguageOptions] = useState<OptionsType<string>[]>([])
 
   const languageResult = useApiCall<OptionsType<string>[], string>({
-    callApi: () => getMethod(apiRoute.language.getLanguageSelectList, cookie.token),
+    callApi: () =>
+      getMethod({ pathName: apiRoute.language.getLanguageSelectList, token: cookie.token }),
     handleSuccess: (message, data) => {
       toast.success(translate(message))
       setLanguageOptions(data)

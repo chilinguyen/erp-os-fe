@@ -36,7 +36,12 @@ export const DictionaryCreatePopup = ({
   }
 
   const createResult = useApiCall<DictionaryKey, Record<keyof DictionaryKey, string>>({
-    callApi: () => postMethod(apiRoute.language.addNewDictionary, cookies.token, dictionaryState),
+    callApi: () =>
+      postMethod({
+        pathName: apiRoute.language.addNewDictionary,
+        token: cookies.token,
+        request: dictionaryState,
+      }),
     handleSuccess(message) {
       toast.success(translate(message))
       handleClose()

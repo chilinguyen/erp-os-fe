@@ -25,8 +25,12 @@ export const DeletePathPopup = ({ deleteId, setDeleteId, setLetCallList }: IDele
 
   const deleteResult = useApiCall<string, string>({
     callApi: () =>
-      putMethod(apiRoute.paths.deletePath, cookies.token, {
-        id: deleteId?.[0],
+      putMethod({
+        pathName: apiRoute.paths.deletePath,
+        token: cookies.token,
+        params: {
+          id: deleteId?.[0],
+        },
       }),
     handleError(status, message) {
       if (status) {

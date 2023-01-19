@@ -26,7 +26,12 @@ export const PathsManagement = () => {
   const { breakPoint } = useSelector(ShareStoreSelector)
 
   const result = useApiCall<CommonListResultType<PathResponse>, String>({
-    callApi: () => getMethod(apiRoute.paths.getPathList, cookies.token, { page: page.toString() }),
+    callApi: () =>
+      getMethod({
+        pathName: apiRoute.paths.getPathList,
+        token: cookies.token,
+        params: { page: page.toString() },
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

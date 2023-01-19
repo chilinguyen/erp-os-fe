@@ -21,8 +21,12 @@ export const DeletePermissionPopup = () => {
 
   const deleteResult = useApiCall<string, string>({
     callApi: () =>
-      putMethod(apiRoute.permissions.deletePermission, cookies.token, {
-        id: router?.query?.id?.toString() ?? '1',
+      putMethod({
+        pathName: apiRoute.permissions.deletePermission,
+        token: cookies.token,
+        params: {
+          id: router?.query?.id?.toString() ?? '1',
+        },
       }),
     handleError(status, message) {
       if (status) {

@@ -29,7 +29,12 @@ export const ChatUserList = ({ userChooseId, setUserChoose }: IChatUserList) => 
   })
 
   const getChatRooms = useApiCall<ChatRoom[], string>({
-    callApi: () => getMethod(apiRoute.message.getChatRooms, cookies.token, { page: '1' }),
+    callApi: () =>
+      getMethod({
+        pathName: apiRoute.message.getChatRooms,
+        token: cookies.token,
+        params: { page: '1' },
+      }),
   })
 
   const getBackGroundColor = (id: string) => {

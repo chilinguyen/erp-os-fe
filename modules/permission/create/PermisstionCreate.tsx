@@ -22,7 +22,12 @@ export const PermissionCreate = () => {
     useState<PermissionRequest>(PermissionRequestDefault)
 
   const createResult = useApiCall<PermissionRequest, PermissionRequestFailure>({
-    callApi: () => postMethod(apiRoute.permissions.addPermission, cookies.token, permissionState),
+    callApi: () =>
+      postMethod({
+        pathName: apiRoute.permissions.addPermission,
+        token: cookies.token,
+        request: permissionState,
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

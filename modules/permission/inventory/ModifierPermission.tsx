@@ -50,7 +50,8 @@ export const ModifierPermission = ({
   const selectEditable = useTranslation('selectEditable')
 
   const viewPointsResult = useApiCall<ViewPointKey, String>({
-    callApi: () => getMethod(apiRoute.permissions.getViewPointsSelect, cookies.token),
+    callApi: () =>
+      getMethod({ pathName: apiRoute.permissions.getViewPointsSelect, token: cookies.token }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -59,7 +60,8 @@ export const ModifierPermission = ({
   })
 
   const editAblesResult = useApiCall<ViewPointKey, String>({
-    callApi: () => getMethod(apiRoute.permissions.getEditableSelect, cookies.token),
+    callApi: () =>
+      getMethod({ pathName: apiRoute.permissions.getEditableSelect, token: cookies.token }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

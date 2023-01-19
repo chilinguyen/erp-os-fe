@@ -25,8 +25,12 @@ export const UserDetail = () => {
 
   const viewResult = useApiCall<UserResponseSuccess, string>({
     callApi: () =>
-      getMethod(apiRoute.user.getDetailUser, cookies.token, {
-        id: router?.query?.id?.toString() ?? '1',
+      getMethod({
+        pathName: apiRoute.user.getDetailUser,
+        token: cookies.token,
+        params: {
+          id: router?.query?.id?.toString() ?? '1',
+        },
       }),
     handleSuccess: (message, data) => {
       setUserState(data)
@@ -40,12 +44,12 @@ export const UserDetail = () => {
 
   const updateResult = useApiCall<UserRequest, UserRequestFailure>({
     callApi: () =>
-      putMethod<UserRequest>(
-        apiRoute.user.updateUser,
-        cookies.token,
-        { id: UserState.id },
-        lostOddProps<UserRequest>(UserState, viewResult.data?.editable)
-      ),
+      putMethod<UserRequest>({
+        pathName: apiRoute.user.updateUser,
+        token: cookies.token,
+        params: { id: UserState.id },
+        request: lostOddProps<UserRequest>(UserState, viewResult.data?.editable),
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -59,8 +63,12 @@ export const UserDetail = () => {
 
   const changeStatus = useApiCall<UserResponseSuccess, string>({
     callApi: () => {
-      return putMethod(apiRoute.user.changeStatus, cookies.token, {
-        id: router?.query?.id?.toString() ?? '1',
+      return putMethod({
+        pathName: apiRoute.user.changeStatus,
+        token: cookies.token,
+        params: {
+          id: router?.query?.id?.toString() ?? '1',
+        },
       })
     },
     handleError: (status, message) => {

@@ -37,8 +37,12 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
 
   const getDetailSidebar = useApiCall<NavbarResponseSuccess, string>({
     callApi: () =>
-      getMethod(apiRoute.navbar.getNavbarDetailName, cookies.token, {
-        name: 'side-bar-icon',
+      getMethod({
+        pathName: apiRoute.navbar.getNavbarDetailName,
+        token: cookies.token,
+        params: {
+          name: 'side-bar-icon',
+        },
       }),
     handleSuccess(message, data) {
       setPathContent(data.content)

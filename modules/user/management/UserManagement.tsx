@@ -27,7 +27,12 @@ export const UserManagement = () => {
   const { breakPoint } = useSelector(ShareStoreSelector)
 
   const result = useApiCall<UserListSuccess, String>({
-    callApi: () => getMethod(apiRoute.user.getListUser, cookies.token, { page: String(page) }),
+    callApi: () =>
+      getMethod({
+        pathName: apiRoute.user.getListUser,
+        token: cookies.token,
+        params: { page: String(page) },
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
