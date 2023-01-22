@@ -23,7 +23,11 @@ export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTa
 
   const userResult = useApiCall<UserListSuccess, String>({
     callApi: () =>
-      getMethod(apiRoute.user.getYourListUser, cookies.token, { page: page.toString() }),
+      getMethod({
+        pathName: apiRoute.user.getYourListUser,
+        token: cookies.token,
+        params: { page: page.toString() },
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

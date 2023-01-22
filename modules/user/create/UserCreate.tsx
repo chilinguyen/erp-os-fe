@@ -24,11 +24,11 @@ export const UserCreate = () => {
 
   const createResult = useApiCall<UserRequest, UserRequestFailure>({
     callApi: () =>
-      postMethod<UserRequest>(
-        apiRoute.user.addNewUser,
-        cookies.token,
-        lostOddProps<UserRequest>(UserState, initUserRequest)
-      ),
+      postMethod<UserRequest>({
+        pathName: apiRoute.user.addNewUser,
+        token: cookies.token,
+        request: lostOddProps<UserRequest>(UserState, initUserRequest),
+      }),
     handleError(status, message) {
       if (status !== 400) {
         toast.error(translate(message))

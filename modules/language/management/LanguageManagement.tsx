@@ -21,7 +21,7 @@ export const LanguageManagement = () => {
   const { breakPoint } = useSelector(ShareStoreSelector)
 
   const viewLanguageresult = useApiCall<CommonListResultType<LanguageResponseSuccess>, String>({
-    callApi: () => getMethod(apiRoute.language.getLanguageList, cookies.token),
+    callApi: () => getMethod({ pathName: apiRoute.language.getLanguageList, token: cookies.token }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))
@@ -35,7 +35,11 @@ export const LanguageManagement = () => {
 
   const getLanguage = useApiCall<LanguageResponseSuccess, string>({
     callApi: () =>
-      getMethod(apiRoute.language.getLanguageByKey, cookies.token, { key: languageKey }),
+      getMethod({
+        pathName: apiRoute.language.getLanguageByKey,
+        token: cookies.token,
+        params: { key: languageKey },
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

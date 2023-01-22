@@ -28,7 +28,11 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
 
   const getOldMessages = useApiCall<CommonListResultType<MessageResponse>, string>({
     callApi: () =>
-      getMethod(apiRoute.message.getOldMessage, cookie.token, { page: '1', id: user.id }),
+      getMethod({
+        pathName: apiRoute.message.getOldMessage,
+        token: cookie.token,
+        params: { page: '1', id: user.id },
+      }),
   })
 
   useEffect(() => {
@@ -37,7 +41,12 @@ export const ChatContent = ({ setUserChoose, user }: IChatContent) => {
 
   // const sendMessages = useApiCall<MessageResponse, string>({
   //   callApi: () =>
-  //     postMethod(apiRoute.message.sendMessage, cookie.token, { message }, { id: user.id }),
+  //     postMethod({
+  //       pathName: apiRoute.message.sendMessage,
+  //       token: cookie.token,
+  //       request: { message },
+  //       params: { id: user.id },
+  //     }),
   //   handleSuccess(message, data) {
   //     const newMessages = messages.filter((item) => item.id !== '')
   //     newMessages.push(data)

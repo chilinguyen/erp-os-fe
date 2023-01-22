@@ -30,7 +30,11 @@ export const DeleteDictionaryPopup = ({
 
   const deleteResult = useApiCall({
     callApi: () =>
-      putMethod(apiRoute.language.deleteDictionaryKey, cookies.token, { key: dictionaryKey }),
+      putMethod({
+        pathName: apiRoute.language.deleteDictionaryKey,
+        token: cookies.token,
+        params: { key: dictionaryKey },
+      }),
     handleSuccess(message) {
       toast.success(translate(message))
       setOpen(false)

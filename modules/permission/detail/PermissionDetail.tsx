@@ -26,8 +26,12 @@ export const PermissionDetail = () => {
 
   const viewResult = useApiCall<PermissionResponse, string>({
     callApi: () =>
-      getMethod(apiRoute.permissions.getDetailPermission, cookies.token, {
-        id: router?.query?.id?.toString() ?? '1',
+      getMethod({
+        pathName: apiRoute.permissions.getDetailPermission,
+        token: cookies.token,
+        params: {
+          id: router?.query?.id?.toString() ?? '1',
+        },
       }),
     handleSuccess: (message, data) => {
       setPermissionState(data)
@@ -36,14 +40,14 @@ export const PermissionDetail = () => {
 
   const updateResult = useApiCall<PermissionRequest, PermissionRequestFailure>({
     callApi: () =>
-      putMethod(
-        apiRoute.permissions.updatePermission,
-        cookies.token,
-        {
+      putMethod({
+        pathName: apiRoute.permissions.updatePermission,
+        token: cookies.token,
+        params: {
           id: router?.query?.id?.toString() ?? '1',
         },
-        lostOddProps<PermissionRequest>(permissionState, viewResult?.data?.editable)
-      ),
+        request: lostOddProps<PermissionRequest>(permissionState, viewResult?.data?.editable),
+      }),
     handleError(status, message) {
       if (status) {
         toast.error(translate(message))

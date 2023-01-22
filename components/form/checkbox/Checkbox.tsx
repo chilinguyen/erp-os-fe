@@ -1,16 +1,18 @@
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { ColorType, SizeType } from '@/types'
-import { CSSProperties, InputHTMLAttributes } from 'react'
+import { CSSProperties, ReactNode } from 'react'
 import { useSelector } from 'react-redux'
 
-interface ICheckbox extends InputHTMLAttributes<HTMLInputElement> {
+interface ICheckbox {
   color?: ColorType
   labelColor?: ColorType
   disabled?: boolean
   isSelected?: boolean
   isReadOnly?: boolean
   sizes?: SizeType
+  onChange?: Function
+  children?: ReactNode
 }
 
 export const Checkbox = ({
@@ -21,7 +23,7 @@ export const Checkbox = ({
   isReadOnly,
   children,
   sizes = 'md',
-  ...rest
+  onChange,
 }: ICheckbox) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
@@ -55,8 +57,14 @@ export const Checkbox = ({
     }
   }
 
+  const handleChange = () => {
+    if (onChange && !isReadOnly && !disabled) {
+      onChange()
+    }
+  }
+
   return (
-    <label
+    <div
       style={{
         color: disabled
           ? themeValue[darkTheme].colors.gray500
@@ -67,14 +75,8 @@ export const Checkbox = ({
         alignItems: 'center',
         cursor: disabled ? 'default' : 'pointer',
       }}
+      onClick={handleChange}
     >
-      <input
-        checked={isSelected}
-        type="checkbox"
-        readOnly={isReadOnly}
-        style={{ display: 'none' }}
-        {...rest}
-      />
       <div
         style={{
           aspectRatio: '1',
@@ -138,6 +140,6 @@ export const Checkbox = ({
         </div>
       </div>
       <div>{children}</div>
-    </label>
+    </div>
   )
 }

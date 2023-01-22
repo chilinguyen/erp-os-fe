@@ -33,7 +33,11 @@ export const IOCsvLanguage = ({
 
   const data = useApiCall<string, string>({
     callApi: () =>
-      putMethod(apiRoute.language.updateDictionaryList, cookies.token, undefined, stateLanguage),
+      putMethod({
+        pathName: apiRoute.language.updateDictionaryList,
+        token: cookies.token,
+        request: stateLanguage,
+      }),
     handleSuccess(message) {
       toast.success(translate(message))
       setLetCall(true)

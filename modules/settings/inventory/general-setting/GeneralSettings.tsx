@@ -18,7 +18,8 @@ export const GeneralSettings = () => {
   const dispatch = useDispatch()
 
   const viewResult = useApiCall<GeneralSettingsResponseSuccess, string>({
-    callApi: () => getMethod(apiRoute.settings.getGeneralSettings, cookie.token),
+    callApi: () =>
+      getMethod({ pathName: apiRoute.settings.getGeneralSettings, token: cookie.token }),
     handleSuccess: (message, data) => {
       toast.success(translate(message))
       dispatch(setGeneralSettings(data))
@@ -33,11 +34,11 @@ export const GeneralSettings = () => {
   const updateResult = useApiCall<GeneralSettingsResponseSuccess, UpdateGeneralFailure>({
     callApi: () => {
       const { darkTheme, ...rest } = generalSettingsState
-      return putMethod<GeneralSettingsResponseSuccess>(
-        apiRoute.settings.updateGeneralSettings,
-        cookie.token,
-        rest
-      )
+      return putMethod<GeneralSettingsResponseSuccess>({
+        pathName: apiRoute.settings.updateGeneralSettings,
+        token: cookie.token,
+        params: rest,
+      })
     },
     handleSuccess: (message) => {
       toast.success(translate(message))

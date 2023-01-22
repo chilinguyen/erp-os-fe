@@ -43,11 +43,11 @@ export const LanguageCreatePopup = ({
     Record<keyof AddNewLanguageRequest, string>
   >({
     callApi: () =>
-      postMethod<AddNewLanguageRequest>(
-        apiRoute.language.addNewLanguage,
-        cookies.token,
-        languageState
-      ),
+      postMethod<AddNewLanguageRequest>({
+        pathName: apiRoute.language.addNewLanguage,
+        token: cookies.token,
+        request: languageState,
+      }),
     handleSuccess(message) {
       toast.success(translate(message))
       handleClose()

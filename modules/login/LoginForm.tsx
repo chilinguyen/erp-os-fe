@@ -25,8 +25,11 @@ export const LoginForm = () => {
 
   const resultForgotPassword = useApiCall({
     callApi: () =>
-      postMethod(apiRoute.auth.forgotPassword, undefined, undefined, {
-        email: emailRef?.current?.value || '',
+      postMethod({
+        pathName: apiRoute.auth.forgotPassword,
+        params: {
+          email: emailRef?.current?.value || '',
+        },
       }),
     handleError(status, message) {
       if (status) {
@@ -40,9 +43,12 @@ export const LoginForm = () => {
 
   const result = useApiCall<LoginResponseSuccess, LoginResponseFailure>({
     callApi: () =>
-      postMethod<LoginRequest>(apiRoute.auth.login, undefined, {
-        username: emailRef.current ? emailRef.current.value : '',
-        password: encodeBase64(passwordRef.current ? passwordRef.current.value : ''),
+      postMethod<LoginRequest>({
+        pathName: apiRoute.auth.login,
+        request: {
+          username: emailRef.current ? emailRef.current.value : '',
+          password: encodeBase64(passwordRef.current ? passwordRef.current.value : ''),
+        },
       }),
     handleSuccess(message, data) {
       if (data.needVerify) {
