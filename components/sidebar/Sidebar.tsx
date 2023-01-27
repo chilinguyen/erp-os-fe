@@ -142,7 +142,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
             borderTop: `1px solid ${themeValue[darkTheme].colors.border}`,
           }}
         >
-          <SignOutButton isLabel={childrenList.length === 0} />
+          <SignOutButton />
         </div>
         {childrenList.length > 0 && (
           <div

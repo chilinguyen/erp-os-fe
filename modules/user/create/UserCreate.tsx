@@ -1,7 +1,7 @@
 import { Button, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
 import { getListEditAble, lostOddProps } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { postMethod } from '@/services'
@@ -19,6 +19,8 @@ export const UserCreate = () => {
   const translate = useTranslationFunction()
 
   const { breakPoint } = useSelector(ShareStoreSelector)
+
+  const breadCrumb = useGetBreadCrumb()
 
   const [UserState, setUserState] = useState<UserResponseSuccess>(DefaultUser)
 
@@ -45,15 +47,13 @@ export const UserCreate = () => {
     setUserState({ ...newUserState, ...newUpdate })
   }
 
-  const createUserLabel = useTranslation('createUserPascal')
-
   const cancelLabel = useTranslation('cancel')
 
   const saveLabel = useTranslation('save')
 
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
-      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{createUserLabel}</h2>
+      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div
         style={{
           display: 'flex',
@@ -62,7 +62,7 @@ export const UserCreate = () => {
           marginBottom: 10,
         }}
       >
-        <h1 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{createUserLabel}</h1>
+        <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <div
           style={{
             display: 'flex',

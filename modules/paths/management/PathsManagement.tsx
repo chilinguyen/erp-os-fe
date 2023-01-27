@@ -1,7 +1,7 @@
 import { CustomTable, Pagination } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { useApiCall, useGetBreadCrumb, useTranslationFunction } from '@/hooks'
 import { getTotalPage } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
@@ -21,9 +21,9 @@ export const PathsManagement = () => {
 
   const [page, setPage] = useState<number>(1)
 
-  const pathsPascal = useTranslation('path')
-
   const { breakPoint } = useSelector(ShareStoreSelector)
+
+  const breadCrumb = useGetBreadCrumb()
 
   const result = useApiCall<CommonListResultType<PathResponse>, String>({
     callApi: () =>
@@ -47,9 +47,9 @@ export const PathsManagement = () => {
 
   return (
     <>
-      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{pathsPascal}</h2>
+      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{pathsPascal}</h1>
+        <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <div style={{ display: 'flex', gap: 5 }}>
           <CreatePathPopup callList={setLetCall} />
           <DeletePathPopup

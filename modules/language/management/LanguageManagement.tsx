@@ -1,7 +1,7 @@
 import { Collapse, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { useApiCall, useGetBreadCrumb, useTranslationFunction } from '@/hooks'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { setLanguage, ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
@@ -58,15 +58,13 @@ export const LanguageManagement = () => {
     viewLanguageresult.setLetCall(true)
   }, [])
 
+  const breadCrumb = useGetBreadCrumb()
+
   return (
     <>
-      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>
-        {useTranslation('langMangPascal')}
-      </h2>
+      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>
-          {useTranslation('langMangPascal')}
-        </h1>
+        <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <div
           style={{
             display: 'flex',

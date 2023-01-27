@@ -1,5 +1,6 @@
 import { useResponsive } from '@/hooks'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { NavbarInternal } from '../navbar'
 import { SideBar } from '../sidebar'
 
@@ -16,6 +17,12 @@ const DefaultLayout = ({
   const toggleSideBar = () => {
     setOpenSideBar(!isOpenSideBar)
   }
+
+  const router = useRouter()
+
+  useEffect(() => {
+    setOpenSideBar(false)
+  }, [router])
 
   return (
     <>
