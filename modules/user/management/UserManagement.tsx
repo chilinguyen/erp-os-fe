@@ -1,30 +1,30 @@
-import { useEffect, useState } from 'react'
+import { Button, CustomTable, Pagination } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
+import { listFunctionParseValue } from '@/modules/permission/inventory'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { UserListSuccess } from '@/types'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { toast } from 'react-toastify'
-import { listFunctionParseValue } from '@/modules/permission/inventory'
-import { Button, CustomTable, Pagination } from '@/components'
 import { useSelector } from 'react-redux'
-import { ShareStoreSelector } from '@/redux/share-store'
+import { toast } from 'react-toastify'
 
 export const UserManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
 
-  const [page, setPage] = useState<number>(1)
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
-  const userManagementPascal = useTranslation('userManagementPascal')
+  const [page, setPage] = useState<number>(1)
 
   const createUserPascal = useTranslation('createUserPascal')
 
   const router = useRouter()
 
-  const { breakPoint } = useSelector(ShareStoreSelector)
+  const breadCrumb = useGetBreadCrumb()
 
   const result = useApiCall<UserListSuccess, String>({
     callApi: () =>
@@ -50,9 +50,9 @@ export const UserManagement = () => {
 
   return (
     <>
-      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{userManagementPascal}</h2>
+      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{userManagementPascal}</h1>
+        <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <Button
           onClick={() => {
             router.push('/user/create')

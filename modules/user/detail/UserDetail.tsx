@@ -1,7 +1,7 @@
 import { Button, Dropdown, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
 import { getListEditAble, lostOddProps, StatusList } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod, putMethod } from '@/services'
@@ -99,11 +99,9 @@ export const UserDetail = () => {
 
   const editLabel = useTranslation('edit')
 
-  const userDetail = useTranslation('userDetail')
-
-  const userEdit = useTranslation('userEdit')
-
   const statusList = StatusList()
+
+  const breadCrumb = useGetBreadCrumb()
 
   if (viewResult.loading)
     return (
@@ -116,9 +114,7 @@ export const UserDetail = () => {
 
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
-      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>
-        {type === 'read' ? userDetail : userEdit}
-      </h2>
+      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div
         style={{
           display: 'flex',
@@ -127,9 +123,7 @@ export const UserDetail = () => {
           marginBottom: 10,
         }}
       >
-        <h1 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>
-          {type === 'read' ? userDetail : userEdit}
-        </h1>
+        <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           {/* <Dropdown isDisabled={changeStatus.loading} isBordered>
             <Dropdown.Button

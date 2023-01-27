@@ -1,7 +1,7 @@
 import { Button, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
 import { getListEditAble, lostOddProps } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod, putMethod } from '@/services'
@@ -19,6 +19,7 @@ export const PermissionDetail = () => {
   const router = useRouter()
   const translate = useTranslationFunction()
   const { breakPoint } = useSelector(ShareStoreSelector)
+  const breadCrumb = useGetBreadCrumb()
 
   const [type, setType] = useState<'read' | 'update'>('read')
   const [permissionState, setPermissionState] =
@@ -78,15 +79,9 @@ export const PermissionDetail = () => {
 
   const editLabel = useTranslation('edit')
 
-  const permissionDetail = useTranslation('permissionDetail')
-
-  const editPermission = useTranslation('editPermission')
-
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
-      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>
-        {type === 'read' ? permissionDetail : editPermission}
-      </h2>
+      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div
         style={{
           display: 'flex',
@@ -95,9 +90,7 @@ export const PermissionDetail = () => {
           marginBottom: 10,
         }}
       >
-        <h1 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>
-          {type === 'read' ? permissionDetail : editPermission}
-        </h1>
+        <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <div>
           <div style={{ display: 'flex', gap: 20 }}>
             {type === 'read' ? (

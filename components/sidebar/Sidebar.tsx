@@ -87,7 +87,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           position: 'fixed',
           top: 60,
           left: 0,
-          bottom: 0,
+          bottom: 60,
           zIndex: pixel >= 960 ? 2 : 50,
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           fontWeight: 500,
@@ -124,7 +124,25 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
               isLabel={childrenList.length === 0}
             />
           ))}
-          <SignOutButton isLabel={childrenList.length === 0} />
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            width: pixel >= 960 || isOpenSideBar ? 300 : 0,
+            position: 'fixed',
+            height: '60px',
+            left: 0,
+            bottom: 0,
+            zIndex: pixel >= 960 ? 2 : 50,
+            boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
+            fontWeight: 500,
+            transition: 'all 0.2s linear',
+            overflow: 'hidden',
+            backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
+            borderTop: `1px solid ${themeValue[darkTheme].colors.border}`,
+          }}
+        >
+          <SignOutButton />
         </div>
         {childrenList.length > 0 && (
           <div

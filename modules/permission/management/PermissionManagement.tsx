@@ -1,7 +1,7 @@
 import { Button, CustomTable, Pagination } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { CommonListResultType, PermissionResponse } from '@/types'
@@ -19,9 +19,9 @@ export const PermissionManagement = () => {
 
   const router = useRouter()
 
-  const permissionManagementPascal = useTranslation('permissionManagementPascal')
-
   const permissionCreatePascal = useTranslation('permissionCreatePascal')
+
+  const breadCrumb = useGetBreadCrumb()
 
   const { breakPoint } = useSelector(ShareStoreSelector)
 
@@ -47,11 +47,9 @@ export const PermissionManagement = () => {
 
   return (
     <>
-      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{permissionManagementPascal}</h2>
+      <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>
-          {permissionManagementPascal}
-        </h1>
+        <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <Button
           onClick={() => {
             router.push('/permission/create')
