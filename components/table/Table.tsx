@@ -131,37 +131,23 @@ export function CustomTable({
       </div>
     )
 
+  // this is condition for switching between selection and not selection
+  let newHeader = [{ key: 'actions', label: '' }, ...header]
+  if (selectionMode !== 'none') {
+    newHeader = [{ key: 'select', label: '' }, ...newHeader]
+  }
+
   return (
     <div style={{ width: '100%', overflow: 'auto', padding: '16px 12px', paddingTop: 20 }}>
       <table {...rest}>
         <thead>
           <tr>
-            {selectionMode !== 'none' ? (
-              <th
-                style={{
-                  padding: '1px 1px 1px 16px',
-                  borderTopLeftRadius: '12px',
-                  borderBottomLeftRadius: '12px',
-                  backgroundColor: themeValue[darkTheme].colors.gray50,
-                }}
-              >
-                {' '}
-              </th>
-            ) : null}
-            <th
-              style={{
-                padding: '1px 1px 1px 16px',
-                borderTopLeftRadius: selectionMode === 'none' ? '12px' : undefined,
-                borderBottomLeftRadius: selectionMode === 'none' ? '12px' : undefined,
-                backgroundColor: themeValue[darkTheme].colors.gray50,
-              }}
-            >
-              {' '}
-            </th>
-            {header.map((itemHead, index) => (
+            {newHeader.map((itemHead, index) => (
               <th
                 style={{
                   padding: '4px 16px',
+                  borderTopLeftRadius: index === 0 ? '12px' : undefined,
+                  borderBottomLeftRadius: index === 0 ? '12px' : undefined,
                   borderTopRightRadius: index === header.length - 1 ? '12px' : undefined,
                   borderBottomRightRadius: index === header.length - 1 ? '12px' : undefined,
                   fontSize: '12px',
@@ -192,29 +178,26 @@ export function CustomTable({
               onClick={handleChange}
               id={itemBody?.id}
             >
-              {[{ key: 'select', label: '' }, { key: 'actions', label: '' }, ...header].map(
-                (itemHead, index) => {
-                  if (selectionMode === 'none' && itemHead.key === 'select') return null
-                  return (
-                    <td
-                      style={{
-                        whiteSpace: 'nowrap',
-                        padding: '10px 16px',
-                        borderTopLeftRadius: index === 0 ? '12px' : undefined,
-                        borderBottomLeftRadius: index === 0 ? '12px' : undefined,
-                        borderTopRightRadius:
-                          itemHead.key === header.at(-1)?.key ? '12px' : undefined,
-                        borderBottomRightRadius:
-                          itemHead.key === header.at(-1)?.key ? '12px' : undefined,
-                        backgroundColor: getBackgroundColor(itemBody?.id),
-                      }}
-                      key={itemHead.key}
-                    >
-                      {renderCell(itemBody, itemHead.key)}
-                    </td>
-                  )
-                }
-              )}
+              {newHeader.map((itemHead, index) => {
+                return (
+                  <td
+                    style={{
+                      whiteSpace: 'nowrap',
+                      padding: '10px 16px',
+                      borderTopLeftRadius: index === 0 ? '12px' : undefined,
+                      borderBottomLeftRadius: index === 0 ? '12px' : undefined,
+                      borderTopRightRadius:
+                        itemHead.key === header.at(-1)?.key ? '12px' : undefined,
+                      borderBottomRightRadius:
+                        itemHead.key === header.at(-1)?.key ? '12px' : undefined,
+                      backgroundColor: getBackgroundColor(itemBody?.id),
+                    }}
+                    key={itemHead.key}
+                  >
+                    {renderCell(itemBody, itemHead.key)}
+                  </td>
+                )
+              })}
             </tr>
           ))}
         </tbody>

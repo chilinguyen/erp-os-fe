@@ -49,7 +49,6 @@ export const DeletePermissionPopup = () => {
         onClick={() => {
           setOpen(true)
         }}
-        size="sm"
         color="error"
       >
         {deleteLabel}

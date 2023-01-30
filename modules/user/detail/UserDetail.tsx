@@ -127,7 +127,6 @@ export const UserDetail = () => {
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           {/* <Dropdown isDisabled={changeStatus.loading} isBordered>
             <Dropdown.Button
-              size="sm"
               color={UserState.deleted === 0 ? 'success' : 'warning'}
               css={{ width: 144 }}
             >

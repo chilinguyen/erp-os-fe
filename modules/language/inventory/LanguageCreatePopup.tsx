@@ -75,7 +75,6 @@ export const LanguageCreatePopup = ({
         onClick={() => {
           setOpen(true)
         }}
-        size="sm"
       >
         {labelButton}
       </Button>

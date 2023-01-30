@@ -99,7 +99,6 @@ export const PermissionDetail = () => {
                   onClick={() => {
                     setType('update')
                   }}
-                  size="sm"
                 >
                   {editLabel}
                 </Button>
@@ -109,7 +108,6 @@ export const PermissionDetail = () => {
                   onClick={() => {
                     router.push('/permission/management')
                   }}
-                  size="sm"
                 >
                   {cancelLabel}
                 </Button>
@@ -121,7 +119,6 @@ export const PermissionDetail = () => {
                   onClick={() => {
                     updateResult.setLetCall(true)
                   }}
-                  size="sm"
                   disabled={updateResult.loading}
                 >
                   {updateResult.loading ? <Loading /> : <>{saveLabel}</>}
@@ -133,7 +130,6 @@ export const PermissionDetail = () => {
                     updateResult.handleReset()
                     setType('read')
                   }}
-                  size="sm"
                   disabled={updateResult.loading}
                 >
                   {cancelLabel}

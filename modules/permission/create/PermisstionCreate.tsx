@@ -74,7 +74,6 @@ export const PermissionCreate = () => {
             onClick={() => {
               createResult.setLetCall(true)
             }}
-            size="sm"
             disabled={createResult.loading}
           >
             {createResult.loading ? <Loading /> : <>{saveLabel}</>}
@@ -84,7 +83,6 @@ export const PermissionCreate = () => {
             onClick={() => {
               router.push('/permission/management')
             }}
-            size="sm"
             disabled={createResult.loading}
           >
             {cancelLabel}

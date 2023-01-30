@@ -65,7 +65,6 @@ export const OneLanguage = ({ language, setLetCallList, updateStoreLanguage }: I
                 updateResult.setLetCall(true)
                 setEditAble(false)
               }}
-              size="sm"
               disabled={updateResult.loading}
             >
               {updateResult.loading ? <Loading /> : <>{save}</>}
@@ -76,7 +75,6 @@ export const OneLanguage = ({ language, setLetCallList, updateStoreLanguage }: I
                 setLetCallList(true)
                 setEditAble(false)
               }}
-              size="sm"
               disabled={updateResult.loading}
             >
               {cancel}
@@ -87,7 +85,6 @@ export const OneLanguage = ({ language, setLetCallList, updateStoreLanguage }: I
             onClick={() => {
               setEditAble(true)
             }}
-            size="sm"
           >
             {edit}
           </Button>

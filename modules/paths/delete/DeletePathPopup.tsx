@@ -55,7 +55,6 @@ export const DeletePathPopup = ({ deleteId, setDeleteId, setLetCallList }: IDele
         onClick={() => {
           setOpen(true)
         }}
-        size="sm"
         color="error"
         disabled={deleteId.length === 0}
       >
