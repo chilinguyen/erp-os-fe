@@ -75,7 +75,6 @@ export const DictionaryCreatePopup = ({
         onClick={() => {
           setOpen(true)
         }}
-        size="sm"
       >
         {labelButton}
       </Button>

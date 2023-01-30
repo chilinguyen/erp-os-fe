@@ -68,7 +68,6 @@ export const PermissionManagement = () => {
           onClick={() => {
             router.push('/permission/create')
           }}
-          size="sm"
         >
           {permissionCreatePascal}
         </Button>

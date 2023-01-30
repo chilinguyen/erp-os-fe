@@ -98,12 +98,12 @@ export const IOCsvLanguage = ({
   return (
     <>
       {uploadFileName ? (
-        <Button size="sm" onClick={handleDiscardFile}>
+        <Button onClick={handleDiscardFile}>
           {uploadFileName}
           <TiDelete size={25} color="red" />
         </Button>
       ) : (
-        <Button size="sm" style={{ position: 'relative' }}>
+        <Button style={{ position: 'relative' }}>
           <input
             style={{
               opacity: '0',
@@ -122,7 +122,7 @@ export const IOCsvLanguage = ({
         </Button>
       )}
       <a href={encodedUri} download="language">
-        <Button size="sm">{labelExport}</Button>
+        <Button>{labelExport}</Button>
       </a>
 
       <Modal open={open} preventClose>

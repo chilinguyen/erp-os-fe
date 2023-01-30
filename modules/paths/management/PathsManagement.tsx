@@ -80,6 +80,7 @@ export const PathsManagement = () => {
         listFunctionParseValue={{}}
         loading={loading}
         handleChangeSelection={setPathSelectedId}
+        selectedKeys={pathSelectedId}
       >
         <>{null}</>
       </CustomTable>

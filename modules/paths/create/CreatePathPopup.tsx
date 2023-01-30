@@ -56,9 +56,7 @@ export const CreatePathPopup = ({ callList }: ICreatePathPopup) => {
 
   return (
     <>
-      <Button onClick={handleOpen} size="sm">
-        {pathsCreatePascal}
-      </Button>
+      <Button onClick={handleOpen}>{pathsCreatePascal}</Button>
       <Modal open={open} setOpen={handleClose} preventClose>
         <h2>{pathsCreatePascal}</h2>
 
