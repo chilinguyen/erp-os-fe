@@ -5,7 +5,7 @@ import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } 
 import { listFunctionParseValue } from '@/modules/permission/inventory'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
-import { UserListSuccess } from '@/types'
+import { UserListSuccess, ViewPointType } from '@/types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -40,10 +40,24 @@ export const UserManagement = () => {
     },
   })
 
+  const resultTableHeader = useApiCall<ViewPointType[], String>({
+    callApi: () =>
+      getMethod({
+        pathName: apiRoute.table.getIgnoreFieldUser,
+        token: cookies.token,
+      }),
+    handleError(status, message) {
+      if (status) {
+        toast.error(translate(message))
+      }
+    },
+  })
+
   const { data, loading, setLetCall } = result
 
   useEffect(() => {
     setLetCall(true)
+    resultTableHeader.setLetCall(true)
   }, [page])
 
   const listFunctionParseValues = listFunctionParseValue()
@@ -62,7 +76,7 @@ export const UserManagement = () => {
         </Button>
       </div>
       <CustomTable
-        header={data?.viewPoints ?? [{ key: '', label: '' }]}
+        header={resultTableHeader.data?.result ?? [{ key: '', label: '' }]}
         body={data ? data.result.data : []}
         listFunctionParseValue={listFunctionParseValues}
         loading={loading}
