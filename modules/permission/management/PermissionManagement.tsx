@@ -4,7 +4,7 @@ import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
-import { CommonListResultType, PermissionResponse } from '@/types'
+import { CommonListResultType, PermissionResponse, ViewPointType } from '@/types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -39,10 +39,24 @@ export const PermissionManagement = () => {
     },
   })
 
+  const resultTableHeader = useApiCall<ViewPointType[], String>({
+    callApi: () =>
+      getMethod({
+        pathName: apiRoute.table.getIgnoreFieldPermission,
+        token: cookies.token,
+      }),
+    handleError(status, message) {
+      if (status) {
+        toast.error(translate(message))
+      }
+    },
+  })
+
   const { data, loading, setLetCall } = result
 
   useEffect(() => {
     setLetCall(true)
+    resultTableHeader.setLetCall(true)
   }, [])
 
   return (
@@ -60,7 +74,7 @@ export const PermissionManagement = () => {
         </Button>
       </div>
       <CustomTable
-        header={data?.viewPoints ?? []}
+        header={resultTableHeader.data?.result ?? []}
         body={data ? data.result.data : []}
         listFunctionParseValue={{}}
         loading={loading}

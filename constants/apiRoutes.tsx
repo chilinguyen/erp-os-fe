@@ -65,4 +65,9 @@ export const apiRoute = {
   navbar: {
     getNavbarDetailName: 'navbar/get-navbar-detail-name',
   },
+  table: {
+    getIgnoreFieldPath: 'table/get-ignore-field-path',
+    getIgnoreFieldUser: 'table/get-ignore-field-user',
+    getIgnoreFieldPermission: 'table/get-ignore-field-permission',
+  },
 }

@@ -5,7 +5,7 @@ import { useApiCall, useGetBreadCrumb, useTranslationFunction } from '@/hooks'
 import { getTotalPage } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
-import { CommonListResultType, PathResponse } from '@/types'
+import { CommonListResultType, PathResponse, ViewPointType } from '@/types'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
@@ -39,10 +39,24 @@ export const PathsManagement = () => {
     },
   })
 
+  const resultTableHeader = useApiCall<ViewPointType[], String>({
+    callApi: () =>
+      getMethod({
+        pathName: apiRoute.table.getIgnoreFieldPath,
+        token: cookies.token,
+      }),
+    handleError(status, message) {
+      if (status) {
+        toast.error(translate(message))
+      }
+    },
+  })
+
   const { data, loading, setLetCall } = result
 
   useEffect(() => {
     setLetCall(true)
+    resultTableHeader.setLetCall(true)
   }, [])
 
   return (
@@ -60,7 +74,7 @@ export const PathsManagement = () => {
         </div>
       </div>
       <CustomTable
-        header={data?.viewPoints ?? [{ key: '', label: '' }]}
+        header={resultTableHeader.data?.result ?? [{ key: '', label: '' }]}
         body={data ? data.result.data : []}
         selectionMode="single"
         listFunctionParseValue={{}}
