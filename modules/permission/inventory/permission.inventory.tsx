@@ -1,12 +1,25 @@
-import { convertValueToLabel, StatusList } from '@/lib'
+import { convertValueToLabel, GenderList } from '@/lib'
 import { PermissionRequest, PermissionResponse } from '@/types'
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 
 export const listFunctionParseValue = () => {
-  const statusList = StatusList()
+  const genderList = GenderList()
 
   return {
     deleted: (value: number) => {
-      return convertValueToLabel(value, statusList)
+      if (value) return <AiOutlineCheckCircle color="green" />
+      return <AiOutlineCloseCircle color="red" />
+    },
+    verified: (value: boolean) => {
+      if (value) return <AiOutlineCheckCircle color="green" />
+      return <AiOutlineCloseCircle color="red" />
+    },
+    verify2FA: (value: boolean) => {
+      if (value) return <AiOutlineCheckCircle color="green" />
+      return <AiOutlineCloseCircle color="red" />
+    },
+    gender: (value: number) => {
+      return convertValueToLabel(value, genderList)
     },
   }
 }
