@@ -1,4 +1,4 @@
-import { Collapse, Input, Loading } from '@/components'
+import { Checkbox, Collapse, Input, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
@@ -49,6 +49,8 @@ export const ModifierPermission = ({
 
   const selectEditable = useTranslation('selectEditable')
 
+  const isServer = useTranslation('isServer')
+
   const viewPointsResult = useApiCall<ViewPointKey, String>({
     callApi: () =>
       getMethod({ pathName: apiRoute.permissions.getViewPointsSelect, token: cookies.token }),
@@ -96,6 +98,17 @@ export const ModifierPermission = ({
             }}
             {...inputStylesPermission({ error: errorState?.name && translate(errorState.name) })}
           />
+        </div>
+        <div style={{ gridColumn: 'span 1 / span 1' }}>
+          <Checkbox
+            isSelected={permissionState.isServer === 1}
+            onChange={() => {
+              handleChangeState({ isServer: permissionState.isServer === 1 ? 0 : 1 })
+            }}
+            isReadOnly={!editAble?.isServer}
+          >
+            {isServer}
+          </Checkbox>
         </div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 80 }}>

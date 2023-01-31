@@ -1,4 +1,4 @@
-import { Button, Dropdown, Loading } from '@/components'
+import { Button, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
@@ -125,41 +125,14 @@ export const UserDetail = () => {
       >
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          {/* <Dropdown isDisabled={changeStatus.loading} isBordered>
-            <Dropdown.Button
-              color={UserState.deleted === 0 ? 'success' : 'warning'}
-              css={{ width: 144 }}
-            >
-              {statusList.find((item) => item.value === UserState.deleted)?.label}
-            </Dropdown.Button>
-            <Dropdown.Menu
-              disallowEmptySelection
-              selectedKeys={new Set([UserState.deleted.toString()])}
-              selectionMode="single"
-            >
-              {statusList
-                .filter((item) => item.value !== UserState.deleted)
-                .map((item) => (
-                  <Dropdown.Item key={item.value}>
-                    <div
-                      onClick={() => {
-                        changeStatus.setLetCall(true)
-                      }}
-                    >
-                      {item.label}
-                    </div>
-                  </Dropdown.Item>
-                ))}
-            </Dropdown.Menu>
-          </Dropdown> */}
-          <Dropdown
-            button={statusList.find((item) => item.value === UserState.active)?.label ?? ''}
-            color={UserState.active === 0 ? 'success' : 'warning'}
+          <Button
+            color={UserState.active !== 0 ? 'success' : 'warning'}
             onClick={() => {
               changeStatus.setLetCall(true)
             }}
-            options={statusList}
-          />
+          >
+            {statusList.find((item) => item.value !== UserState.active)?.label ?? ''}
+          </Button>
           <div style={{ display: 'flex', gap: 10 }}>
             {type === 'read' ? (
               <>

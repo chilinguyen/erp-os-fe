@@ -3,7 +3,7 @@ import { PathTypeEnum } from '@/types'
 
 export const inputStylesPath = ({ error }: { error?: string }) => {
   const initialValue: Partial<any> = {
-    status: error ? 'error' : 'default',
+    status: error ? 'error' : undefined,
     helperText: error || '',
     underlined: true,
   }

@@ -1,13 +1,13 @@
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
-import { PseudoType } from '@/types'
+import { PseudoType, ColorType } from '@/types'
 import { InputHTMLAttributes, useId, forwardRef, useRef, useState, FocusEvent } from 'react'
 import { useSelector } from 'react-redux'
 
 interface IInput extends InputHTMLAttributes<HTMLInputElement> {
   helperText?: string
   clearable?: boolean
-  status?: string
+  status?: ColorType
   underlined?: boolean
   labelLeft?: string
   label?: string
@@ -60,7 +60,16 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
           minWidth: 'content',
         }}
       >
-        {label ? <label htmlFor={id}>{label}</label> : undefined}
+        {label ? (
+          <label
+            style={{
+              color: themeValue[darkTheme].colors[status ?? 'foreground'],
+            }}
+            htmlFor={id}
+          >
+            {label}
+          </label>
+        ) : undefined}
         <label
           htmlFor={id}
           style={{
@@ -76,9 +85,9 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
             <span
               ref={refLabelLeft}
               style={{
-                color: themeValue[darkTheme].colors.gray600,
+                color: themeValue[darkTheme].colors[status ?? 'gray600'],
                 padding: '0 0.5rem',
-                borderRight: `1px solid ${themeValue[darkTheme].colors.gray600}`,
+                borderRight: `1px solid ${themeValue[darkTheme].colors[status ?? 'gray600']}`,
                 height: 'min-content',
                 width: 'min-content',
                 fontWeight: 500,
@@ -106,20 +115,22 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
               <hr
                 style={{
                   transition: 'width 0.25s ease',
-                  backgroundColor: themeValue[darkTheme].colors.foreground,
+                  backgroundColor: themeValue[darkTheme].colors[status ?? 'foreground'],
                   position: 'absolute',
                   bottom: 0,
                   right: '50%',
                   translate: '50% 0',
                   height: '0.188rem',
-                  zIndex: 1,
+                  zIndex: 0,
                   width: pseudo === 'focus' ? '100%' : '0',
+                  opacity: pseudo === 'focus' ? '100%' : '0',
+                  border: 0,
                 }}
               />
               <hr
                 style={{
                   transition: 'opacity 0.25s ease',
-                  backgroundColor: themeValue[darkTheme].colors.border,
+                  backgroundColor: themeValue[darkTheme].colors[status ?? 'gray600'],
                   position: 'absolute',
                   bottom: 0,
                   left: 0,
@@ -127,6 +138,7 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
                   height: '0.125rem',
                   zIndex: 0,
                   opacity: pseudo === 'focus' ? '0' : '100%',
+                  border: 0,
                 }}
               />
             </>

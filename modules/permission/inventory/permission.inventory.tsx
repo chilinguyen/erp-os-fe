@@ -29,11 +29,12 @@ export const PermissionRequestDefault: PermissionRequest = {
   userId: [],
   viewPoints: {},
   editable: {},
+  isServer: 0,
 }
 
 export const inputStylesPermission = ({ error }: { error?: string }) => {
   const initialValue: Partial<any> = {
-    status: error ? 'error' : 'default',
+    status: error ? 'error' : undefined,
     helperText: error || '',
     underlined: true,
   }
@@ -51,4 +52,5 @@ export const PermissionResponseDefault: PermissionResponse = {
   modified: '',
   viewPoints: {},
   editable: {},
+  isServer: 0,
 }

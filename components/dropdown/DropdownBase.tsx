@@ -29,7 +29,6 @@ export const DropdownBase = ({
       const windowHeight = window.innerHeight
       const heightParent = refParent?.current?.getBoundingClientRect()?.height ?? 0
       const heightChild = refChild.current.getBoundingClientRect().height
-
       if (positionParent + heightParent + heightChild < windowHeight) {
         return positionParent + heightParent
       }
@@ -71,7 +70,6 @@ export const DropdownBase = ({
         zIndex: zIndex ?? 10,
         borderRadius: 10,
         overflow: 'hidden',
-        maxHeight: '30vh',
         ...style,
       }}
       onClick={onClick}
