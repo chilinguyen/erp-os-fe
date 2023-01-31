@@ -9,7 +9,7 @@ export const useGetBreadCrumb = () => {
 
   const router = useRouter()
 
-  const content = router.asPath.substring(1, router.asPath.length).split('/')
+  const content = router.pathname.substring(1, router.pathname.length).split('/')
 
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
