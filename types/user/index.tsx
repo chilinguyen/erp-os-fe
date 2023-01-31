@@ -14,7 +14,7 @@ export interface UserResponseSuccess {
   modified: string
   verified: boolean
   verify2FA: boolean
-  deleted: number
+  active: number
 }
 
 export interface UserListSuccess {
