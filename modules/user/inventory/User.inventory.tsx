@@ -21,7 +21,7 @@ export const DefaultUser: UserResponseSuccess = {
 
 export const inputStylesUser = ({ error }: { error?: string }) => {
   const initialValue: Partial<any> = {
-    status: error ? 'error' : 'default',
+    status: error ? 'error' : undefined,
     helperText: error || '',
     underlined: true,
   }

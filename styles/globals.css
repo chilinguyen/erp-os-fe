@@ -80,26 +80,27 @@ button {
   scrollbar-width: none; /* Firefox */
 }
 
-.custom-scroolbar::-webkit-scrollbar {
+::-webkit-scrollbar {
   margin-top: 10px;
   height: 10px;
   width: 5px;
 }
 
 /* Track */
-.custom-scroolbar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #f2f2f2;
+  border-radius: 10px;
 }
 
 /* Handle */
-.custom-scroolbar::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: #bcbcbc;
+  background: #0072f5;
 }
 
 /* Handle on hover */
-.custom-scroolbar::-webkit-scrollbar-thumb:hover {
-  background: #bcbcbc;
+::-webkit-scrollbar-thumb:hover {
+  background: #0072f5;
 }
 
 .line-clamp-2 {

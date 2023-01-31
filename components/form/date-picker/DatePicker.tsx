@@ -124,7 +124,7 @@ export const DatePicker = ({
         refParent={divRef}
         zIndex={zIndex}
       >
-        <div style={{ height: 'fit-content', width: 300 }}>{obj[type]}</div>
+        <div style={{ height: 'fit-content', width: 300, minHeight: 260 }}>{obj[type]}</div>
       </DropdownBase>
     </>
   )

@@ -95,6 +95,7 @@ export const PermissionCreate = () => {
           { key: 'userId', label: 'userId' },
           { key: 'viewPoints', label: 'viewPoints' },
           { key: 'editable', label: 'editable' },
+          { key: 'isServer', label: 'isServer' },
         ])}
         permissionState={permissionState}
         handleChangeState={handleChangeState}

@@ -6,6 +6,7 @@ export interface PermissionResponse {
   modified: string
   viewPoints: ViewPointKey
   editable: ViewPointKey
+  isServer: 0 | 1
 }
 
 export interface PermissionRequest {
@@ -13,6 +14,7 @@ export interface PermissionRequest {
   userId?: string[]
   viewPoints?: ViewPointKey
   editable?: ViewPointKey
+  isServer?: 0 | 1
 }
 
 export type PermissionRequestFailure = Record<keyof PermissionRequest, string>
