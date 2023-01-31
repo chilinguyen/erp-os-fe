@@ -112,6 +112,7 @@ export const IOCsvLanguage = ({
               right: 0,
               bottom: 0,
               position: 'absolute',
+              cursor: 'pointer',
             }}
             type="file"
             id="csvFile"

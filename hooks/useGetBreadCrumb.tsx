@@ -2,6 +2,7 @@ import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import { GrNext } from 'react-icons/gr'
 import { useSelector } from 'react-redux'
 
 export const useGetBreadCrumb = () => {
@@ -28,13 +29,19 @@ export const useGetBreadCrumb = () => {
         newResult.push(<div>{item}</div>)
       }
       if (content.indexOf(item) !== content.length - 1) {
-        newResult.push(<div>-</div>)
+        newResult.push(
+          <div>
+            <GrNext size={20} />
+          </div>
+        )
       }
     })
     setResult(newResult)
   }, [router])
 
   return (
-    <div style={{ display: 'flex', gap: 10, overflow: 'auto' }}>{result.map((item) => item)}</div>
+    <div style={{ display: 'flex', gap: 10, overflow: 'auto', alignItems: 'center' }}>
+      {result.map((item) => item)}
+    </div>
   )
 }

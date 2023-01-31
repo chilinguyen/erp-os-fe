@@ -1,6 +1,6 @@
-import { themeValue } from '@/lib'
+import { addClassBody, removeClassBody, themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
-import { CSSProperties, ReactNode } from 'react'
+import { CSSProperties, ReactNode, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 interface IModal {
@@ -33,6 +33,11 @@ export const Modal = ({
   const handleClose = () => {
     if (!preventClose && setOpen) setOpen(false)
   }
+
+  useEffect(() => {
+    if (open) addClassBody('overflow')
+    else removeClassBody('overflow')
+  }, [open])
 
   return (
     <div
