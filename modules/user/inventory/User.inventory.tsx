@@ -16,7 +16,7 @@ export const DefaultUser: UserResponseSuccess = {
   modified: '',
   verified: false,
   verify2FA: false,
-  deleted: 0,
+  active: 0,
 }
 
 export const inputStylesUser = ({ error }: { error?: string }) => {

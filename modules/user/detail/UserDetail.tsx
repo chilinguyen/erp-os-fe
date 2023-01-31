@@ -153,8 +153,8 @@ export const UserDetail = () => {
             </Dropdown.Menu>
           </Dropdown> */}
           <Dropdown
-            button={statusList.find((item) => item.value === UserState.deleted)?.label ?? ''}
-            color={UserState.deleted === 0 ? 'success' : 'warning'}
+            button={statusList.find((item) => item.value === UserState.active)?.label ?? ''}
+            color={UserState.active === 0 ? 'success' : 'warning'}
             onClick={() => {
               changeStatus.setLetCall(true)
             }}
