@@ -29,6 +29,7 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
         left: 0,
         right: 0,
         padding: '10px',
+        zIndex: 10,
       }}
     >
       <div

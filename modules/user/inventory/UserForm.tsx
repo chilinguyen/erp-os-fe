@@ -53,6 +53,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
           padding: '0 12px',
           display: 'flex',
           alignItems: 'center',
+          height: 62,
         }}
       >
         {verifiedLabel.toUpperCase()}
