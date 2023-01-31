@@ -6,9 +6,9 @@ export const listFunctionParseValue = () => {
   const genderList = GenderList()
 
   return {
-    deleted: (value: number) => {
-      if (value) return <AiOutlineCheckCircle color="green" />
-      return <AiOutlineCloseCircle color="red" />
+    active: (value: number) => {
+      if (value) return <AiOutlineCloseCircle color="red" />
+      return <AiOutlineCheckCircle color="green" />
     },
     verified: (value: boolean) => {
       if (value) return <AiOutlineCheckCircle color="green" />
