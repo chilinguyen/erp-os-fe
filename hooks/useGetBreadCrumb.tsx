@@ -17,7 +17,13 @@ export const useGetBreadCrumb = () => {
     const newResult: React.ReactNode[] = []
     content.forEach((item) => {
       if (item === content[content.length - 1]) {
-        newResult.push(<div style={{ color: themeValue[darkTheme].colors.blue600 }}>{item}</div>)
+        if (item === '[id]') {
+          newResult.push(
+            <div style={{ color: themeValue[darkTheme].colors.blue600 }}>{router.query.id}</div>
+          )
+        } else {
+          newResult.push(<div style={{ color: themeValue[darkTheme].colors.blue600 }}>{item}</div>)
+        }
       } else {
         newResult.push(<div>{item}</div>)
       }
