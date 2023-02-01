@@ -73,7 +73,7 @@ export const Checkbox = ({
         display: 'flex',
         gap: '0.5rem',
         alignItems: 'center',
-        cursor: disabled ? 'default' : 'pointer',
+        cursor: disabled || isReadOnly ? 'default' : 'pointer',
       }}
       onClick={handleChange}
     >

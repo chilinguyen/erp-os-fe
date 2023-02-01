@@ -4,12 +4,15 @@ export interface PathResponse {
   path: string
   type: PathTypeEnum
   icon: string
+  userId: string[]
 }
 
 export interface PathRequest {
   label: string
   path: string
   type: PathTypeEnum
+  icon: string
+  userId: string[]
 }
 
 export enum PathTypeEnum {
@@ -23,3 +26,5 @@ export interface PathListResponse {
   pageSize: number
   totalRows: number
 }
+
+export type PathRequestFailure = Record<keyof PathRequest, string>

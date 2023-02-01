@@ -25,6 +25,8 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
       style,
       onFocus,
       onBlur,
+      disabled,
+      readOnly,
       ...rest
     },
     ref
@@ -98,6 +100,8 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
           )}
           <input
             ref={ref}
+            disabled={disabled}
+            readOnly={readOnly}
             {...rest}
             id={id}
             style={{
@@ -106,6 +110,7 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
               height: '2.5rem',
               background: 'transparent',
               padding: '0 0.5rem',
+              cursor: disabled || readOnly ? 'default' : 'text',
             }}
             onFocus={handleFocus}
             onBlur={handleBlur}
@@ -130,7 +135,7 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
               <hr
                 style={{
                   transition: 'opacity 0.25s ease',
-                  backgroundColor: themeValue[darkTheme].colors[status ?? 'gray600'],
+                  backgroundColor: themeValue[darkTheme].colors[status ?? 'border'],
                   position: 'absolute',
                   bottom: 0,
                   left: 0,
@@ -144,7 +149,17 @@ export const Input = forwardRef<HTMLInputElement, IInput>(
             </>
           ) : null}
         </label>
-        {helperText && <div style={{ fontSize: '10px', paddingLeft: '4px' }}>{helperText}</div>}
+        {helperText && (
+          <div
+            style={{
+              fontSize: '10px',
+              paddingLeft: '4px',
+              color: themeValue[darkTheme].colors[status ?? 'foreground'],
+            }}
+          >
+            {helperText}
+          </div>
+        )}
       </div>
     )
   }

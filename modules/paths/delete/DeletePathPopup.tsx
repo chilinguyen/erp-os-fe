@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 
 interface IDeletePathPopup {
   deleteId: string[]
-  setDeleteId: (id: string[]) => void
+  setDeleteId?: (id: string[]) => void
   setLetCallList: (v: boolean) => void
 }
 
@@ -39,7 +39,9 @@ export const DeletePathPopup = ({ deleteId, setDeleteId, setLetCallList }: IDele
     },
     handleSuccess(message) {
       toast.success(translate(message))
-      setDeleteId([])
+      if (setDeleteId) {
+        setDeleteId([])
+      }
       handleClose()
       setLetCallList(true)
     },

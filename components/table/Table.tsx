@@ -100,7 +100,7 @@ export function CustomTable({
           }
           break
         default:
-          handleChangeSelection(body.map((item) => item?.id ?? ''))
+          break
       }
     }
   }

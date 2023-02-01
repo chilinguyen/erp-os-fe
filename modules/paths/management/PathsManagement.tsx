@@ -1,21 +1,21 @@
-import { CustomTable, Pagination } from '@/components'
+import { Button, CustomTable, Pagination } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useGetBreadCrumb, useTranslationFunction } from '@/hooks'
-import { getTotalPage } from '@/lib'
+import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { CommonListResultType, PathResponse, ViewPointType } from '@/types'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { CreatePathPopup } from '../create/CreatePathPopup'
 import { DeletePathPopup } from '../delete/DeletePathPopup'
 
 export const PathsManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
+  const router = useRouter()
 
   const [pathSelectedId, setPathSelectedId] = useState<string[]>([])
 
@@ -24,6 +24,8 @@ export const PathsManagement = () => {
   const { breakPoint } = useSelector(ShareStoreSelector)
 
   const breadCrumb = useGetBreadCrumb()
+
+  const pathsCreatePascal = useTranslation('createNewPath')
 
   const result = useApiCall<CommonListResultType<PathResponse>, String>({
     callApi: () =>
@@ -55,9 +57,12 @@ export const PathsManagement = () => {
   const { data, loading, setLetCall } = result
 
   useEffect(() => {
-    setLetCall(true)
     resultTableHeader.setLetCall(true)
   }, [])
+
+  useEffect(() => {
+    setLetCall(true)
+  }, [page])
 
   return (
     <>
@@ -65,7 +70,13 @@ export const PathsManagement = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <div style={{ display: 'flex', gap: 5 }}>
-          <CreatePathPopup callList={setLetCall} />
+          <Button
+            onClick={() => {
+              router.push('/paths/create')
+            }}
+          >
+            {pathsCreatePascal}
+          </Button>
           <DeletePathPopup
             deleteId={pathSelectedId}
             setDeleteId={setPathSelectedId}
@@ -86,7 +97,7 @@ export const PathsManagement = () => {
       </CustomTable>
       {!loading && (
         <Pagination
-          total={getTotalPage(data?.result.totalRows || 0, 10)}
+          total={data?.result?.totalRows ?? 0}
           onChange={(number) => setPage(number)}
           page={page}
           paginationStyle={{ marginTop: 20 }}
