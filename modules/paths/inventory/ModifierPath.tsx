@@ -2,13 +2,13 @@ import { Input, SelectCustom, UploadFileBase64 } from '@/components'
 import { useTranslation } from '@/hooks'
 import { formatSVGBase64 } from '@/lib'
 import { UserTablePermission } from '@/modules/permission/inventory'
-import { PathRequest, PathRequestFailure, PathTypeEnum } from '@/types'
+import { PathRequest, PathRequestFailure, PathResponse, PathTypeEnum } from '@/types'
 import Image from 'next/image'
 import { inputStylesPath, PathTypeList } from './Iventory'
 
 interface IModifierPath {
-  handleChangeState: (newUpdate: Partial<PathRequest>) => void
-  pathState: PathRequest
+  handleChangeState: (newUpdate: Partial<PathResponse>) => void
+  pathState: PathResponse
   editAble?: Partial<Record<keyof PathRequest, boolean>>
   errorState?: Partial<PathRequestFailure>
 }
@@ -42,7 +42,7 @@ export const ModifierPath = ({
           disabled={!editAble?.icon}
         />
         <div style={{ position: 'relative', width: 32, aspectRatio: 1 }}>
-          <Image src={pathState.icon} layout="fill" />
+          {pathState.icon ? <Image src={pathState.icon} layout="fill" /> : 'No icon'}
         </div>
       </div>
       <Input

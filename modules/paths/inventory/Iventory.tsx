@@ -1,5 +1,5 @@
 import { useTranslation } from '@/hooks'
-import { PathRequest, PathTypeEnum } from '@/types'
+import { PathResponse, PathTypeEnum } from '@/types'
 
 export const inputStylesPath = ({ error }: { error?: string }) => {
   const initialValue: Partial<any> = {
@@ -30,7 +30,8 @@ export const PathTypeList = () => {
   ]
 }
 
-export const PathRequestDefault: PathRequest = {
+export const PathDefault: PathResponse = {
+  id: '',
   path: '',
   label: '',
   type: PathTypeEnum.INTERNAL,

@@ -4,13 +4,13 @@ import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { postMethod } from '@/services'
-import { PathRequest, PathRequestFailure } from '@/types'
+import { PathRequest, PathRequestFailure, PathResponse } from '@/types'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { ModifierPath, PathRequestDefault } from '../inventory'
+import { ModifierPath, PathDefault } from '../inventory'
 
 export const PathCreate = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -18,7 +18,7 @@ export const PathCreate = () => {
   const { breakPoint } = useSelector(ShareStoreSelector)
   const router = useRouter()
 
-  const [pathState, setPathState] = useState<PathRequest>(PathRequestDefault)
+  const [pathState, setPathState] = useState<PathResponse>(PathDefault)
 
   const createResult = useApiCall<PathRequest, PathRequestFailure>({
     callApi: () =>
