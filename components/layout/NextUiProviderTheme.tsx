@@ -8,7 +8,7 @@ import { GeneralSettingsResponseSuccess, LanguageResponseSuccess } from '@/types
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { BackdropLoading } from '../backdrop'
 
 export const NextUiProviderTheme = ({ children }: { children: React.ReactNode }) => {
@@ -74,12 +74,6 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
 
   return (
     <>
-      <ToastContainer
-        autoClose={2000}
-        position="top-center"
-        theme={isDark ? 'dark' : 'light'}
-        style={{ zIndex: 1000000 }}
-      />
       {children}
       <BackdropLoading isOpen={!!loading} />
     </>

@@ -57,6 +57,7 @@ export const PermissionDetail = () => {
     handleSuccess(message) {
       toast.success(translate(message))
       viewResult.setLetCall(true)
+      setType('read')
     },
   })
 
