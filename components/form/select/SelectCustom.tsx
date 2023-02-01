@@ -32,8 +32,10 @@ export const SelectCustom = <T,>({
   const { darkTheme } = useSelector(GeneralSettingsSelector)
 
   const handleOpen = () => {
-    setOpen(true)
-    addClassBody('overflow')
+    if (!disabled) {
+      setOpen(true)
+      addClassBody('overflow')
+    }
   }
 
   const handleClose = () => {
@@ -61,7 +63,7 @@ export const SelectCustom = <T,>({
         onBlur={handleClose}
         {...buttonProps}
       />
-      <DropdownBase open={!disabled && open} refParent={divRef} zIndex={zIndex} typeWidth="full">
+      <DropdownBase open={open} refParent={divRef} zIndex={zIndex} typeWidth="full">
         {options.map((item) => (
           <div
             style={{
