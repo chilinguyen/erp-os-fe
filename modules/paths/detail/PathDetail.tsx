@@ -54,6 +54,7 @@ export const PathDetail = () => {
     handleSuccess(message) {
       toast.success(translate(message))
       viewResult.setLetCall(true)
+      setType('read')
     },
   })
 

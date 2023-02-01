@@ -79,6 +79,7 @@ export const UserDetail = () => {
     handleSuccess: (message) => {
       toast.success(translate(message))
       viewResult.setLetCall(true)
+      setType('read')
     },
   })
 
