@@ -1,23 +1,28 @@
-import { Button } from '@/components'
+import { Button, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
-import { useApiCall, useGetBreadCrumb, useTranslation } from '@/hooks'
+import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
+import { getListEditAble, lostOddProps } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
-import { getMethod } from '@/services'
-import { PathRequest, PathResponse } from '@/types'
+import { getMethod, putMethod } from '@/services'
+import { PathRequest, PathRequestFailure, PathResponse } from '@/types'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 import { DeletePathPopup } from '../delete/DeletePathPopup'
-import { ModifierPath, PathRequestDefault } from '../inventory'
+import { ModifierPath, PathDefault } from '../inventory'
 
 export const PathDetail = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const { breakPoint } = useSelector(ShareStoreSelector)
   const router = useRouter()
 
-  const [pathState, setPathState] = useState<PathRequest>(PathRequestDefault)
+  const translate = useTranslationFunction()
+
+  const [type, setType] = useState<'read' | 'update'>('read')
+  const [pathState, setPathState] = useState<PathResponse>(PathDefault)
 
   const viewResult = useApiCall<PathResponse, string>({
     callApi: () =>
@@ -33,14 +38,40 @@ export const PathDetail = () => {
     },
   })
 
+  const updateResult = useApiCall<PathRequest, PathRequestFailure>({
+    callApi: () =>
+      putMethod<PathRequest>({
+        pathName: apiRoute.paths.updatePath,
+        token: cookies.token,
+        params: { id: pathState.id },
+        request: lostOddProps<PathRequest>(pathState, viewResult.data?.editable),
+      }),
+    handleError(status, message) {
+      if (status) {
+        toast.error(translate(message))
+      }
+    },
+    handleSuccess(message) {
+      toast.success(translate(message))
+      viewResult.setLetCall(true)
+    },
+  })
+
   const cancel = useTranslation('cancel')
   const breadCrumb = useGetBreadCrumb()
+  const saveLabel = useTranslation('save')
+  const editLabel = useTranslation('edit')
 
   useEffect(() => {
     if (router?.query?.id) {
       viewResult.setLetCall(true)
     }
   }, [router?.query?.id])
+
+  const onchangePathState = (newUpdate: Partial<PathResponse>) => {
+    const newUserState = { ...pathState }
+    setPathState({ ...newUserState, ...newUpdate })
+  }
 
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
@@ -56,29 +87,63 @@ export const PathDetail = () => {
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <div>
           <div style={{ display: 'flex', gap: 20 }}>
-            <DeletePathPopup
-              deleteId={[router?.query?.id?.toString() ?? '']}
-              setLetCallList={() => {
-                router.push('/paths/management')
-              }}
-            />
-            <Button
-              color="warning"
-              onClick={() => {
-                router.push('/paths/management')
-              }}
-            >
-              {cancel}
-            </Button>
+            {type === 'read' ? (
+              <>
+                <Button
+                  onClick={() => {
+                    setType('update')
+                  }}
+                >
+                  {editLabel}
+                </Button>
+                <DeletePathPopup
+                  deleteId={[router?.query?.id?.toString() ?? '']}
+                  setLetCallList={() => {
+                    router.push('/paths/management')
+                  }}
+                />
+                <Button
+                  color="warning"
+                  onClick={() => {
+                    router.push('/paths/management')
+                  }}
+                >
+                  {cancel}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  color="success"
+                  onClick={() => {
+                    updateResult.setLetCall(true)
+                  }}
+                  disabled={updateResult.loading}
+                >
+                  {updateResult.loading ? <Loading /> : <>{saveLabel}</>}
+                </Button>
+                <Button
+                  color="warning"
+                  onClick={() => {
+                    if (viewResult?.data?.result) setPathState(viewResult.data.result)
+                    setType('read')
+                    updateResult.handleReset()
+                  }}
+                  disabled={updateResult.loading}
+                >
+                  {cancel}
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
 
       <ModifierPath
-        editAble={{ userId: true }}
+        editAble={type === 'update' ? getListEditAble(viewResult?.data?.editable) : {}}
         pathState={pathState}
-        handleChangeState={() => {}}
-        errorState={{}}
+        handleChangeState={onchangePathState}
+        errorState={updateResult?.error?.result}
       />
     </div>
   )

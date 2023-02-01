@@ -56,7 +56,7 @@ export const PermissionDetail = () => {
     },
     handleSuccess(message) {
       toast.success(translate(message))
-      router.push('/permission/management')
+      viewResult.setLetCall(true)
     },
   })
 

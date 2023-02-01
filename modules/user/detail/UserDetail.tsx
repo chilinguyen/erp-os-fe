@@ -57,7 +57,7 @@ export const UserDetail = () => {
     },
     handleSuccess(message) {
       toast.success(translate(message))
-      router.push('/user/management')
+      viewResult.setLetCall(true)
     },
   })
 

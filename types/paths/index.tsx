@@ -8,11 +8,11 @@ export interface PathResponse {
 }
 
 export interface PathRequest {
-  label: string
-  path: string
-  type: PathTypeEnum
-  icon: string
-  userId: string[]
+  label?: string
+  path?: string
+  type?: PathTypeEnum
+  icon?: string
+  userId?: string[]
 }
 
 export enum PathTypeEnum {
