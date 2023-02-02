@@ -1,5 +1,6 @@
 export interface UserResponseSuccess {
   id: string
+  avatar: string
   username: string
   password: string
   gender: number
@@ -15,7 +16,6 @@ export interface UserResponseSuccess {
   verified: boolean
   verify2FA: boolean
   active: number
-  avatar: string
 }
 
 export interface UserListSuccess {
