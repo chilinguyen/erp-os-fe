@@ -1,11 +1,19 @@
 import { convertValueToLabel, GenderList } from '@/lib'
 import { PermissionRequest, PermissionResponse } from '@/types'
+import Image from 'next/image'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 
 export const listFunctionParseValue = () => {
   const genderList = GenderList()
 
   return {
+    avatar: (value: string) => {
+      return (
+        <div style={{ width: '40px', aspectRatio: '1 / 1', position: 'relative' }}>
+          <Image layout="fill" src={value} />
+        </div>
+      )
+    },
     active: (value: number) => {
       if (value) return <AiOutlineCloseCircle color="red" />
       return <AiOutlineCheckCircle color="green" />
