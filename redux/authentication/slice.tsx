@@ -13,6 +13,7 @@ const initialState: AuthenticationStoreTypes = {
     address: '',
   },
   isLoggedIn: false,
+  isLoginLoading: false,
 }
 
 const AuthenticationSlice = createSlice({
@@ -38,10 +39,19 @@ const AuthenticationSlice = createSlice({
     setIsLoggedIn: (state, actions: PayloadAction<boolean>) => {
       state.isLoggedIn = actions.payload
     },
+    setLoading: (state, actions: PayloadAction<boolean>) => {
+      state.isLoginLoading = actions.payload
+    },
   },
 })
 
-export const { setSignUpRequest, reset, resetSignUpRequest, setIsForbidden, setIsLoggedIn } =
-  AuthenticationSlice.actions
+export const {
+  setSignUpRequest,
+  reset,
+  resetSignUpRequest,
+  setIsForbidden,
+  setIsLoggedIn,
+  setLoading,
+} = AuthenticationSlice.actions
 
 export default AuthenticationSlice

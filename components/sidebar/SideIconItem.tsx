@@ -49,7 +49,9 @@ export const SideIconItem = (props: SidebarIconProps) => {
         setHover(false)
       }}
       onClick={() => {
-        router.push(link)
+        if (link !== router.pathname) {
+          router.push(link)
+        }
       }}
     >
       <div

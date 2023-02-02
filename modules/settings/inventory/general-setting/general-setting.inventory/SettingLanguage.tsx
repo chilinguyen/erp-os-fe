@@ -29,7 +29,6 @@ export const SettingLanguage = ({ disabled, languageKey, setLetCallUpdate }: ISe
     callApi: () =>
       getMethod({ pathName: apiRoute.language.getLanguageSelectList, token: cookie.token }),
     handleSuccess: (message, data) => {
-      toast.success(translate(message))
       setLanguageOptions(data)
     },
     handleError: (status, message) => {

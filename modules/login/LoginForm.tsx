@@ -3,7 +3,7 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { encodeBase64, themeValue } from '@/lib'
-import { setIsLoggedIn } from '@/redux/authentication'
+import { authenticationSelector, setIsLoggedIn, setLoading } from '@/redux/authentication'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { postMethod } from '@/services'
 import { LoginRequest, LoginResponseFailure, LoginResponseSuccess } from '@/types'
@@ -22,6 +22,7 @@ export const LoginForm = () => {
   const translate = useTranslationFunction()
   const dispatch = useDispatch()
   const { darkTheme } = useSelector(GeneralSettingsSelector)
+  const { isLoginLoading } = useSelector(authenticationSelector)
 
   const resultForgotPassword = useApiCall({
     callApi: () =>
@@ -81,12 +82,14 @@ export const LoginForm = () => {
         toast.error(translate(message))
       }
     },
+    preventLoadingGlobal: true,
   })
 
-  const { error, loading, setLetCall, handleReset } = result
+  const { error, setLetCall, handleReset } = result
 
   const handleLogin = () => {
     setLetCall(true)
+    dispatch(setLoading(true))
   }
 
   const usernameLabel = useTranslation('username')
@@ -120,7 +123,7 @@ export const LoginForm = () => {
       />
       <div style={{ width: '100%', display: 'flex', justifyContent: 'end' }}>
         <Button
-          disabled={loading}
+          disabled={isLoginLoading}
           styleType="light"
           onClick={() => resultForgotPassword.setLetCall(true)}
         >
@@ -128,8 +131,8 @@ export const LoginForm = () => {
         </Button>
       </div>
       <div style={{ width: '100%', display: 'flex', justifyContent: 'end', paddingTop: '1rem' }}>
-        <Button disabled={loading} onClick={handleLogin}>
-          {loading ? <Loading /> : <>{signIn}</>}
+        <Button disabled={isLoginLoading} onClick={handleLogin}>
+          {isLoginLoading ? <Loading /> : <>{signIn}</>}
         </Button>
       </div>
     </>
