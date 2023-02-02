@@ -4,6 +4,7 @@ import { GenderList, themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { UserDetailFailure, UserResponseSuccess } from '@/types'
+import Image from 'next/image'
 import { useSelector } from 'react-redux'
 import { inputStylesUser } from './User.inventory'
 
@@ -47,16 +48,20 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
           gridColumn: 'span 1 / span 1',
           backgroundColor: user.verified
             ? themeValue[darkTheme].colors.success
-            : themeValue[darkTheme].colors.primary,
+            : themeValue[darkTheme].colors.warning,
           verticalAlign: 'middle',
           borderRadius: '14px',
-          padding: '0 12px',
+          padding: '6px 12px',
           display: 'flex',
           alignItems: 'center',
           height: 62,
+          justifyContent: 'space-between',
         }}
       >
         {verifiedLabel.toUpperCase()}
+        <div style={{ height: '100%', position: 'relative', aspectRatio: '1 / 1' }}>
+          <Image src={user.avatar} layout="fill" />
+        </div>
       </div>
       <div style={{ gridColumn: 'span 1 / span 1' }}>
         <Input
