@@ -13,7 +13,7 @@ interface INavbarInternal {
 }
 
 export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
-  const { darkTheme } = useSelector(GeneralSettingsSelector)
+  const { darkTheme, accountInfo } = useSelector(GeneralSettingsSelector)
 
   const router = useRouter()
 
@@ -29,7 +29,7 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
         left: 0,
         right: 0,
         padding: '10px',
-        zIndex: 10,
+        zIndex: 5,
       }}
     >
       <div
@@ -71,7 +71,7 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
       >
         <div
           style={{
-            height: '70%',
+            height: '90%',
             aspectRatio: '1/1',
             borderRadius: '100%',
             cursor: 'pointer',
@@ -88,7 +88,7 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
         >
           <div
             style={{
-              height: '70%',
+              height: '80%',
               aspectRatio: '1/1',
               position: 'relative',
               overflow: 'hidden',
@@ -102,17 +102,14 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
         </div>
         <div
           style={{
-            height: '70%',
+            height: '90%',
             aspectRatio: '1/1',
             position: 'relative',
             borderRadius: '100%',
             overflow: 'hidden',
           }}
         >
-          <Image
-            src="https://thumbs.dreamstime.com/z/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
-            layout="fill"
-          />
+          <Image src={accountInfo.avatar} layout="fill" />
         </div>
       </div>
     </div>

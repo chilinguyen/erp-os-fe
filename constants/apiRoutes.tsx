@@ -21,6 +21,7 @@ export const apiRoute = {
     updateGeneralSettings: 'settings/update-general-settings',
     updateAccountSettings: 'settings/update-account-settings',
     getGeneralSettings: 'settings/get-general-settings',
+    updateAvatar: 'settings/update-avatar',
   },
   permissions: {
     updatePermission: 'permission/update-permission',

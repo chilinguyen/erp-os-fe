@@ -1,5 +1,5 @@
 import { AuthLayout } from '@/components/layout/AuthLayout'
-import { NextUiProviderTheme } from '@/components/layout/NextUiProviderTheme'
+import { GeneralProvider } from '@/components/layout/GeneralProvider'
 import { useGetDarkMode } from '@/hooks'
 import store from '@/redux/store'
 import { NextPage } from 'next'
@@ -33,9 +33,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         style={{ zIndex: 1000000 }}
       />
       <CookiesProvider>
-        <NextUiProviderTheme>
+        <GeneralProvider>
           <AuthLayout>{getLayout(<Component {...pageProps} />)}</AuthLayout>
-        </NextUiProviderTheme>
+        </GeneralProvider>
       </CookiesProvider>
     </Provider>
   )
