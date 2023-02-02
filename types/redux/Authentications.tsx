@@ -4,4 +4,5 @@ export type AuthenticationStoreTypes = {
   isForbidden: boolean
   signUpRequest: SignUpRequest
   isLoggedIn: boolean
+  isLoginLoading: boolean
 }

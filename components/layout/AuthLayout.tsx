@@ -1,7 +1,7 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
-import { authenticationSelector, setIsLoggedIn } from '@/redux/authentication'
+import { authenticationSelector, setIsLoggedIn, setLoading } from '@/redux/authentication'
 import { getMethod, postMethod } from '@/services'
 import { LoginResponseSuccess, TypeAccount } from '@/types'
 import { useRouter } from 'next/router'
@@ -18,7 +18,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const translate = useTranslationFunction()
   const [googleToken, setGoogleToken] = useState('')
   const [isFirstRender, setIsFirstRender] = useState(true)
-  const [accessPath, setAccessPath] = useState<String[]>([])
+  const [accessPath, setAccessPath] = useState<String[]>()
   const { isLoggedIn } = useSelector(authenticationSelector)
   const dispatch = useDispatch()
 
@@ -64,6 +64,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         dispatch(setIsLoggedIn(true))
       }
     },
+    preventLoadingGlobal: true,
   })
 
   const getAccessPath = useApiCall<string[], {}>({
@@ -105,26 +106,16 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   }, [isLoggedIn, router, isFirstRender])
 
   const ignoreAccessPath = ['login', 'forgot-password', 'verify']
+  const specialPath = ['403', '404']
 
   const resultAuthentication = () => {
-    if (!isFirstRender && router) {
-      if (router.pathname.includes('403')) {
-        return <Component403 />
-      }
-      if (router.pathname.includes('404')) {
-        return children
-      }
-      if (!isLoggedIn) {
-        if (!!ignoreAccessPath.find((localPath) => router.pathname.includes(localPath)))
-          return children
-        return null
-      }
-      if (!!accessPath.find((pathItem) => router.pathname === pathItem)) {
-        return children
-      }
+    if (specialPath.find((pathItem) => router.pathname === pathItem)) {
+      return children
+    }
+    if (accessPath && !accessPath.find((pathItem) => router.pathname === pathItem)) {
       return <Component403 />
     }
-    return <>logo</>
+    return children
   }
 
   useEffect(() => {
@@ -140,9 +131,11 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         !isLoggedIn &&
         !ignoreAccessPath.find((localPath) => router.pathname.includes(localPath))
       ) {
+        setAccessPath(undefined)
         router.push('/login')
       }
       if (isLoggedIn) {
+        dispatch(setLoading(false))
         getAccessPath.setLetCall(true)
       }
     }
@@ -167,6 +160,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         context: 'use',
         callback: (res: any) => {
           if (res?.credential) {
+            dispatch(setLoading(true))
             setGoogleToken(res.credential)
           }
         },

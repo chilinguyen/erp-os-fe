@@ -21,7 +21,6 @@ export const GeneralSettings = () => {
     callApi: () =>
       getMethod({ pathName: apiRoute.settings.getGeneralSettings, token: cookie.token }),
     handleSuccess: (message, data) => {
-      toast.success(translate(message))
       dispatch(setGeneralSettings(data))
     },
     handleError: (status, message) => {
@@ -37,7 +36,7 @@ export const GeneralSettings = () => {
       return putMethod<GeneralSettingsResponseSuccess>({
         pathName: apiRoute.settings.updateGeneralSettings,
         token: cookie.token,
-        params: rest,
+        request: rest,
       })
     },
     handleSuccess: (message) => {

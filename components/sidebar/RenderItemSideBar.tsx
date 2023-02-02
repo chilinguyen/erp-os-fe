@@ -73,7 +73,9 @@ export const RenderItemSideBar = ({ item, hasDivide, level }: IRenderItemSideBar
         cursor: 'pointer',
       }}
       onClick={() => {
-        router.push(item.path)
+        if (item.path !== router.pathname) {
+          router.push(item.path)
+        }
       }}
     >
       {thisLabel}

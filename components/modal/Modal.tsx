@@ -66,7 +66,7 @@ export const Modal = ({
           bottom: open ? 0 : undefined,
           width: !open ? 0 : undefined,
           overflow: 'auto',
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: 'rgba(0,0,0,0.2)',
           backdropFilter: !notBlur ? 'blur(15px)' : undefined,
           WebkitBackdropFilter: !notBlur ? 'blur(15px)' : undefined,
         }}
