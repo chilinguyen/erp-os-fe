@@ -1,22 +1,29 @@
 import { apiRoute } from '@/constants/apiRoutes'
-import { TOKEN_AUTHENTICATION } from '@/constants/auth'
+import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetDarkMode, useTranslationFunction } from '@/hooks'
-import { GeneralSettingsSelector, setGeneralSettings } from '@/redux/general-settings'
+import { authenticationSelector } from '@/redux/authentication'
+import { GeneralSettingsSelector, setGeneralSettings, setUserInfo } from '@/redux/general-settings'
 import { setLanguage, ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
-import { GeneralSettingsResponseSuccess, LanguageResponseSuccess } from '@/types'
+import {
+  GeneralSettingsResponseSuccess,
+  LanguageResponseSuccess,
+  UserResponseSuccess,
+} from '@/types'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { BackdropLoading } from '../backdrop'
 
-export const NextUiProviderTheme = ({ children }: { children: React.ReactNode }) => {
-  const [cookies] = useCookies([TOKEN_AUTHENTICATION])
+export const GeneralProvider = ({ children }: { children: React.ReactNode }) => {
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
   const { darkTheme, languageKey } = useSelector(GeneralSettingsSelector)
 
   const { breakPoint, loading } = useSelector(ShareStoreSelector)
+
+  const { isLoggedIn } = useSelector(authenticationSelector)
 
   const dispatch = useDispatch()
 
@@ -33,6 +40,25 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
     handleSuccess(message, data) {
       if (breakPoint === 3) {
         dispatch(setGeneralSettings(data))
+      }
+    },
+  })
+
+  const viewResult = useApiCall<UserResponseSuccess, string>({
+    callApi: () =>
+      getMethod({
+        pathName: apiRoute.user.getDetailUser,
+        token: cookies.token,
+        params: {
+          id: cookies.userId,
+        },
+      }),
+    handleSuccess: (message, data) => {
+      dispatch(setUserInfo(data))
+    },
+    handleError(status, message) {
+      if (status) {
+        toast.error(translate(message))
       }
     },
   })
@@ -63,10 +89,11 @@ export const NextUiProviderTheme = ({ children }: { children: React.ReactNode })
   }, [isDark])
 
   useEffect(() => {
-    if (cookies.token) {
+    if (isLoggedIn) {
       result.setLetCall(true)
+      viewResult.setLetCall(true)
     }
-  }, [cookies.token])
+  }, [isLoggedIn])
 
   useEffect(() => {
     getLanguage.setLetCall(true)

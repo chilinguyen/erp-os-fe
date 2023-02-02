@@ -17,6 +17,7 @@ export const DefaultUser: UserResponseSuccess = {
   verified: false,
   verify2FA: false,
   active: 0,
+  avatar: '',
 }
 
 export const inputStylesUser = ({ error }: { error?: string }) => {

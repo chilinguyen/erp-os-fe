@@ -15,6 +15,7 @@ export interface UserResponseSuccess {
   verified: boolean
   verify2FA: boolean
   active: number
+  avatar: string
 }
 
 export interface UserListSuccess {
