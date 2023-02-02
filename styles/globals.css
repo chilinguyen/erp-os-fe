@@ -15,16 +15,6 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
-}
-
 table,
 tr,
 td,
@@ -129,5 +119,20 @@ button {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: black;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #1a1919;
   }
 }
