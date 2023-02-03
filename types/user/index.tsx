@@ -16,6 +16,7 @@ export interface UserResponseSuccess {
   verified: boolean
   verify2FA: boolean
   active: number
+  type: 'INTERNAL' | 'EXTERNAL'
 }
 
 export interface UserListSuccess {
