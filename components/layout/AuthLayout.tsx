@@ -4,7 +4,7 @@ import { useApiCall, useTranslationFunction } from '@/hooks'
 import { PreAuthentication } from '@/modules/per-authentication/PreAuthentication'
 import { authenticationSelector, setIsLoggedIn, setLoading } from '@/redux/authentication'
 import { getMethod, postMethod } from '@/services'
-import { LoginResponseSuccess, TypeAccount } from '@/types'
+import { LoginResponseSuccess } from '@/types'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
@@ -56,12 +56,6 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           path: '/',
           expires: new Date(new Date().setDate(new Date().getDate() + 7)),
         })
-        if (data.type === TypeAccount.INTERNAL) {
-          router.push('/dashboard')
-        }
-        if (data.type === TypeAccount.EXTERNAL) {
-          router.push('/')
-        }
         dispatch(setIsLoggedIn(true))
       }
     },
@@ -106,7 +100,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isLoggedIn, router, isFirstRender])
 
-  const specialPath = ['403', '404']
+  const specialPath = ['/403', '/404']
 
   const resultAuthentication = () => {
     if (!isLoggedIn) return <PreAuthentication />

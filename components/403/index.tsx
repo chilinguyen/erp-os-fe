@@ -1,38 +1,48 @@
+import { useTranslation } from '@/hooks'
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
+import { ShareStoreSelector } from '@/redux/share-store'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
-import { Button } from '../button'
+import { DefaultLayout } from '../layout'
 
 export const Component403 = () => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
-  const router = useRouter()
-
+  const forbidden = useTranslation('forbidden')
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        justifyContent: 'center',
-        alignItems: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 30,
-      }}
-    >
-      <div style={{ width: '20%', position: 'relative', aspectRatio: '1/1' }}>
-        <Image layout="fill" src="/undraw_access_denied_re_awnf.svg" />
-      </div>
-      <div style={{ fontSize: 50, color: themeValue[darkTheme].colors.gray900 }}>ACCESS DENIED</div>
-      <Button
-        onClick={() => {
-          router.push('/dashboard')
+    <DefaultLayout>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 30,
+          paddingTop: breakPoint === 1 ? 100 : 150,
         }}
       >
-        Back to dashboard
-      </Button>
-    </div>
+        <div
+          style={{
+            width: breakPoint === 1 ? '100%' : '20%',
+            position: 'relative',
+            aspectRatio: '1/1',
+          }}
+        >
+          <Image layout="fill" src="/undraw_access_denied_re_awnf.svg" />
+        </div>
+        <div
+          style={{
+            fontSize: breakPoint === 1 ? 40 : 50,
+            color: themeValue[darkTheme].colors.gray900,
+          }}
+        >
+          {forbidden}
+        </div>
+      </div>
+    </DefaultLayout>
   )
 }
