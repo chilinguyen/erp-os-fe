@@ -7,17 +7,21 @@ import { authenticationSelector, setIsLoggedIn, setLoading } from '@/redux/authe
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { postMethod } from '@/services'
 import { LoginRequest, LoginResponseFailure, LoginResponseSuccess } from '@/types'
-import { useRouter } from 'next/router'
 import { useRef } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { inputStyles } from './login.inventory'
 
-export const LoginForm = () => {
+interface ILoginProps {
+  setPage: (value: 'login' | 'verify') => void
+  setVerifyType: (value: 'verifyEmail' | 'verify2FA') => void
+  setEmail: (value: string) => void
+}
+
+export const LoginForm = ({ setPage, setVerifyType, setEmail }: ILoginProps) => {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
-  const router = useRouter()
   const [, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const translate = useTranslationFunction()
   const dispatch = useDispatch()
@@ -53,10 +57,14 @@ export const LoginForm = () => {
       }),
     handleSuccess(message, data) {
       if (data.needVerify) {
-        router.push('/verify?type=verifyEmail')
+        setVerifyType('verifyEmail')
+        setPage('verify')
+        setEmail(emailRef?.current?.value || '')
       }
       if (data.verify2Fa) {
-        router.push(`/verify?type=verify2FA&email=${emailRef.current?.value || ''}`)
+        setVerifyType('verify2FA')
+        setPage('verify')
+        setEmail(emailRef?.current?.value || '')
       }
       if (!data.needVerify && !data.verify2Fa) {
         toast.success(translate(message))
@@ -69,12 +77,6 @@ export const LoginForm = () => {
           expires: new Date(new Date().setDate(new Date().getDate() + 7)),
         })
         dispatch(setIsLoggedIn(true))
-        // if (data.type === TypeAccount.INTERNAL) {
-        //   router.push('/dashboard')
-        // }
-        // if (data.type === TypeAccount.EXTERNAL) {
-        //   router.push('/')
-        // }
       }
     },
     handleError(status, message) {

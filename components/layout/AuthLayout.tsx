@@ -1,6 +1,7 @@
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
+import { PreAuthentication } from '@/modules/per-authentication/PreAuthentication'
 import { authenticationSelector, setIsLoggedIn, setLoading } from '@/redux/authentication'
 import { getMethod, postMethod } from '@/services'
 import { LoginResponseSuccess, TypeAccount } from '@/types'
@@ -105,10 +106,10 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isLoggedIn, router, isFirstRender])
 
-  const ignoreAccessPath = ['login', 'forgot-password', 'verify']
   const specialPath = ['403', '404']
 
   const resultAuthentication = () => {
+    if (!isLoggedIn) return <PreAuthentication />
     if (specialPath.find((pathItem) => router.pathname === pathItem)) {
       return children
     }
@@ -120,23 +121,11 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (router && !isFirstRender) {
-      if (
-        isLoggedIn &&
-        !!ignoreAccessPath.find((localPath) => router.pathname.includes(localPath))
-      ) {
-        router.push('/dashboard')
-        return
-      }
-      if (
-        !isLoggedIn &&
-        !ignoreAccessPath.find((localPath) => router.pathname.includes(localPath))
-      ) {
-        setAccessPath(undefined)
-        router.push('/login')
-      }
       if (isLoggedIn) {
         dispatch(setLoading(false))
         getAccessPath.setLetCall(true)
+      } else {
+        setAccessPath(undefined)
       }
     }
   }, [isLoggedIn, isFirstRender, router])
@@ -153,25 +142,25 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     /* global google */
     /* @ts-ignore */
-    if (typeof google !== undefined && !isLoggedIn && !isFirstRender) {
-      /* @ts-ignore */
-      google.accounts.id.initialize({
-        client_id: process.env.NEXT_PUBLIC_AUTH_GOOGLE_KEY,
-        context: 'use',
-        callback: (res: any) => {
-          if (res?.credential) {
-            dispatch(setLoading(true))
-            setGoogleToken(res.credential)
-          }
-        },
-      })
-      /* @ts-ignore */
-      google.accounts.id.prompt()
-    }
-    /* @ts-ignore */
-    if (google && isLoggedIn) {
-      /* @ts-ignore */
-      google.accounts.id.cancel()
+    if (!isFirstRender && typeof google !== undefined) {
+      if (!isLoggedIn) {
+        /* @ts-ignore */
+        google.accounts.id.initialize({
+          client_id: process.env.NEXT_PUBLIC_AUTH_GOOGLE_KEY,
+          context: 'use',
+          callback: (res: any) => {
+            if (res?.credential) {
+              dispatch(setLoading(true))
+              setGoogleToken(res.credential)
+            }
+          },
+        })
+        /* @ts-ignore */
+        google.accounts.id.prompt()
+      } else {
+        /* @ts-ignore */
+        google.accounts.id.cancel()
+      }
     }
   }, [isLoggedIn, isFirstRender])
 

@@ -1,46 +1,39 @@
-import { Button, Input, Loading, Modal } from '@/components'
+import { Button, Input, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
-import { setIsLoggedIn } from '@/redux/authentication'
+import { setIsLoggedIn, setLoading } from '@/redux/authentication'
 import { postMethod } from '@/services'
 import { LoginResponseSuccess } from '@/types'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { inputStyles } from './verify.inventory'
 
-export const VerifyForm = () => {
-  const [isCode, setIsCode] = useState<boolean>(false)
-  const router = useRouter()
+interface IVerifyFormProps {
+  setPage: (value: 'login' | 'verify') => void
+  email: string
+  verifyType: 'verifyEmail' | 'verify2FA'
+}
+
+export const VerifyForm = ({ setPage, email, verifyType }: IVerifyFormProps) => {
   const [, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const dispatch = useDispatch()
 
-  const [email, setEmail] = useState<string>('')
   const [code, setCode] = useState<string>('')
 
-  const verifyLabel = useTranslation(router?.query.type === 'verify2FA' ? '2FALabel' : 'EmailLabel')
-  const emailLabel = useTranslation('email')
+  const verifyLabel = useTranslation(verifyType === 'verify2FA' ? '2FALabel' : 'EmailLabel')
   const codeLabel = useTranslation('codeLabel')
   const signIn = useTranslation('signIn')
   const submit = useTranslation('submit')
-  const send = useTranslation('send')
   const resend = useTranslation('resend')
 
   const translate = useTranslationFunction()
 
   const handleLogin = () => {
-    router.push('/login')
+    setPage('login')
   }
-
-  useEffect(() => {
-    if (router?.query.type === 'verify2FA') {
-      setEmail(router?.query.email?.toString() || '')
-      setIsCode(true)
-    }
-  }, [router])
 
   const verify2FACall = useApiCall<LoginResponseSuccess, string>({
     callApi: () =>
@@ -67,12 +60,7 @@ export const VerifyForm = () => {
         expires: new Date(new Date().setDate(new Date().getDate() + 7)),
       })
       dispatch(setIsLoggedIn(true))
-      // if (data.type === TypeAccount.INTERNAL) {
-      //   router.push('/dashboard')
-      // }
-      // if (data.type === TypeAccount.EXTERNAL) {
-      //   router.push('/home')
-      // }
+      dispatch(setLoading(false))
     },
   })
 
@@ -92,7 +80,8 @@ export const VerifyForm = () => {
     },
     handleSuccess(message) {
       toast.success(translate(message))
-      router.push('/login')
+      setPage('login')
+      dispatch(setLoading(false))
     },
   })
 
@@ -107,7 +96,6 @@ export const VerifyForm = () => {
     handleSuccess(message) {
       if (message) {
         toast.success(translate(message))
-        setIsCode(true)
       }
     },
   })
@@ -122,24 +110,23 @@ export const VerifyForm = () => {
     handleSuccess(message) {
       if (message) {
         toast.success(translate(message))
-        setIsCode(true)
       }
     },
   })
 
   const handleSubmit = () => {
-    if (router?.query.type === 'verify2FA') verify2FACall.setLetCall(true)
-    if (router?.query.type === 'verifyEmail') verifyEmail.setLetCall(true)
+    if (verifyType === 'verify2FA') verify2FACall.setLetCall(true)
+    if (verifyType === 'verifyEmail') verifyEmail.setLetCall(true)
   }
 
   const handleReset = () => {
-    if (router?.query.type === 'verify2FA') verify2FACall.handleReset()
-    if (router?.query.type === 'verifyEmail') verifyEmail.handleReset()
+    if (verifyType === 'verify2FA') verify2FACall.handleReset()
+    if (verifyType === 'verifyEmail') verifyEmail.handleReset()
   }
 
   const handleResend = () => {
-    if (router?.query.type === 'verify2FA') resultResend2FA.setLetCall(true)
-    if (router?.query.type === 'verifyEmail') resultResendEmail.setLetCall(true)
+    if (verifyType === 'verify2FA') resultResend2FA.setLetCall(true)
+    if (verifyType === 'verifyEmail') resultResendEmail.setLetCall(true)
   }
 
   const loading =
@@ -149,55 +136,33 @@ export const VerifyForm = () => {
     resultResendEmail.loading
 
   return (
-    <Modal open>
+    <>
       <h3>{verifyLabel}</h3>
 
-      <div>
-        {!isCode ? (
-          <Input
-            {...inputStyles({})}
-            labelLeft={emailLabel}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onFocus={handleReset}
-          />
-        ) : (
-          <>
-            <Input
-              {...inputStyles({})}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              labelLeft={codeLabel}
-              onFocus={handleReset}
-            />
-            <div style={{ display: 'flex', justifyContent: 'end' }}>
-              <Button
-                disabled={resultResend2FA.loading || resultResendEmail.loading}
-                auto
-                styleType="light"
-                onClick={handleResend}
-              >
-                {resend}?
-              </Button>
-            </div>
-          </>
-        )}
+      <Input
+        {...inputStyles({})}
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        labelLeft={codeLabel}
+        onFocus={handleReset}
+      />
+      <div style={{ display: 'flex', justifyContent: 'end', width: '100%' }}>
+        <Button
+          disabled={resultResend2FA.loading || resultResendEmail.loading}
+          styleType="light"
+          onClick={handleResend}
+        >
+          {resend}?
+        </Button>
       </div>
-
-      <div>
-        <Button disabled={loading} auto onClick={handleLogin}>
+      <div style={{ display: 'flex', gap: 10, justifyContent: 'end', width: '100%' }}>
+        <Button disabled={loading} onClick={handleLogin}>
           {signIn}
         </Button>
-        {isCode ? (
-          <Button disabled={loading} auto onClick={handleSubmit}>
-            {loading ? <Loading /> : <>{submit}</>}
-          </Button>
-        ) : (
-          <Button disabled={loading} auto onClick={() => resultResendEmail.setLetCall(true)}>
-            {loading ? <Loading /> : <>{send}</>}
-          </Button>
-        )}
+        <Button disabled={loading} onClick={handleSubmit}>
+          {loading ? <Loading /> : <>{submit}</>}
+        </Button>
       </div>
-    </Modal>
+    </>
   )
 }
