@@ -77,10 +77,12 @@ export const LoginForm = ({ setPage, setVerifyType, setEmail }: ILoginProps) => 
           expires: new Date(new Date().setDate(new Date().getDate() + 7)),
         })
         dispatch(setIsLoggedIn(true))
+        dispatch(setLoading(false))
       }
     },
     handleError(status, message) {
       if (status) {
+        dispatch(setLoading(false))
         toast.error(translate(message))
       }
     },

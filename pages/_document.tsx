@@ -15,6 +15,7 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <script src="https://accounts.google.com/gsi/client" async defer />
+          <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js" async defer />
         </Head>
         <body>
           <Main />
