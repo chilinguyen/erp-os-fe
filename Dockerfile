@@ -7,7 +7,7 @@ FROM node:lts as builder
 WORKDIR /franchise-sys-frontend
 COPY . .
 COPY --from=dependencies /franchise-sys-frontend/node_modules ./node_modules
-RUN NEXT_PUBLIC_API_BASE_URL=APP_NEXT_PUBLIC_API_URL NEXT_PUBLIC_AUTH_GOOGLE_KEY=APP_NEXT_PUBLIC_AUTH_GOOGLE_KEY yarn build
+RUN yarn build
 
 FROM node:lts as runner
 WORKDIR /franchise-sys-frontend
@@ -18,13 +18,6 @@ COPY --from=builder /franchise-sys-frontend/public ./public
 COPY --from=builder /franchise-sys-frontend/.next ./.next
 COPY --from=builder /franchise-sys-frontend/node_modules ./node_modules
 COPY --from=builder /franchise-sys-frontend/package.json ./package.json
-COPY --from=builder /franchise-sys-frontend/entrypoint.sh ./entrypoint.sh
-COPY entrypoint.sh .
-COPY .env .
-
-RUN apk add --no-cache --upgrade bash
-RUN ["chmod", "+x", "./entrypoint.sh"]
-ENTRYPOINT ["./entrypoint.sh"]
 
 EXPOSE 3000
 CMD ["yarn", "start"]
