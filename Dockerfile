@@ -7,7 +7,7 @@ FROM node:lts as builder
 WORKDIR /franchise-sys-frontend
 COPY . .
 COPY --from=dependencies /franchise-sys-frontend/node_modules ./node_modules
-RUN NEXT_PUBLIC_API_BASE_URL=NEXT_PUBLIC_API_BASE_URL NEXT_PUBLIC_AUTH_GOOGLE_KEY=NEXT_PUBLIC_AUTH_GOOGLE_KEY yarn build
+RUN NEXT_PUBLIC_API_BASE_URL=APP_NEXT_PUBLIC_API_URL NEXT_PUBLIC_AUTH_GOOGLE_KEY=APP_NEXT_PUBLIC_AUTH_GOOGLE_KEY yarn build
 
 FROM node:lts as runner
 WORKDIR /franchise-sys-frontend
