@@ -18,6 +18,7 @@ COPY --from=builder /franchise-sys-frontend/public ./public
 COPY --from=builder /franchise-sys-frontend/.next ./.next
 COPY --from=builder /franchise-sys-frontend/node_modules ./node_modules
 COPY --from=builder /franchise-sys-frontend/package.json ./package.json
+COPY --from=builder /franchise-sys-frontend/entrypoint.sh ./entrypoint.sh
 
 ENTRYPOINT ["/franchise-sys-frontend/entrypoint.sh"]
 
