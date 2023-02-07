@@ -19,5 +19,7 @@ COPY --from=builder /franchise-sys-frontend/.next ./.next
 COPY --from=builder /franchise-sys-frontend/node_modules ./node_modules
 COPY --from=builder /franchise-sys-frontend/package.json ./package.json
 
+ENTRYPOINT ["/franchise-sys-frontend/entrypoint.sh"]
+
 EXPOSE 3000
 CMD ["yarn", "start"]
