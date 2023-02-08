@@ -2,13 +2,13 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { themeValue } from '@/lib'
-import { GeneralSettingsSelector } from '@/redux/general-settings'
+import { GeneralSettingsSelector, setIsUpdateSidebar } from '@/redux/general-settings'
 import { getMethod } from '@/services'
 import { NavbarResponseSuccess, PathResponse } from '@/types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { Backdrop } from '../backdrop'
 import { RenderItemSideBar } from './RenderItemSideBar'
@@ -22,7 +22,7 @@ interface ISideBar {
 }
 
 export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
-  const { darkTheme } = useSelector(GeneralSettingsSelector)
+  const { darkTheme, isUpdateSidebar } = useSelector(GeneralSettingsSelector)
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const [pathContent, setPathContent] = useState<
     {
@@ -32,6 +32,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   >([])
 
   const router = useRouter()
+  const dispatch = useDispatch()
 
   const translate = useTranslationFunction()
 
@@ -46,6 +47,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
       }),
     handleSuccess(message, data) {
       setPathContent(data.content)
+      dispatch(setIsUpdateSidebar(false))
     },
     handleError(status, message) {
       if (status) toast.error(translate(message))
@@ -53,10 +55,10 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   })
 
   useEffect(() => {
-    if (pathContent.length === 0) {
+    if (isUpdateSidebar) {
       getDetailSidebar.setLetCall(true)
     }
-  }, [])
+  }, [isUpdateSidebar])
 
   const childrenList =
     pathContent.find((item) =>

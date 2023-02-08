@@ -17,7 +17,6 @@ export interface UserResponseSuccess {
   verify2FA: boolean
   active: number
   type: 'INTERNAL' | 'EXTERNAL'
-  notificationId: string
 }
 
 export interface UserListSuccess {
@@ -43,6 +42,12 @@ export interface UserRequest {
   email?: string
   phone?: string
   deleted?: number
+}
+
+export interface UserConfig {
+  notificationId: string
+  channelId: string
+  eventId: string
 }
 
 export type UserRequestFailure = Record<keyof UserRequest, string>

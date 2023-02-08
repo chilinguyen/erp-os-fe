@@ -19,7 +19,6 @@ export const DefaultUser: UserResponseSuccess = {
   active: 0,
   avatar: '',
   type: 'INTERNAL',
-  notificationId: '',
 }
 
 export const inputStylesUser = ({ error }: { error?: string }) => {
