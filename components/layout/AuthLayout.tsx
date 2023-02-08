@@ -11,7 +11,6 @@ import {
 import { getMethod, postMethod } from '@/services'
 import { LoginResponseSuccess } from '@/types'
 import { useRouter } from 'next/router'
-import Pusher from 'pusher-js'
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,7 +20,7 @@ import { Component403 } from '../403'
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   const [cookies, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  const { accountConfig, isUpdateAccess } = useSelector(GeneralSettingsSelector)
+  const { isUpdateAccess } = useSelector(GeneralSettingsSelector)
   const { isLoggedIn } = useSelector(authenticationSelector)
   const translate = useTranslationFunction()
   const [googleToken, setGoogleToken] = useState('')
@@ -103,19 +102,6 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     }
     setIsFirstRender(false)
   }, [])
-
-  useEffect(() => {
-    if (accountConfig.channelId && accountConfig.eventId && window && !isFirstRender) {
-      const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY || '', {
-        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || '',
-      })
-
-      const channel = pusher.subscribe(accountConfig.channelId)
-      channel.bind(accountConfig.eventId, function (data: any) {
-        if (data.isUpdateAccessPath) dispatch(setIsUpdateAccess(data.isUpdateAccessPath))
-      })
-    }
-  }, [accountConfig, isFirstRender])
 
   useEffect(() => {
     /* global google */

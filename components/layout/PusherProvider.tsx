@@ -2,9 +2,10 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { authenticationSelector } from '@/redux/authentication'
-import { GeneralSettingsSelector, setUserConfig } from '@/redux/general-settings'
+import { GeneralSettingsSelector, setIsUpdateAccess, setUserConfig } from '@/redux/general-settings'
 import { getMethod } from '@/services'
 import { UserConfig } from '@/types'
+import Pusher from 'pusher-js'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,6 +30,16 @@ export const PusherProvider = ({ children }: { children: React.ReactNode }) => {
         })
 
         beamsClient.start().then(() => beamsClient.addDeviceInterest(accountConfig.notificationId))
+      }
+      if (accountConfig.channelId && accountConfig.eventId) {
+        const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY || '', {
+          cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || '',
+        })
+
+        const channel = pusher.subscribe(accountConfig.channelId)
+        channel.bind(accountConfig.eventId, function (data: any) {
+          if (data.isUpdateAccessPath) dispatch(setIsUpdateAccess(data.isUpdateAccessPath))
+        })
       }
     }
   }, [accountConfig])
