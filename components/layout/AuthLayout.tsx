@@ -3,9 +3,15 @@ import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { PreAuthentication } from '@/modules/per-authentication/PreAuthentication'
 import { authenticationSelector, setIsLoggedIn, setLoading } from '@/redux/authentication'
+import {
+  GeneralSettingsSelector,
+  setIsUpdateAccess,
+  setIsUpdateSidebar,
+} from '@/redux/general-settings'
 import { getMethod, postMethod } from '@/services'
 import { LoginResponseSuccess } from '@/types'
 import { useRouter } from 'next/router'
+import Pusher from 'pusher-js'
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,21 +21,13 @@ import { Component403 } from '../403'
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   const [cookies, setCookie] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  const [chatStatus, setChatStatus] = useState<string>('out')
+  const { accountConfig, isUpdateAccess } = useSelector(GeneralSettingsSelector)
+  const { isLoggedIn } = useSelector(authenticationSelector)
   const translate = useTranslationFunction()
   const [googleToken, setGoogleToken] = useState('')
   const [isFirstRender, setIsFirstRender] = useState(true)
   const [accessPath, setAccessPath] = useState<String[]>()
-  const { isLoggedIn } = useSelector(authenticationSelector)
   const dispatch = useDispatch()
-
-  const outChatRoom = useApiCall({
-    callApi: () => postMethod({ pathName: apiRoute.message.outChatRoom, token: cookies.token }),
-  })
-
-  const inChatRoom = useApiCall({
-    callApi: () => postMethod({ pathName: apiRoute.message.toChatRoom, token: cookies.token }),
-  })
 
   const loginWithGoogle = useApiCall<LoginResponseSuccess, {}>({
     callApi: () =>
@@ -43,9 +41,6 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       toast.error(translate(message))
     },
     handleSuccess(message, data) {
-      if (data.needVerify) {
-        router.push('/verify?type=verifyEmail')
-      }
       if (!data.needVerify && !data.verify2Fa) {
         toast.success(translate(message))
         setCookie(TOKEN_AUTHENTICATION, data.token, {
@@ -69,36 +64,10 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     },
     handleSuccess(message, data) {
       setAccessPath(data)
+      dispatch(setIsUpdateAccess(false))
+      dispatch(setIsUpdateSidebar(true))
     },
   })
-
-  useEffect(() => {
-    const onClose = () => {
-      if (isLoggedIn) {
-        outChatRoom.setLetCall(true)
-      }
-    }
-
-    onClose()
-
-    window.addEventListener('beforeunload', onClose)
-
-    return () => {
-      window.removeEventListener('beforeunload', onClose)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (router.asPath.includes('chat') && isLoggedIn && isFirstRender) {
-      if (chatStatus !== 'in') {
-        inChatRoom.setLetCall(true)
-        setChatStatus('in')
-      }
-    } else if (chatStatus !== 'out') {
-      outChatRoom.setLetCall(true)
-      setChatStatus('out')
-    }
-  }, [isLoggedIn, router, isFirstRender])
 
   const specialPath = ['/403', '/404']
 
@@ -117,12 +86,14 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     if (router && !isFirstRender) {
       if (isLoggedIn) {
         dispatch(setLoading(false))
-        getAccessPath.setLetCall(true)
+        if (isUpdateAccess) {
+          getAccessPath.setLetCall(true)
+        }
       } else {
         setAccessPath(undefined)
       }
     }
-  }, [isLoggedIn, isFirstRender, router])
+  }, [isLoggedIn, isFirstRender, router, isUpdateAccess])
 
   useEffect(() => {
     if (cookies.token) {
@@ -134,9 +105,22 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   useEffect(() => {
+    if (accountConfig.channelId && accountConfig.eventId && window && !isFirstRender) {
+      const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY || '', {
+        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || '',
+      })
+
+      const channel = pusher.subscribe(accountConfig.channelId)
+      channel.bind(accountConfig.eventId, function (data: any) {
+        if (data.isUpdateAccessPath) dispatch(setIsUpdateAccess(data.isUpdateAccessPath))
+      })
+    }
+  }, [accountConfig, isFirstRender])
+
+  useEffect(() => {
     /* global google */
     /* @ts-ignore */
-    if (!isFirstRender && typeof google !== undefined) {
+    if (!isFirstRender && typeof google !== undefined && window) {
       if (!isLoggedIn) {
         /* @ts-ignore */
         google.accounts.id.initialize({

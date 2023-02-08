@@ -19,7 +19,7 @@ import { BackdropLoading } from '../backdrop'
 export const GeneralProvider = ({ children }: { children: React.ReactNode }) => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
-  const { darkTheme, languageKey, accountInfo } = useSelector(GeneralSettingsSelector)
+  const { darkTheme, languageKey } = useSelector(GeneralSettingsSelector)
 
   const { breakPoint, loading } = useSelector(ShareStoreSelector)
 
@@ -81,20 +81,6 @@ export const GeneralProvider = ({ children }: { children: React.ReactNode }) => 
   })
 
   const isDark = useGetDarkMode()
-
-  useEffect(() => {
-    if (window) {
-      const nav = window.navigator.userAgent
-      if (!nav.toLowerCase().includes('iphone') && accountInfo.notificationId) {
-        /* @ts-ignore */
-        const beamsClient = new PusherPushNotifications.Client({
-          instanceId: process.env.NEXT_PUBLIC_PUSHER_INSTANCE_ID,
-        })
-
-        beamsClient.start().then(() => beamsClient.addDeviceInterest(accountInfo.notificationId))
-      }
-    }
-  }, [accountInfo.notificationId])
 
   useEffect(() => {
     if (isDark) {
