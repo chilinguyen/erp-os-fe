@@ -12,7 +12,7 @@ const initialState: GeneralSettingsStoreTypes = {
     eventId: '',
   },
   isUpdateAccess: true,
-  isUpdateSidebar: true,
+  isUpdateSidebar: false,
 }
 
 const GeneralSettingsSlice = createSlice({
