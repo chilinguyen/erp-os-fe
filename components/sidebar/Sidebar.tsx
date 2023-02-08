@@ -3,10 +3,11 @@ import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector, setIsUpdateSidebar } from '@/redux/general-settings'
+import { setSidebar, ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
-import { NavbarResponseSuccess, PathResponse } from '@/types'
+import { NavbarResponseSuccess } from '@/types'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -23,13 +24,8 @@ interface ISideBar {
 
 export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   const { darkTheme, isUpdateSidebar } = useSelector(GeneralSettingsSelector)
+  const { sidebar } = useSelector(ShareStoreSelector)
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  const [pathContent, setPathContent] = useState<
-    {
-      mainItem: PathResponse
-      childrenItem: PathResponse[]
-    }[]
-  >([])
 
   const router = useRouter()
   const dispatch = useDispatch()
@@ -46,7 +42,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
         },
       }),
     handleSuccess(message, data) {
-      setPathContent(data.content)
+      dispatch(setSidebar(data.content))
       dispatch(setIsUpdateSidebar(false))
     },
     handleError(status, message) {
@@ -61,7 +57,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   }, [isUpdateSidebar])
 
   const childrenList =
-    pathContent.find((item) =>
+    sidebar.find((item) =>
       item.childrenItem.find((childItem) => childItem.path.includes(router.pathname.split('/')[1]))
     )?.childrenItem || []
 
@@ -118,7 +114,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
             alignItems: 'center',
           }}
         >
-          {pathContent.map((item) => (
+          {sidebar.map((item) => (
             <SideIconItem
               link={item.mainItem.path}
               image={item.mainItem.icon}
