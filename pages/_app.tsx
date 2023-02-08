@@ -36,11 +36,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <CookiesProvider>
         <PusherProvider>
           <GeneralProvider>
-            {getLayout(
-              <AuthLayout>
-                <Component {...pageProps} />
-              </AuthLayout>
-            )}
+            <AuthLayout>{getLayout(<Component {...pageProps} />)}</AuthLayout>
           </GeneralProvider>
         </PusherProvider>
       </CookiesProvider>
