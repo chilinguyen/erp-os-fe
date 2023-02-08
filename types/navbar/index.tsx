@@ -1,11 +1,8 @@
-import { PathResponse } from '../paths'
+import { SidebarItem } from '../redux'
 
 export interface NavbarResponseSuccess {
   id: string
   name: string
   userIds: string[]
-  content: {
-    mainItem: PathResponse
-    childrenItem: PathResponse[]
-  }[]
+  content: SidebarItem[]
 }

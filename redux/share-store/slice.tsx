@@ -1,10 +1,11 @@
-import { ShareStoreTypes } from '@/types'
+import { ShareStoreTypes, SidebarItem } from '@/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initialState: ShareStoreTypes = {
   loading: 0,
   breakPoint: 1,
   language: {},
+  sidebar: [],
 }
 
 const ShareStoreSlice = createSlice({
@@ -29,11 +30,14 @@ const ShareStoreSlice = createSlice({
     resetLoading: (state) => {
       return { ...state, loading: 0 }
     },
+    setSidebar: (state, actions: PayloadAction<SidebarItem[]>) => {
+      state.sidebar = actions.payload
+    },
     resetShareStore: () => initialState,
   },
 })
 
-export const { resetShareStore, setLoading, setLanguage, setBreakPoint, resetLoading } =
+export const { resetShareStore, setLoading, setLanguage, setBreakPoint, resetLoading, setSidebar } =
   ShareStoreSlice.actions
 
 export default ShareStoreSlice
