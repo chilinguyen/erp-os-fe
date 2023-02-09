@@ -6,8 +6,8 @@ import { NextRouter, useRouter } from 'next/router'
 import { HTMLAttributes, MouseEvent, useState } from 'react'
 import { AiOutlineEye } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
-import { Loading } from '../loading'
 import { Checkbox } from '../form'
+import { Loading } from '../loading'
 
 interface ICustomTable extends HTMLAttributes<HTMLTableElement> {
   header: ViewPointType[]
@@ -17,6 +17,7 @@ interface ICustomTable extends HTMLAttributes<HTMLTableElement> {
   handleChangeSelection?: Function
   loading?: boolean
   selectionMode?: 'single' | 'multiple' | 'none'
+  disableAction?: boolean
   selectedKeys?: string[]
 }
 
@@ -27,6 +28,7 @@ export function CustomTable({
   listActions,
   listFunctionParseValue,
   loading,
+  disableAction = false,
   selectionMode = 'none',
   selectedKeys,
   ...rest
@@ -132,7 +134,10 @@ export function CustomTable({
     )
 
   // this is condition for switching between selection and not selection
-  let newHeader = [{ key: 'actions', label: '' }, ...header]
+  let newHeader = [...header]
+  if (!disableAction) {
+    newHeader = [{ key: 'actions', label: '' }, ...header]
+  }
   if (selectionMode !== 'none') {
     newHeader = [{ key: 'select', label: '' }, ...newHeader]
   }
