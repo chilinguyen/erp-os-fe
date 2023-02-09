@@ -46,10 +46,7 @@ export const SignOutButton = () => {
         cursor: 'pointer',
         position: 'relative',
         borderBottom: `1px solid ${themeValue[darkTheme].colors.border}`,
-        boxShadow: hover ? themeValue[darkTheme].shadows.md : undefined,
-        border: hover
-          ? `1px solid ${themeValue[darkTheme].colors.border}`
-          : `1px solid ${themeValue[darkTheme].colors.backgroundContrast}`,
+        backgroundColor: hover ? themeValue[darkTheme].colors.blue200 : '',
       }}
       onMouseEnter={() => {
         setHover(true)
