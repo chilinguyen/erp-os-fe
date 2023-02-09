@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
 import { CustomTable, Pagination } from '@/components'
+import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
-import { useCookies } from 'react-cookie'
-import { UserListSuccess } from '@/types'
 import { getMethod } from '@/services'
-import { apiRoute } from '@/constants/apiRoutes'
+import { UserListSuccess } from '@/types'
+import { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
 import { listFunctionParseValue } from './permission.inventory'
 
@@ -51,6 +51,7 @@ export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTa
         handleChangeSelection={setListUser}
         selectedKeys={listUser}
         loading={userResult.loading}
+        disableAction
       >
         <>{null}</>
       </CustomTable>

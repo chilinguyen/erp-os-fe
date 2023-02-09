@@ -1,8 +1,11 @@
 import { useTranslation } from '@/hooks'
+import { themeValue } from '@/lib'
+import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { NavBarItemType } from '@/types'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import { MdOutlineArrowBackIosNew } from 'react-icons/md'
+import { useSelector } from 'react-redux'
 
 interface IRenderItemSideBar {
   item: NavBarItemType
@@ -13,6 +16,9 @@ interface IRenderItemSideBar {
 export const RenderItemSideBar = ({ item, hasDivide, level }: IRenderItemSideBar) => {
   const router = useRouter()
   const [isShowCollapse, setShowCollapse] = useState(false)
+  const [hover, setHover] = useState(false)
+  const { darkTheme } = useSelector(GeneralSettingsSelector)
+
   const refDiv = useRef<HTMLDivElement>(null)
 
   const thisLabel = useTranslation(item.label)
@@ -71,6 +77,13 @@ export const RenderItemSideBar = ({ item, hasDivide, level }: IRenderItemSideBar
         paddingBottom: 10,
         paddingLeft: level * 10,
         cursor: 'pointer',
+        backgroundColor: hover ? themeValue[darkTheme].colors.blue200 : '',
+      }}
+      onMouseEnter={() => {
+        setHover(true)
+      }}
+      onMouseLeave={() => {
+        setHover(false)
       }}
       onClick={() => {
         if (item.path !== router.pathname) {
