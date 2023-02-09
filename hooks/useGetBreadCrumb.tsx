@@ -31,7 +31,7 @@ export const useGetBreadCrumb = () => {
       if (content.indexOf(item) !== content.length - 1) {
         newResult.push(
           <div>
-            <GrNext size={20} />
+            <GrNext color={themeValue[darkTheme].colors.backgroundContrast} size={20} />
           </div>
         )
       }
