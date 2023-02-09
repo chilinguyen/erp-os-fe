@@ -144,7 +144,10 @@ export function CustomTable({
 
   return (
     <div style={{ width: '100%', overflow: 'auto', padding: '16px 12px', paddingTop: 20 }}>
-      <table {...rest}>
+      <table
+        {...rest}
+        style={{ ...rest.style, borderCollapse: 'separate', borderSpacing: '0px 5px' }}
+      >
         <thead>
           <tr>
             {newHeader.map((itemHead, index) => (
