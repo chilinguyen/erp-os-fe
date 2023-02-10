@@ -1,5 +1,6 @@
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
@@ -13,6 +14,7 @@ interface INavbarInternal {
 
 export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
   const router = useRouter()
 
@@ -55,9 +57,13 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
           icon
         </div>
       </div>
-      <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Search />
-      </div>
+      {breakPoint > 2 && (
+        <div
+          style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Search />
+        </div>
+      )}
       {/* <div
         style={{
           width: 'fit-content',
