@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import { FloatTrayDetail } from '../inventory'
 
 export const UserDetail = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -113,6 +114,24 @@ export const UserDetail = () => {
       </div>
     )
 
+  const handleChangeStatus = () => {
+    changeStatus.setLetCall(true)
+  }
+
+  const handleSetTypeUpdate = () => {
+    setType('update')
+  }
+
+  const callUpdate = () => {
+    updateResult.setLetCall(true)
+  }
+
+  const handleSetTypeRead = () => {
+    if (viewResult?.data?.result) setUserState(viewResult.data.result)
+    setType('read')
+    updateResult.handleReset()
+  }
+
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
       <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
@@ -125,60 +144,53 @@ export const UserDetail = () => {
         }}
       >
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <Button
-            color={UserState.active !== 0 ? 'success' : 'warning'}
-            onClick={() => {
-              changeStatus.setLetCall(true)
-            }}
-          >
-            {statusList.find((item) => item.value !== UserState.active)?.label ?? ''}
-          </Button>
-          <div style={{ display: 'flex', gap: 10 }}>
-            {type === 'read' ? (
-              <>
-                <Button
-                  onClick={() => {
-                    setType('update')
-                  }}
-                >
-                  {editLabel}
-                </Button>
-                <Button
-                  color="warning"
-                  onClick={() => {
-                    router.push('/user/management')
-                  }}
-                >
-                  {cancelLabel}
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  color="success"
-                  onClick={() => {
-                    updateResult.setLetCall(true)
-                  }}
-                  disabled={updateResult.loading}
-                >
-                  {updateResult.loading ? <Loading /> : <>{saveLabel}</>}
-                </Button>
-                <Button
-                  color="warning"
-                  onClick={() => {
-                    if (viewResult?.data?.result) setUserState(viewResult.data.result)
-                    setType('read')
-                    updateResult.handleReset()
-                  }}
-                  disabled={updateResult.loading}
-                >
-                  {cancelLabel}
-                </Button>
-              </>
-            )}
+        {breakPoint > 1 ? (
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <Button
+              color={UserState.active !== 0 ? 'success' : 'warning'}
+              onClick={handleChangeStatus}
+            >
+              {statusList.find((item) => item.value !== UserState.active)?.label ?? ''}
+            </Button>
+            <div style={{ display: 'flex', gap: 10 }}>
+              {type === 'read' ? (
+                <>
+                  <Button onClick={handleSetTypeUpdate}>{editLabel}</Button>
+                  <Button
+                    color="warning"
+                    onClick={() => {
+                      router.push('/user/management')
+                    }}
+                  >
+                    {cancelLabel}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button color="success" onClick={callUpdate} disabled={updateResult.loading}>
+                    {updateResult.loading ? <Loading /> : <>{saveLabel}</>}
+                  </Button>
+                  <Button
+                    color="warning"
+                    onClick={handleSetTypeRead}
+                    disabled={updateResult.loading}
+                  >
+                    {cancelLabel}
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <FloatTrayDetail
+            type={type}
+            handleChangeStatus={handleChangeStatus}
+            handleSetTypeUpdate={handleSetTypeUpdate}
+            callUpdate={callUpdate}
+            handleSetTypeRead={handleSetTypeRead}
+            status={UserState.active}
+          />
+        )}
       </div>
       <div style={{ paddingTop: 20 }}>
         <UserForm

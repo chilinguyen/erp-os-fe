@@ -33,7 +33,7 @@ export const DropdownBase = ({
         return positionParent + heightParent
       }
 
-      return positionParent - heightChild
+      return positionParent - heightChild - 5
     }
     return 0
   }
