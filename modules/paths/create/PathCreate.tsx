@@ -2,6 +2,7 @@ import { Button, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
+import { PathDefault } from '@/inventory'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { postMethod } from '@/services'
 import { PathRequest, PathRequestFailure, PathResponse } from '@/types'
@@ -10,7 +11,7 @@ import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { ModifierPath, PathDefault } from '../inventory'
+import { ModifierPath } from '../inventory'
 
 export const PathCreate = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])

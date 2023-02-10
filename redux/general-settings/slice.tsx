@@ -1,4 +1,4 @@
-import { DefaultUser } from '@/modules/user/inventory'
+import { DefaultUser } from '@/inventory'
 import { GeneralSettingsStoreTypes, UserConfig, UserResponseSuccess } from '@/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
@@ -11,7 +11,7 @@ const initialState: GeneralSettingsStoreTypes = {
     channelId: '',
     eventId: '',
   },
-  isUpdateAccess: true,
+  isUpdateAccess: false,
   isUpdateSidebar: false,
 }
 

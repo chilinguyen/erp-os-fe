@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { DeletePathPopup } from '../delete/DeletePathPopup'
+import { DeletePathPopup } from '../inventory'
 
 export const PathsManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -88,7 +88,6 @@ export const PathsManagement = () => {
         header={resultTableHeader.data?.result ?? [{ key: '', label: '' }]}
         body={data ? data.result.data : []}
         selectionMode="single"
-        listFunctionParseValue={{}}
         loading={loading}
         handleChangeSelection={setPathSelectedId}
         selectedKeys={pathSelectedId}

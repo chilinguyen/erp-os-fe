@@ -1,10 +1,9 @@
 import { Input, SelectCustom, UploadFileBase64 } from '@/components'
 import { useTranslation } from '@/hooks'
+import { inputStyles, PathTypeList, UserTableSelect } from '@/inventory'
 import { formatSVGBase64 } from '@/lib'
-import { UserTablePermission } from '@/modules/permission/inventory'
 import { PathRequest, PathRequestFailure, PathResponse, PathTypeEnum } from '@/types'
 import Image from 'next/image'
-import { inputStylesPath, PathTypeList } from './Iventory'
 
 interface IModifierPath {
   handleChangeState: (newUpdate: Partial<PathResponse>) => void
@@ -52,7 +51,7 @@ export const ModifierPath = ({
         onChange={(event) => {
           handleChangeState({ path: event.target.value })
         }}
-        {...inputStylesPath({
+        {...inputStyles({
           error: errorState?.path,
         })}
         readOnly={!editAble?.path}
@@ -64,7 +63,7 @@ export const ModifierPath = ({
         onChange={(event) => {
           handleChangeState({ label: event.target.value })
         }}
-        {...inputStylesPath({
+        {...inputStyles({
           error: errorState?.label,
         })}
         readOnly={!editAble?.label}
@@ -77,14 +76,14 @@ export const ModifierPath = ({
         label={type}
         options={PathTypeList()}
         buttonProps={{
-          ...inputStylesPath({
+          ...inputStyles({
             error: errorState?.type,
           }),
           width: '100%',
         }}
         disabled={!editAble?.type}
       />
-      <UserTablePermission
+      <UserTableSelect
         listUser={pathState.userId}
         setListUser={setListUser}
         editAble={editAble?.userId}

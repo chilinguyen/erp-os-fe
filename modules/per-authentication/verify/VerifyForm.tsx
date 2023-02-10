@@ -2,6 +2,7 @@ import { Button, Input, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { inputStyles } from '@/inventory'
 import { setIsLoggedIn, setLoading } from '@/redux/authentication'
 import { postMethod } from '@/services'
 import { LoginResponseSuccess } from '@/types'
@@ -9,7 +10,6 @@ import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
-import { inputStyles } from './verify.inventory'
 
 interface IVerifyFormProps {
   setPage: (value: 'login' | 'verify') => void
@@ -145,6 +145,7 @@ export const VerifyForm = ({ setPage, email, verifyType }: IVerifyFormProps) => 
         onChange={(e) => setCode(e.target.value)}
         labelLeft={codeLabel}
         onFocus={handleReset}
+        clearable
       />
       <div style={{ display: 'flex', justifyContent: 'end', width: '100%' }}>
         <Button

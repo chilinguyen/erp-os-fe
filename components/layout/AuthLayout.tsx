@@ -85,14 +85,17 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     if (router && !isFirstRender) {
       if (isLoggedIn) {
         dispatch(setLoading(false))
-        if (isUpdateAccess) {
-          getAccessPath.setLetCall(true)
-        }
       } else {
         setAccessPath(undefined)
       }
     }
   }, [isLoggedIn, isFirstRender, router, isUpdateAccess])
+
+  useEffect(() => {
+    if (isLoggedIn || isUpdateAccess) {
+      getAccessPath.setLetCall(true)
+    }
+  }, [isLoggedIn, isUpdateAccess])
 
   useEffect(() => {
     if (cookies.token) {

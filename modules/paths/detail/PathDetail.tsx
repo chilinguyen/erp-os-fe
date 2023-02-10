@@ -2,6 +2,7 @@ import { Button, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
+import { PathDefault } from '@/inventory'
 import { getListEditAble, lostOddProps } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod, putMethod } from '@/services'
@@ -11,8 +12,7 @@ import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { DeletePathPopup } from '../delete/DeletePathPopup'
-import { ModifierPath, PathDefault } from '../inventory'
+import { ModifierPath, DeletePathPopup } from '../inventory'
 
 export const PathDetail = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])

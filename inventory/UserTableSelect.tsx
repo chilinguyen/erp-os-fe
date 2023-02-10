@@ -7,15 +7,14 @@ import { UserListSuccess } from '@/types'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
-import { listFunctionParseValue } from './permission.inventory'
 
-interface IUserTablePermission {
+interface IUserTableSelect {
   setListUser: Function
   listUser: string[]
   editAble?: boolean
 }
 
-export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTablePermission) => {
+export const UserTableSelect = ({ listUser, setListUser, editAble }: IUserTableSelect) => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])
   const translate = useTranslationFunction()
 
@@ -39,15 +38,12 @@ export const UserTablePermission = ({ listUser, setListUser, editAble }: IUserTa
     userResult.setLetCall(true)
   }, [page])
 
-  const listFunctionParseValues = listFunctionParseValue()
-
   return (
     <div>
       <CustomTable
         header={userResult?.data?.viewPoints ?? []}
         body={userResult?.data?.result?.data ?? []}
         selectionMode={editAble ? 'multiple' : 'none'}
-        listFunctionParseValue={listFunctionParseValues}
         handleChangeSelection={setListUser}
         selectedKeys={listUser}
         loading={userResult.loading}

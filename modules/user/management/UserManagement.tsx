@@ -2,7 +2,6 @@ import { Button, CustomTable, Pagination } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
-import { listFunctionParseValue } from '@/modules/permission/inventory'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { UserListSuccess, ViewPointType } from '@/types'
@@ -60,8 +59,6 @@ export const UserManagement = () => {
     resultTableHeader.setLetCall(true)
   }, [page])
 
-  const listFunctionParseValues = listFunctionParseValue()
-
   return (
     <>
       <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
@@ -78,7 +75,6 @@ export const UserManagement = () => {
       <CustomTable
         header={resultTableHeader.data?.result ?? [{ key: '', label: '' }]}
         body={data ? data.result.data : []}
-        listFunctionParseValue={listFunctionParseValues}
         loading={loading}
       >
         <>{null}</>

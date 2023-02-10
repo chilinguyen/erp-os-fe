@@ -1,12 +1,12 @@
 import { DatePicker, Input, SelectCustom } from '@/components'
 import { useTranslation, useTranslationFunction } from '@/hooks'
+import { inputStyles } from '@/inventory'
 import { GenderList, themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { UserDetailFailure, UserResponseSuccess } from '@/types'
 import Image from 'next/image'
 import { useSelector } from 'react-redux'
-import { inputStylesUser } from './User.inventory'
 
 interface IUserForm {
   user: UserResponseSuccess
@@ -68,7 +68,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
           value={user.created}
           label={createLabel}
           readOnly={!editAble?.created}
-          {...inputStylesUser({
+          {...inputStyles({
             error: errorState?.created && translate(errorState.created),
           })}
         />
@@ -78,7 +78,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
           value={user.modified}
           label={modifiedLabel}
           readOnly={!editAble?.modified}
-          {...inputStylesUser({
+          {...inputStyles({
             error: errorState?.modified && translate(errorState.modified),
           })}
         />
@@ -93,7 +93,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
               username: event.currentTarget.value,
             })
           }}
-          {...inputStylesUser({
+          {...inputStyles({
             error: errorState?.username && translate(errorState.username),
           })}
         />
@@ -108,7 +108,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
               address: event.currentTarget.value,
             })
           }}
-          {...inputStylesUser({ error: errorState?.address && translate(errorState.address) })}
+          {...inputStyles({ error: errorState?.address && translate(errorState.address) })}
         />
       </div>
       <div style={{ gridColumn: 'span 1 / span 1' }}>
@@ -121,7 +121,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
               firstName: event.currentTarget.value,
             })
           }}
-          {...inputStylesUser({
+          {...inputStyles({
             error: errorState?.firstName && translate(errorState.firstName),
           })}
         />
@@ -136,7 +136,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
               lastName: event.currentTarget.value,
             })
           }}
-          {...inputStylesUser({ error: errorState?.lastName && translate(errorState.lastName) })}
+          {...inputStyles({ error: errorState?.lastName && translate(errorState.lastName) })}
         />
       </div>
       <div style={{ gridColumn: 'span 1 / span 1' }}>
@@ -148,7 +148,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
               dob: event,
             })
           }}
-          buttonProps={inputStylesUser({
+          buttonProps={inputStyles({
             error: errorState?.dob && translate(errorState.dob),
           })}
           disable={!editAble?.dob}
@@ -166,7 +166,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
           disabled={!editAble?.gender}
           options={genderList}
           buttonProps={{
-            ...inputStylesUser({
+            ...inputStyles({
               error: errorState?.gender && translate(errorState.gender),
             }),
             width: '100%',
@@ -183,7 +183,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
               phone: event.currentTarget.value,
             })
           }}
-          {...inputStylesUser({ error: errorState?.phone && translate(errorState.phone) })}
+          {...inputStyles({ error: errorState?.phone && translate(errorState.phone) })}
         />
       </div>
       <div style={{ gridColumn: 'span 1 / span 1' }}>
@@ -196,7 +196,7 @@ export const UserForm = ({ user, onchangeUserState, errorState, editAble }: IUse
               email: event.currentTarget.value,
             })
           }}
-          {...inputStylesUser({ error: errorState?.email && translate(errorState.email) })}
+          {...inputStyles({ error: errorState?.email && translate(errorState.email) })}
         />
       </div>
     </div>

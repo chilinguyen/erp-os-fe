@@ -2,12 +2,12 @@ import { Button, Input, Modal } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { inputStyles } from '@/inventory'
 import { postMethod } from '@/services'
 import { AddNewLanguageRequest } from '@/types'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
-import { inputStylesLanguage } from './Language.inventory'
 
 interface ILanguageCreatePopup {
   setLetCallList: Function
@@ -90,7 +90,7 @@ export const LanguageCreatePopup = ({
               key: event.currentTarget.value,
             })
           }}
-          {...inputStylesLanguage({
+          {...inputStyles({
             error: createResult?.error?.result.key && translate(createResult.error.result.key),
           })}
         />
@@ -103,7 +103,7 @@ export const LanguageCreatePopup = ({
               language: event.currentTarget.value,
             })
           }}
-          {...inputStylesLanguage({
+          {...inputStyles({
             error:
               createResult?.error?.result.language && translate(createResult.error.result.language),
           })}
