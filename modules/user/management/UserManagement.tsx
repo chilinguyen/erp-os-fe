@@ -1,4 +1,5 @@
 import { Button, CustomTable, Pagination } from '@/components'
+import { FloatButton } from '@/components/button/FloatButton'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
@@ -8,6 +9,7 @@ import { UserListSuccess, ViewPointType } from '@/types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { BsPersonPlus } from 'react-icons/bs'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
@@ -52,6 +54,10 @@ export const UserManagement = () => {
     },
   })
 
+  const handleRidrecCreate = () => {
+    router.push('/user/create')
+  }
+
   const { data, loading, setLetCall } = result
 
   useEffect(() => {
@@ -64,13 +70,21 @@ export const UserManagement = () => {
       <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
-        <Button
-          onClick={() => {
-            router.push('/user/create')
-          }}
-        >
-          {createUserPascal}
-        </Button>
+        {breakPoint > 1 ? (
+          <Button onClick={handleRidrecCreate}>{createUserPascal}</Button>
+        ) : (
+          <FloatButton
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              aspectRatio: '1',
+            }}
+            onClick={handleRidrecCreate}
+          >
+            <BsPersonPlus style={{ width: '70%', height: '70%' }} />
+          </FloatButton>
+        )}
       </div>
       <CustomTable
         header={resultTableHeader.data?.result ?? [{ key: '', label: '' }]}

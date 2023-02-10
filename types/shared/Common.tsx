@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { ViewPointType } from '../permission'
 
 export interface CommonResponseType<T> {
@@ -28,3 +29,10 @@ export type QueryParams = {
 export type PseudoType = 'hover' | 'active' | 'focus' | 'disabled' | 'selected' | 'none'
 export type ColorType = 'primary' | 'success' | 'secondary' | 'warning' | 'error' | 'gradient'
 export type SizeType = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+
+export type SpeedDialType = {
+  label: ReactNode
+  function?: Function
+  router?: string
+  color?: ColorType
+}

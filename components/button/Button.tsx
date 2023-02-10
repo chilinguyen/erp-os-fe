@@ -4,7 +4,7 @@ import { ColorType, SizeType } from '@/types'
 import { ButtonHTMLAttributes, CSSProperties, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: ColorType
   styleType?: 'flat' | 'light' | 'ghost' | 'default'
   auto?: boolean

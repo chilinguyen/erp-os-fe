@@ -12,6 +12,7 @@ import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import { FloatTrayCreate } from '../inventory'
 
 export const UserCreate = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -51,6 +52,14 @@ export const UserCreate = () => {
 
   const saveLabel = useTranslation('save')
 
+  const callCreate = () => {
+    createResult.setLetCall(true)
+  }
+
+  const directManagement = () => {
+    router.push('/user/management')
+  }
+
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
       <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
@@ -63,31 +72,23 @@ export const UserCreate = () => {
         }}
       >
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
-        <div
-          style={{
-            display: 'flex',
-            gap: 10,
-          }}
-        >
-          <Button
-            color="success"
-            onClick={() => {
-              createResult.setLetCall(true)
+        {breakPoint > 1 ? (
+          <div
+            style={{
+              display: 'flex',
+              gap: 10,
             }}
-            disabled={createResult.loading}
           >
-            {createResult.loading ? <Loading /> : <>{saveLabel}</>}
-          </Button>
-          <Button
-            color="warning"
-            onClick={() => {
-              router.push('/user/management')
-            }}
-            disabled={createResult.loading}
-          >
-            {cancelLabel}
-          </Button>
-        </div>
+            <Button color="success" onClick={callCreate} disabled={createResult.loading}>
+              {createResult.loading ? <Loading /> : <>{saveLabel}</>}
+            </Button>
+            <Button color="warning" onClick={directManagement} disabled={createResult.loading}>
+              {cancelLabel}
+            </Button>
+          </div>
+        ) : (
+          <FloatTrayCreate callCreate={callCreate} directManagement={directManagement} />
+        )}
       </div>
       <div style={{ paddingTop: 40 }}>
         <UserForm
