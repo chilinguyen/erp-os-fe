@@ -73,7 +73,7 @@ export const AccountInformation = () => {
           display: 'flex',
           flexDirection: 'column',
           position: 'absolute',
-          backgroundColor: 'white',
+          backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
           zIndex: 1,
           overflow: 'hidden',
         }}
