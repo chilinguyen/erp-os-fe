@@ -50,6 +50,7 @@ export const UpdateAccount = () => {
     },
     handleSuccess(message) {
       toast.success(translate(message))
+      viewResult.setLetCall(true)
     },
   })
 

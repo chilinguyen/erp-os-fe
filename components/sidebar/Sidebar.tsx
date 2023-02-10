@@ -12,9 +12,9 @@ import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { Backdrop } from '../backdrop'
+import { AccountInformation } from './AccountInformation'
 import { RenderItemSideBar } from './RenderItemSideBar'
 import { SideIconItem } from './SideIconItem'
-import { SignOutButton } from './SignOutButton'
 
 interface ISideBar {
   isOpenSideBar: boolean
@@ -80,12 +80,11 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
       />
       <div
         style={{
-          display: 'flex',
           width: pixel >= 960 || isOpenSideBar ? 300 : 0,
           position: 'fixed',
           top: 60,
           left: 0,
-          bottom: 60,
+          bottom: 0,
           zIndex: pixel >= 960 ? 2 : 50,
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           fontWeight: 500,
@@ -106,60 +105,52 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
             }}
           />
         ) : null}
+        <AccountInformation />
+
         <div
           style={{
             display: 'flex',
-            flexDirection: 'column',
-            width: pixel >= 960 || isOpenSideBar ? lengthSidebar : 0,
-            alignItems: 'center',
-          }}
-        >
-          {sidebar.map((item) => (
-            <SideIconItem
-              link={item.mainItem.path}
-              image={item.mainItem.icon}
-              label={item.mainItem.label}
-              isLabel={childrenList.length === 0}
-            />
-          ))}
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            width: pixel >= 960 || isOpenSideBar ? 300 : 0,
-            position: 'fixed',
-            height: '60px',
-            left: 0,
-            bottom: 0,
-            zIndex: pixel >= 960 ? 2 : 50,
-            boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
-            fontWeight: 500,
-            transition: 'all 0.2s linear',
-            overflow: 'hidden',
-            backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
+            marginTop: 10,
+            height: '100%',
             borderTop: `1px solid ${themeValue[darkTheme].colors.border}`,
           }}
         >
-          <SignOutButton />
-        </div>
-        {childrenList.length > 0 && (
           <div
             style={{
-              overflow: 'auto',
-              width: 'calc(100% - 60px)',
-              borderLeft: `1px solid ${themeValue[darkTheme].colors.border}`,
+              display: 'flex',
+              flexDirection: 'column',
+              width: pixel >= 960 || isOpenSideBar ? lengthSidebar : 0,
+              alignItems: 'center',
             }}
           >
-            {childrenList.map((item, index) => (
-              <RenderItemSideBar
-                key={item.path}
-                item={item}
-                hasDivide={index + 1 < childrenList.length}
-                level={1}
+            {sidebar.map((item) => (
+              <SideIconItem
+                link={item.mainItem.path}
+                image={item.mainItem.icon}
+                label={item.mainItem.label}
+                isLabel={childrenList.length === 0}
               />
             ))}
           </div>
-        )}
+          {childrenList.length > 0 && (
+            <div
+              style={{
+                overflow: 'auto',
+                width: 'calc(100% - 60px)',
+                borderLeft: `1px solid ${themeValue[darkTheme].colors.border}`,
+              }}
+            >
+              {childrenList.map((item, index) => (
+                <RenderItemSideBar
+                  key={item.path}
+                  item={item}
+                  hasDivide={index + 1 < childrenList.length}
+                  level={1}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </>
   )
