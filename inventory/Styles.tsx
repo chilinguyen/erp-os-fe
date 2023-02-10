@@ -1,4 +1,4 @@
-export const inputStylesLanguage = ({ error }: { error?: string }) => {
+export const inputStyles = ({ error }: { error?: string }) => {
   const initialValue: Partial<any> = {
     status: error ? 'error' : undefined,
     helperText: error || '',

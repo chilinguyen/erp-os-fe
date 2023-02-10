@@ -1,2 +1,2 @@
-export * from './Iventory'
 export * from './ModifierPath'
+export * from './DeletePathPopup'

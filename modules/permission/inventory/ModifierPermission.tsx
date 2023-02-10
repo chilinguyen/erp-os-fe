@@ -2,6 +2,7 @@ import { Checkbox, Collapse, Input, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { inputStyles, UserTableSelect } from '@/inventory'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { PermissionRequest, PermissionRequestFailure, ViewPointKey } from '@/types'
@@ -9,8 +10,6 @@ import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { inputStylesPermission } from './permission.inventory'
-import { UserTablePermission } from './UserTable'
 import { ViewPointPermission } from './ViewPointPermission'
 
 interface IModifierPermission {
@@ -96,7 +95,7 @@ export const ModifierPermission = ({
                 name: event.currentTarget.value,
               })
             }}
-            {...inputStylesPermission({ error: errorState?.name && translate(errorState.name) })}
+            {...inputStyles({ error: errorState?.name && translate(errorState.name) })}
           />
         </div>
         <div style={{ gridColumn: 'span 1 / span 1' }}>
@@ -114,7 +113,7 @@ export const ModifierPermission = ({
       <div style={{ display: 'flex', flexDirection: 'column', gap: 80 }}>
         <div>
           <Collapse title={selectUser}>
-            <UserTablePermission
+            <UserTableSelect
               editAble={editAble?.userId}
               listUser={permissionState?.userId ?? []}
               setListUser={setListUser}

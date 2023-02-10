@@ -2,6 +2,7 @@ import { Button, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
+import { PermissionRequestDefault } from '@/inventory'
 import { getListEditAble } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { postMethod } from '@/services'
@@ -11,7 +12,7 @@ import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { ModifierPermission, PermissionRequestDefault } from '../inventory'
+import { ModifierPermission } from '../inventory'
 
 export const PermissionCreate = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])

@@ -1,5 +1,5 @@
 import { useTranslation, useTranslationFunction } from '@/hooks'
-import { themeValue } from '@/lib'
+import { ParseValueForTable, themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { ActionType, ViewPointType } from '@/types'
 import { NextRouter, useRouter } from 'next/router'
@@ -13,7 +13,6 @@ interface ICustomTable extends HTMLAttributes<HTMLTableElement> {
   header: ViewPointType[]
   body: { [key: string]: any }[]
   listActions?: ActionType[]
-  listFunctionParseValue?: { [key: string]: Function }
   handleChangeSelection?: Function
   loading?: boolean
   selectionMode?: 'single' | 'multiple' | 'none'
@@ -26,7 +25,6 @@ export function CustomTable({
   header,
   handleChangeSelection,
   listActions,
-  listFunctionParseValue,
   loading,
   disableAction = false,
   selectionMode = 'none',
@@ -36,6 +34,8 @@ export function CustomTable({
   const router = useRouter()
   const translate = useTranslationFunction()
   const { darkTheme } = useSelector(GeneralSettingsSelector)
+
+  const listFunctionParseValue = ParseValueForTable()
 
   const [hoverId, setHoverId] = useState('')
 

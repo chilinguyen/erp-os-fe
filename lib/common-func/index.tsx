@@ -1,4 +1,7 @@
 import { OptionsType, ViewPointType } from '@/types'
+import Image from 'next/image'
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
+import { GenderList } from '../common-value'
 
 export const encodeBase64 = (data: string) => {
   return Buffer.from(data).toString('base64')
@@ -59,5 +62,34 @@ export const addClassBody = (className: string) => {
 export const removeClassBody = (className: string) => {
   if (typeof window !== undefined) {
     document.body.classList.remove(className)
+  }
+}
+
+export const ParseValueForTable = (): any => {
+  const genderList = GenderList()
+
+  return {
+    avatar: (value: string) => {
+      return (
+        <div style={{ width: '40px', aspectRatio: '1 / 1', position: 'relative' }}>
+          <Image layout="fill" src={value} />
+        </div>
+      )
+    },
+    active: (value: number) => {
+      if (value) return <AiOutlineCloseCircle color="red" />
+      return <AiOutlineCheckCircle color="green" />
+    },
+    verified: (value: boolean) => {
+      if (value) return <AiOutlineCheckCircle color="green" />
+      return <AiOutlineCloseCircle color="red" />
+    },
+    verify2FA: (value: boolean) => {
+      if (value) return <AiOutlineCheckCircle color="green" />
+      return <AiOutlineCloseCircle color="red" />
+    },
+    gender: (value: number) => {
+      return convertValueToLabel(value, genderList)
+    },
   }
 }

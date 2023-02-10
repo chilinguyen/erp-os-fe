@@ -2,8 +2,8 @@ import { Button, Input, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { inputStyles } from '@/inventory'
 import { encodeBase64 } from '@/lib'
-import { inputStylesUser } from '@/modules/user/inventory'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { putMethod } from '@/services'
 import { UpdatePasswordPayload } from '@/types'
@@ -65,7 +65,7 @@ export const UpdatePassword = () => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <Input
           style={{ width: breakPoint < 2 ? '100%' : '40%' }}
-          {...inputStylesUser({
+          {...inputStyles({
             error: error?.result?.oldPassword && translate(error.result.oldPassword),
           })}
           type="password"
@@ -78,7 +78,7 @@ export const UpdatePassword = () => {
         />
         <Input
           style={{ width: breakPoint < 2 ? '100%' : '40%' }}
-          {...inputStylesUser({
+          {...inputStyles({
             error: error?.result?.newPassword && translate(error.result.newPassword),
           })}
           type="password"
@@ -91,7 +91,7 @@ export const UpdatePassword = () => {
         />
         <Input
           style={{ width: breakPoint < 2 ? '100%' : '40%' }}
-          {...inputStylesUser({
+          {...inputStyles({
             error: error?.result?.confirmNewPassword && translate(error.result.confirmNewPassword),
           })}
           type="password"

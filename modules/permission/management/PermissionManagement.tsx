@@ -75,7 +75,6 @@ export const PermissionManagement = () => {
       <CustomTable
         header={resultTableHeader.data?.result ?? []}
         body={data ? data.result.data : []}
-        listFunctionParseValue={{}}
         loading={loading}
       >
         <>{null}</>

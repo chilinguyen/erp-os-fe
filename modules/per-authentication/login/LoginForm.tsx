@@ -2,6 +2,7 @@ import { Button, Input, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { inputStyles } from '@/inventory'
 import { encodeBase64, themeValue } from '@/lib'
 import { authenticationSelector, setIsLoggedIn, setLoading } from '@/redux/authentication'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
@@ -11,7 +12,6 @@ import { useRef } from 'react'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { inputStyles } from './login.inventory'
 
 interface ILoginProps {
   setPage: (value: 'login' | 'verify') => void
@@ -117,6 +117,7 @@ export const LoginForm = ({ setPage, setVerifyType, setEmail }: ILoginProps) => 
         {...inputStyles({ error: error?.result?.username && translate(error.result.username) })}
         labelLeft={usernameLabel}
         onFocus={handleReset}
+        clearable
       />
       <Input
         ref={passwordRef}
@@ -124,6 +125,7 @@ export const LoginForm = ({ setPage, setVerifyType, setEmail }: ILoginProps) => 
         type="password"
         labelLeft={passwordLabel}
         onFocus={handleReset}
+        clearable
       />
       <div style={{ width: '100%', display: 'flex', justifyContent: 'end' }}>
         <Button

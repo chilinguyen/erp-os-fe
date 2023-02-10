@@ -1,4 +1,39 @@
-import { UserResponseSuccess, ViewPointType } from '@/types'
+import {
+  PathResponse,
+  PathTypeEnum,
+  PermissionRequest,
+  PermissionResponse,
+  UserResponseSuccess,
+  ViewPointType,
+} from '@/types'
+
+export const PathDefault: PathResponse = {
+  id: '',
+  path: '',
+  label: '',
+  type: PathTypeEnum.INTERNAL,
+  icon: '',
+  userId: [],
+}
+
+export const PermissionRequestDefault: PermissionRequest = {
+  name: '',
+  userId: [],
+  viewPoints: {},
+  editable: {},
+  isServer: 0,
+}
+
+export const PermissionResponseDefault: PermissionResponse = {
+  id: '',
+  name: '',
+  userId: [],
+  created: '',
+  modified: '',
+  viewPoints: {},
+  editable: {},
+  isServer: 0,
+}
 
 export const DefaultUser: UserResponseSuccess = {
   id: '',
@@ -19,18 +54,6 @@ export const DefaultUser: UserResponseSuccess = {
   active: 0,
   avatar: '',
   type: 'INTERNAL',
-}
-
-export const inputStylesUser = ({ error }: { error?: string }) => {
-  const initialValue: Partial<any> = {
-    status: error ? 'error' : undefined,
-    helperText: error || '',
-    underlined: true,
-  }
-
-  return {
-    ...initialValue,
-  }
 }
 
 export const initUserRequest: ViewPointType[] = [

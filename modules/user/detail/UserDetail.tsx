@@ -2,6 +2,7 @@ import { Button, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
+import { DefaultUser, UserForm } from '@/inventory'
 import { getListEditAble, lostOddProps, StatusList } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { getMethod, putMethod } from '@/services'
@@ -11,7 +12,6 @@ import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { DefaultUser, UserForm } from '../inventory'
 
 export const UserDetail = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])

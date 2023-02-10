@@ -1,8 +1,8 @@
 import { Input } from '@/components'
 import { useTranslation } from '@/hooks'
+import { inputStyles } from '@/inventory'
 import { DictionaryKey } from '@/types'
 import { DeleteDictionaryPopup } from './DeleteDictionaryPopup'
-import { inputStylesLanguage } from './Language.inventory'
 
 interface ILanguageTable {
   dictionaryList: DictionaryKey
@@ -48,7 +48,7 @@ export const LanguageTable = ({
                   style={{ width: '100%' }}
                   value={dictionaryKey}
                   readOnly
-                  {...inputStylesLanguage({})}
+                  {...inputStyles({})}
                 />
                 <DeleteDictionaryPopup
                   updateStoreLanguage={updateStoreLanguage}
@@ -66,7 +66,7 @@ export const LanguageTable = ({
                       [dictionaryKey]: event.currentTarget.value,
                     })
                   }}
-                  {...inputStylesLanguage({})}
+                  {...inputStyles({})}
                 />
               </div>
             </>
