@@ -37,6 +37,7 @@ export const FloatTray = ({ buttonList }: IFloatTray) => {
             borderRadius: '100%',
             padding: 0,
             aspectRatio: '1',
+            minHeight: '60px',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
