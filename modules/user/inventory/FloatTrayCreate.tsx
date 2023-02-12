@@ -1,6 +1,6 @@
 import { FloatTray } from '@/components'
-import { CiSaveDown1 } from 'react-icons/ci'
-import { MdCancel } from 'react-icons/md'
+import { FiSave } from 'react-icons/fi'
+import { IoArrowBackCircleOutline } from 'react-icons/io5'
 
 interface IFloatTrayCreate {
   directManagement: Function
@@ -12,12 +12,12 @@ export const FloatTrayCreate = ({ directManagement, callCreate }: IFloatTrayCrea
     <FloatTray
       buttonList={[
         {
-          label: <CiSaveDown1 style={{ width: '80%', height: '80%' }} />,
+          label: <FiSave style={{ width: '60%', height: '60%' }} />,
           function: callCreate,
-          color: 'success',
+          color: 'primary',
         },
         {
-          label: <MdCancel style={{ width: '80%', height: '80%' }} />,
+          label: <IoArrowBackCircleOutline style={{ width: '60%', height: '60%' }} />,
           function: directManagement,
           color: 'warning',
         },

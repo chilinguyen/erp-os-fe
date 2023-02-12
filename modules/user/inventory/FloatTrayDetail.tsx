@@ -1,8 +1,10 @@
 import { FloatTray } from '@/components'
 import { SpeedDialType } from '@/types'
-import { AiOutlineCloseSquare, AiOutlineDownSquare } from 'react-icons/ai'
-import { BsSave } from 'react-icons/bs'
-import { MdCancel, MdModeEditOutline } from 'react-icons/md'
+import { BiCheckCircle } from 'react-icons/bi'
+import { FiSave } from 'react-icons/fi'
+import { IoMdCloseCircleOutline } from 'react-icons/io'
+import { IoArrowBackCircleOutline } from 'react-icons/io5'
+import { MdModeEditOutline } from 'react-icons/md'
 
 interface IFloatTrayDetail {
   type: 'read' | 'update'
@@ -26,9 +28,9 @@ export const FloatTrayDetail = ({
       {
         label:
           status === 0 ? (
-            <AiOutlineDownSquare style={{ width: '80%', height: '80%' }} />
+            <BiCheckCircle style={{ width: '60%', height: '60%' }} />
           ) : (
-            <AiOutlineCloseSquare style={{ width: '80%', height: '80%' }} />
+            <IoMdCloseCircleOutline style={{ width: '70%', height: '70%' }} />
           ),
         function: handleChangeStatus,
         color: status === 0 ? 'success' : 'warning',
@@ -39,11 +41,11 @@ export const FloatTrayDetail = ({
       speedList = [
         ...speedList,
         {
-          label: <MdModeEditOutline style={{ width: '80%', height: '80%' }} />,
+          label: <MdModeEditOutline style={{ width: '50%', height: '50%' }} />,
           function: handleSetTypeUpdate,
         },
         {
-          label: <MdCancel style={{ width: '80%', height: '80%' }} />,
+          label: <IoArrowBackCircleOutline style={{ width: '60%', height: '60%' }} />,
           router: '/user/management',
           color: 'warning',
         },
@@ -54,12 +56,12 @@ export const FloatTrayDetail = ({
       speedList = [
         ...speedList,
         {
-          label: <BsSave style={{ width: '60%', height: '60%' }} />,
+          label: <FiSave style={{ width: '60%', height: '60%' }} />,
           function: callUpdate,
           color: 'success',
         },
         {
-          label: <MdCancel style={{ width: '80%', height: '80%' }} />,
+          label: <IoArrowBackCircleOutline style={{ width: '60%', height: '60%' }} />,
           function: handleSetTypeRead,
           color: 'warning',
         },

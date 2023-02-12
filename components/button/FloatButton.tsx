@@ -11,6 +11,7 @@ export const FloatButton = ({ style, ...props }: IButton) => {
         right: 10,
         borderRadius: '100%',
         padding: 0,
+        boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
       }}
     />
   )

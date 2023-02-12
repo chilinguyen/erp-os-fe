@@ -9,7 +9,7 @@ import { UserListSuccess, ViewPointType } from '@/types'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { BsPersonPlus } from 'react-icons/bs'
+import { IoIosCreate } from 'react-icons/io'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
@@ -78,11 +78,12 @@ export const UserManagement = () => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              aspectRatio: '1',
+              height: '60px',
+              aspectRatio: '1 / 1',
             }}
             onClick={handleRidrecCreate}
           >
-            <BsPersonPlus style={{ width: '70%', height: '70%' }} />
+            <IoIosCreate style={{ width: '50%', height: '50%' }} />
           </FloatButton>
         )}
       </div>
