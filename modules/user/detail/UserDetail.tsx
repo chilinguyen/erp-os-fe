@@ -167,7 +167,7 @@ export const UserDetail = () => {
                 </>
               ) : (
                 <>
-                  <Button color="success" onClick={callUpdate} disabled={updateResult.loading}>
+                  <Button color="primary" onClick={callUpdate} disabled={updateResult.loading}>
                     {updateResult.loading ? <Loading /> : <>{saveLabel}</>}
                   </Button>
                   <Button

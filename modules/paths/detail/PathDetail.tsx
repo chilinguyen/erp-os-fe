@@ -12,7 +12,8 @@ import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { ModifierPath, DeletePathPopup } from '../inventory'
+import { DeletePathPopup, ModifierPath } from '../inventory'
+import { FloatTrayDetail } from '../inventory/FloatTrayDetail'
 
 export const PathDetail = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -73,6 +74,25 @@ export const PathDetail = () => {
     const newUserState = { ...pathState }
     setPathState({ ...newUserState, ...newUpdate })
   }
+  const handleSetTypeUpdate = () => {
+    setType('update')
+  }
+
+  const callUpdate = () => {
+    updateResult.setLetCall(true)
+  }
+
+  const handleSetTypeRead = () => {
+    if (viewResult?.data?.result) setPathState(viewResult.data.result)
+    setType('read')
+    updateResult.handleReset()
+  }
+
+  const setLetCallList = (value: boolean) => {
+    if (value) {
+      router.push('/paths/management')
+    }
+  }
 
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
@@ -87,56 +107,49 @@ export const PathDetail = () => {
       >
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <div>
-          <div style={{ display: 'flex', gap: 20 }}>
-            {type === 'read' ? (
-              <>
-                <Button
-                  onClick={() => {
-                    setType('update')
-                  }}
-                >
-                  {editLabel}
-                </Button>
-                <DeletePathPopup
-                  deleteId={[router?.query?.id?.toString() ?? '']}
-                  setLetCallList={() => {
-                    router.push('/paths/management')
-                  }}
-                />
-                <Button
-                  color="warning"
-                  onClick={() => {
-                    router.push('/paths/management')
-                  }}
-                >
-                  {cancel}
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  color="success"
-                  onClick={() => {
-                    updateResult.setLetCall(true)
-                  }}
-                  disabled={updateResult.loading}
-                >
-                  {updateResult.loading ? <Loading /> : <>{saveLabel}</>}
-                </Button>
-                <Button
-                  color="warning"
-                  onClick={() => {
-                    if (viewResult?.data?.result) setPathState(viewResult.data.result)
-                    setType('read')
-                    updateResult.handleReset()
-                  }}
-                  disabled={updateResult.loading}
-                >
-                  {cancel}
-                </Button>
-              </>
-            )}
-          </div>
+          {breakPoint > 1 ? (
+            <div style={{ display: 'flex', gap: 20 }}>
+              {type === 'read' ? (
+                <>
+                  <Button onClick={handleSetTypeUpdate}>{editLabel}</Button>
+                  <DeletePathPopup
+                    deleteId={[router?.query?.id?.toString() ?? '']}
+                    setLetCallList={setLetCallList}
+                  />
+                  <Button
+                    color="warning"
+                    onClick={() => {
+                      setLetCallList(true)
+                    }}
+                  >
+                    {cancel}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button color="primary" onClick={callUpdate} disabled={updateResult.loading}>
+                    {updateResult.loading ? <Loading /> : <>{saveLabel}</>}
+                  </Button>
+                  <Button
+                    color="warning"
+                    onClick={handleSetTypeRead}
+                    disabled={updateResult.loading}
+                  >
+                    {cancel}
+                  </Button>
+                </>
+              )}
+            </div>
+          ) : (
+            <FloatTrayDetail
+              callUpdate={callUpdate}
+              id={router?.query?.id?.toString() ?? ''}
+              deleteSuccess={setLetCallList}
+              handleSetTypeRead={handleSetTypeRead}
+              handleSetTypeUpdate={handleSetTypeUpdate}
+              type={type}
+            />
+          )}
         </div>
       </div>
 

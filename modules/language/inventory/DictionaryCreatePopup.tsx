@@ -3,10 +3,13 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { inputStyles } from '@/inventory'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { postMethod } from '@/services'
 import { DictionaryKey } from '@/types'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { IoIosCreate } from 'react-icons/io'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 interface IDictionaryCreatePopup {
@@ -25,6 +28,7 @@ export const DictionaryCreatePopup = ({
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
   const [dictionaryState, setDictionaryState] = useState<DictionaryKey>({})
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
   const [open, setOpen] = useState(false)
   const [checkKeyExist, setCheckKeyExist] = useState(false)
@@ -69,15 +73,17 @@ export const DictionaryCreatePopup = ({
 
   const keyExist = useTranslation('keyExist')
 
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
   return (
     <>
-      <Button
-        onClick={() => {
-          setOpen(true)
-        }}
-      >
-        {labelButton}
-      </Button>
+      {breakPoint > 1 ? (
+        <Button onClick={handleOpen}>{labelButton}</Button>
+      ) : (
+        <IoIosCreate onClick={handleOpen} style={{ width: '40%', height: '40%' }} />
+      )}
       <Modal open={open} setOpen={handleClose} preventClose>
         <h2>{labelButton}</h2>
 

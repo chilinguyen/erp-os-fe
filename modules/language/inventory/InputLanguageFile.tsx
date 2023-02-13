@@ -4,64 +4,28 @@ import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { putMethod } from '@/services'
-import { DictionaryKey, LanguageResponseSuccess, UpdateDictionaryListRequest } from '@/types'
+import { DictionaryKey, UpdateDictionaryListRequest } from '@/types'
 import { ChangeEvent, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { BiImport } from 'react-icons/bi'
 import { TiDelete } from 'react-icons/ti'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
-export const IOCsvLanguage = ({
-  viewLanguageResult,
-  setLetCall,
-}: {
-  viewLanguageResult: LanguageResponseSuccess[]
-  setLetCall: Function
-}) => {
-  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
-  const { language } = useSelector(ShareStoreSelector)
+export const InputLanguageFile = ({ setLetCall }: { setLetCall: Function }) => {
+  const [uploadFileName, setUploadFileName] = useState<string>('')
+  const { breakPoint } = useSelector(ShareStoreSelector)
+  const labelInput = useTranslation('inputCSVLanguage')
+
+  const [stateLanguage, setStateLanguage] = useState<UpdateDictionaryListRequest>([])
   const translate = useTranslationFunction()
   const [open, setOpen] = useState(false)
-  const [stateLanguage, setStateLanguage] = useState<UpdateDictionaryListRequest>([])
-  const [uploadFileName, setUploadFileName] = useState<string>('')
+  const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
 
-  const labelInput = useTranslation('inputCSVLanguage')
-  const labelExport = useTranslation('exportCSVLanguage')
-  const overrideData = useTranslation('overrideData')
-  const submit = useTranslation('submit')
-  const cancel = useTranslation('cancel')
-
-  const data = useApiCall<string, string>({
-    callApi: () =>
-      putMethod({
-        pathName: apiRoute.language.updateDictionaryList,
-        token: cookies.token,
-        request: stateLanguage,
-      }),
-    handleSuccess(message) {
-      toast.success(translate(message))
-      setLetCall(true)
-      setStateLanguage([])
-      setUploadFileName('')
-    },
-    handleError(status, message) {
-      if (status) {
-        toast.error(translate(message))
-      }
-    },
-  })
-
-  const headers = ['key'].concat(viewLanguageResult.map((language) => language.id) ?? [])
-  const rows = Object.keys(language).map((key) => {
-    return [key].concat(viewLanguageResult.map((language) => language.dictionary[key]) ?? [])
-  })
-  const csvContent = 'data:text/csv;charset=utf-8,'.concat(
-    [headers]
-      .concat(rows)
-      .map((e) => e.join(','))
-      .join('\n')
-  )
-  const encodedUri = encodeURI(csvContent)
+  const handleDiscardFile = () => {
+    setUploadFileName('')
+    setStateLanguage([])
+  }
 
   const handleUploadFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e?.target?.files?.length) {
@@ -90,10 +54,29 @@ export const IOCsvLanguage = ({
     }
   }
 
-  const handleDiscardFile = () => {
-    setUploadFileName('')
-    setStateLanguage([])
-  }
+  const overrideData = useTranslation('overrideData')
+  const submit = useTranslation('submit')
+  const cancel = useTranslation('cancel')
+
+  const data = useApiCall<string, string>({
+    callApi: () =>
+      putMethod({
+        pathName: apiRoute.language.updateDictionaryList,
+        token: cookies.token,
+        request: stateLanguage,
+      }),
+    handleSuccess(message) {
+      toast.success(translate(message))
+      setLetCall(true)
+      setStateLanguage([])
+      setUploadFileName('')
+    },
+    handleError(status, message) {
+      if (status) {
+        toast.error(translate(message))
+      }
+    },
+  })
 
   return (
     <>
@@ -103,7 +86,7 @@ export const IOCsvLanguage = ({
           <TiDelete size={25} color="red" />
         </Button>
       ) : (
-        <Button style={{ position: 'relative' }}>
+        <Button style={{ position: 'relative', borderRadius: breakPoint > 1 ? undefined : '100%' }}>
           <input
             style={{
               opacity: '0',
@@ -113,21 +96,22 @@ export const IOCsvLanguage = ({
               bottom: 0,
               position: 'absolute',
               cursor: 'pointer',
+              borderRadius: breakPoint > 1 ? undefined : '100%',
             }}
             type="file"
             id="csvFile"
             accept=".csv"
             onChange={handleUploadFile}
           />
-          {labelInput}
+          {breakPoint > 1 ? (
+            <>{labelInput}</>
+          ) : (
+            <BiImport style={{ width: '80%', height: '80%' }} />
+          )}
         </Button>
       )}
-      <a href={encodedUri} download="language">
-        <Button>{labelExport}</Button>
-      </a>
-
       <Modal open={open} preventClose>
-        <h2>{labelExport}</h2>
+        <h2>Input Language from file</h2>
 
         <h4>{overrideData}!</h4>
         <div style={{ display: 'flex', justifyContent: 'center' }}>

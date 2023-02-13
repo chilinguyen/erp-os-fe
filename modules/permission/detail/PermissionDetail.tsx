@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { ModifierPermission } from '../inventory'
 import { DeletePermissionPopup } from '../inventory/DeletePermissionPopup'
+import { FloatTrayDetail } from '../inventory/FloatTrayDetail'
 
 export const PermissionDetail = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])
@@ -81,6 +82,20 @@ export const PermissionDetail = () => {
 
   const editLabel = useTranslation('edit')
 
+  const handleSetTypeUpdate = () => {
+    setType('update')
+  }
+
+  const callUpdate = () => {
+    updateResult.setLetCall(true)
+  }
+
+  const handleSetTypeRead = () => {
+    if (viewResult?.data?.result) setPermissionState(viewResult.data.result)
+    setType('read')
+    updateResult.handleReset()
+  }
+
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
       <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
@@ -94,51 +109,54 @@ export const PermissionDetail = () => {
       >
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         <div>
-          <div style={{ display: 'flex', gap: 20 }}>
-            {type === 'read' ? (
-              <>
-                <Button
-                  onClick={() => {
-                    setType('update')
-                  }}
-                >
-                  {editLabel}
-                </Button>
-                <DeletePermissionPopup />
-                <Button
-                  color="warning"
-                  onClick={() => {
-                    router.push('/permission/management')
-                  }}
-                >
-                  {cancelLabel}
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  color="success"
-                  onClick={() => {
-                    updateResult.setLetCall(true)
-                  }}
-                  disabled={updateResult.loading}
-                >
-                  {updateResult.loading ? <Loading /> : <>{saveLabel}</>}
-                </Button>
-                <Button
-                  color="warning"
-                  onClick={() => {
-                    if (viewResult?.data?.result) setPermissionState(viewResult.data.result)
-                    updateResult.handleReset()
-                    setType('read')
-                  }}
-                  disabled={updateResult.loading}
-                >
-                  {cancelLabel}
-                </Button>
-              </>
-            )}
-          </div>
+          {breakPoint > 1 ? (
+            <div style={{ display: 'flex', gap: 20 }}>
+              {type === 'read' ? (
+                <>
+                  <Button
+                    onClick={() => {
+                      setType('update')
+                    }}
+                  >
+                    {editLabel}
+                  </Button>
+                  <DeletePermissionPopup />
+                  <Button
+                    color="warning"
+                    onClick={() => {
+                      router.push('/permission/management')
+                    }}
+                  >
+                    {cancelLabel}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    color="primary"
+                    onClick={handleSetTypeUpdate}
+                    disabled={updateResult.loading}
+                  >
+                    {updateResult.loading ? <Loading /> : <>{saveLabel}</>}
+                  </Button>
+                  <Button
+                    color="warning"
+                    onClick={handleSetTypeRead}
+                    disabled={updateResult.loading}
+                  >
+                    {cancelLabel}
+                  </Button>
+                </>
+              )}
+            </div>
+          ) : (
+            <FloatTrayDetail
+              type={type}
+              handleSetTypeUpdate={handleSetTypeUpdate}
+              callUpdate={callUpdate}
+              handleSetTypeRead={handleSetTypeRead}
+            />
+          )}
         </div>
       </div>
 

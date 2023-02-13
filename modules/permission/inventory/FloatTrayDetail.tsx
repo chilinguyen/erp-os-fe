@@ -1,39 +1,29 @@
 import { FloatTray } from '@/components'
 import { SpeedDialType } from '@/types'
-import { BiCheckCircle } from 'react-icons/bi'
 import { FiSave } from 'react-icons/fi'
-import { IoMdCloseCircleOutline } from 'react-icons/io'
 import { IoArrowBackCircleOutline } from 'react-icons/io5'
 import { MdModeEditOutline } from 'react-icons/md'
+import { DeletePermissionPopup } from './DeletePermissionPopup'
 
 interface IFloatTrayDetail {
   type: 'read' | 'update'
   handleSetTypeUpdate: Function
-  handleChangeStatus: Function
   callUpdate: Function
   handleSetTypeRead: Function
-  status: number
 }
 
 export const FloatTrayDetail = ({
   type,
   handleSetTypeUpdate,
-  handleChangeStatus,
-  status,
   callUpdate,
   handleSetTypeRead,
 }: IFloatTrayDetail) => {
   const getSpeedDiaList = () => {
     let speedList: SpeedDialType[] = [
       {
-        label:
-          status === 0 ? (
-            <BiCheckCircle style={{ width: '60%', height: '60%' }} />
-          ) : (
-            <IoMdCloseCircleOutline style={{ width: '70%', height: '70%' }} />
-          ),
-        function: handleChangeStatus,
-        color: status === 0 ? 'success' : 'error',
+        label: <DeletePermissionPopup />,
+        function: () => {},
+        color: 'error',
       },
     ]
 
@@ -46,7 +36,7 @@ export const FloatTrayDetail = ({
         },
         {
           label: <IoArrowBackCircleOutline style={{ width: '60%', height: '60%' }} />,
-          router: '/user/management',
+          router: '/permission/management',
           color: 'warning',
         },
       ]

@@ -1,4 +1,5 @@
 import { Button, CustomTable, Pagination } from '@/components'
+import { FloatButton } from '@/components/button/FloatButton'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
@@ -8,6 +9,7 @@ import { CommonListResultType, PermissionResponse, ViewPointType } from '@/types
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { IoIosCreate } from 'react-icons/io'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
@@ -59,18 +61,31 @@ export const PermissionManagement = () => {
     resultTableHeader.setLetCall(true)
   }, [])
 
+  const handleRedirectCreate = () => {
+    router.push('/permission/create')
+  }
+
   return (
     <>
       <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
-        <Button
-          onClick={() => {
-            router.push('/permission/create')
-          }}
-        >
-          {permissionCreatePascal}
-        </Button>
+        {breakPoint > 1 ? (
+          <Button onClick={handleRedirectCreate}>{permissionCreatePascal}</Button>
+        ) : (
+          <FloatButton
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '60px',
+              aspectRatio: '1 / 1',
+            }}
+            onClick={handleRedirectCreate}
+          >
+            <IoIosCreate style={{ width: '50%', height: '50%' }} />
+          </FloatButton>
+        )}
       </div>
       <CustomTable
         header={resultTableHeader.data?.result ?? []}

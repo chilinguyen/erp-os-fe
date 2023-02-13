@@ -2,16 +2,21 @@ import { Button, Modal } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { putMethod } from '@/services'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { BsTrash2Fill } from 'react-icons/bs'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 export const DeletePermissionPopup = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const [open, setOpen] = useState(false)
   const router = useRouter()
+
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
   const translate = useTranslationFunction()
 
@@ -43,16 +48,19 @@ export const DeletePermissionPopup = () => {
   const cancel = useTranslation('cancel')
   const deleteKeyLabel = useTranslation('deleteKeyLabel')
 
+  const handleDelete = () => {
+    setOpen(true)
+  }
+
   return (
     <>
-      <Button
-        onClick={() => {
-          setOpen(true)
-        }}
-        color="error"
-      >
-        {deleteLabel}
-      </Button>
+      {breakPoint > 1 ? (
+        <Button onClick={handleDelete} color="error">
+          {deleteLabel}
+        </Button>
+      ) : (
+        <BsTrash2Fill onClick={handleDelete} style={{ width: '50%', height: '50%' }} />
+      )}
       <Modal open={open} setOpen={handleClose}>
         <h2>{deleteLabel}</h2>
 

@@ -3,10 +3,13 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
 import { inputStyles } from '@/inventory'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { postMethod } from '@/services'
 import { AddNewLanguageRequest } from '@/types'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { MdPlaylistAdd } from 'react-icons/md'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 interface ILanguageCreatePopup {
@@ -19,6 +22,7 @@ export const LanguageCreatePopup = ({
   updateStoreLanguage,
 }: ILanguageCreatePopup) => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
   const translate = useTranslationFunction()
 
@@ -69,15 +73,17 @@ export const LanguageCreatePopup = ({
 
   const create = useTranslation('create')
 
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
   return (
     <>
-      <Button
-        onClick={() => {
-          setOpen(true)
-        }}
-      >
-        {labelButton}
-      </Button>
+      {breakPoint > 1 ? (
+        <Button onClick={handleOpen}>{labelButton}</Button>
+      ) : (
+        <MdPlaylistAdd onClick={handleOpen} style={{ width: '50%', height: '50%' }} />
+      )}
       <Modal open={open} setOpen={handleClose} preventClose>
         <h2>{labelButton}</h2>
 
