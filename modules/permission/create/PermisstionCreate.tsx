@@ -13,6 +13,7 @@ import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { ModifierPermission } from '../inventory'
+import { FloatTrayCreate } from '../inventory/FloatTrayCreate'
 
 export const PermissionCreate = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION])
@@ -52,6 +53,14 @@ export const PermissionCreate = () => {
 
   const saveLabel = useTranslation('save')
 
+  const callCreate = () => {
+    createResult.setLetCall(true)
+  }
+
+  const directManagement = () => {
+    router.push('/permission/management')
+  }
+
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
       <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
@@ -70,24 +79,18 @@ export const PermissionCreate = () => {
             gap: 10,
           }}
         >
-          <Button
-            color="success"
-            onClick={() => {
-              createResult.setLetCall(true)
-            }}
-            disabled={createResult.loading}
-          >
-            {createResult.loading ? <Loading /> : <>{saveLabel}</>}
-          </Button>
-          <Button
-            color="warning"
-            onClick={() => {
-              router.push('/permission/management')
-            }}
-            disabled={createResult.loading}
-          >
-            {cancelLabel}
-          </Button>
+          {breakPoint > 1 ? (
+            <>
+              <Button color="primary" onClick={callCreate} disabled={createResult.loading}>
+                {createResult.loading ? <Loading /> : <>{saveLabel}</>}
+              </Button>
+              <Button color="warning" onClick={directManagement} disabled={createResult.loading}>
+                {cancelLabel}
+              </Button>
+            </>
+          ) : (
+            <FloatTrayCreate callCreate={callCreate} directManagement={directManagement} />
+          )}
         </div>
       </div>
       <ModifierPermission

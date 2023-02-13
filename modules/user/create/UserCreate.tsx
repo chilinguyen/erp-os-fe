@@ -2,7 +2,7 @@ import { Button, Loading } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useGetBreadCrumb, useTranslation, useTranslationFunction } from '@/hooks'
-import { UserForm, DefaultUser, initUserRequest } from '@/inventory'
+import { DefaultUser, initUserRequest, UserForm } from '@/inventory'
 import { getListEditAble, lostOddProps } from '@/lib'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { postMethod } from '@/services'
@@ -79,7 +79,7 @@ export const UserCreate = () => {
               gap: 10,
             }}
           >
-            <Button color="success" onClick={callCreate} disabled={createResult.loading}>
+            <Button color="primary" onClick={callCreate} disabled={createResult.loading}>
               {createResult.loading ? <Loading /> : <>{saveLabel}</>}
             </Button>
             <Button color="warning" onClick={directManagement} disabled={createResult.loading}>

@@ -12,6 +12,7 @@ import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { ModifierPath } from '../inventory'
+import { FLoatTrayCreate } from '../inventory/FloatTrayCreate'
 
 export const PathCreate = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -44,6 +45,14 @@ export const PathCreate = () => {
   const breadCrumb = useGetBreadCrumb()
   const saveLabel = useTranslation('save')
 
+  const callCreate = () => {
+    createResult.setLetCall(true)
+  }
+
+  const redirectManagement = () => {
+    router.push('/paths/management')
+  }
+
   return (
     <div style={{ marginTop: 18, marginBottom: 80 }}>
       <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
@@ -56,31 +65,23 @@ export const PathCreate = () => {
         }}
       >
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
-        <div
-          style={{
-            display: 'flex',
-            gap: 10,
-          }}
-        >
-          <Button
-            color="success"
-            onClick={() => {
-              createResult.setLetCall(true)
+        {breakPoint > 1 ? (
+          <div
+            style={{
+              display: 'flex',
+              gap: 10,
             }}
-            disabled={createResult.loading}
           >
-            {createResult.loading ? <Loading /> : <>{saveLabel}</>}
-          </Button>
-          <Button
-            color="warning"
-            onClick={() => {
-              router.push('/paths/management')
-            }}
-            disabled={createResult.loading}
-          >
-            {cancel}
-          </Button>
-        </div>
+            <Button color="primary" onClick={callCreate} disabled={createResult.loading}>
+              {createResult.loading ? <Loading /> : <>{saveLabel}</>}
+            </Button>
+            <Button color="warning" onClick={redirectManagement} disabled={createResult.loading}>
+              {cancel}
+            </Button>
+          </div>
+        ) : (
+          <FLoatTrayCreate callCreate={callCreate} directManagement={redirectManagement} />
+        )}
       </div>
 
       <ModifierPath

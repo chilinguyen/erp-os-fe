@@ -2,9 +2,12 @@ import { Button, Modal } from '@/components'
 import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslation, useTranslationFunction } from '@/hooks'
+import { ShareStoreSelector } from '@/redux/share-store'
 import { putMethod } from '@/services'
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { BsTrash2Fill } from 'react-icons/bs'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 interface IDeletePathPopup {
@@ -16,6 +19,7 @@ interface IDeletePathPopup {
 export const DeletePathPopup = ({ deleteId, setDeleteId, setLetCallList }: IDeletePathPopup) => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
   const [open, setOpen] = useState(false)
+  const { breakPoint } = useSelector(ShareStoreSelector)
 
   const translate = useTranslationFunction()
 
@@ -51,17 +55,21 @@ export const DeletePathPopup = ({ deleteId, setDeleteId, setLetCallList }: IDele
   const cancel = useTranslation('cancel')
   const deletePathNoti = useTranslation('deletePathNoti')
 
+  const handleDelete = () => {
+    if (deleteId.length !== 0) {
+      setOpen(true)
+    }
+  }
+
   return (
     <>
-      <Button
-        onClick={() => {
-          setOpen(true)
-        }}
-        color="error"
-        disabled={deleteId.length === 0}
-      >
-        {deleteLabel}
-      </Button>
+      {breakPoint > 1 ? (
+        <Button onClick={handleDelete} color="error" disabled={deleteId.length === 0}>
+          {deleteLabel}
+        </Button>
+      ) : (
+        <BsTrash2Fill onClick={handleDelete} style={{ width: '50%', height: '50%' }} />
+      )}
       <Modal open={open} setOpen={handleClose}>
         <h2>{deleteLabel}</h2>
 

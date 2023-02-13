@@ -54,7 +54,7 @@ export const UserManagement = () => {
     },
   })
 
-  const handleRidrecCreate = () => {
+  const handleRedirectCreate = () => {
     router.push('/user/create')
   }
 
@@ -71,7 +71,7 @@ export const UserManagement = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
         {breakPoint > 1 ? (
-          <Button onClick={handleRidrecCreate}>{createUserPascal}</Button>
+          <Button onClick={handleRedirectCreate}>{createUserPascal}</Button>
         ) : (
           <FloatButton
             style={{
@@ -81,7 +81,7 @@ export const UserManagement = () => {
               height: '60px',
               aspectRatio: '1 / 1',
             }}
-            onClick={handleRidrecCreate}
+            onClick={handleRedirectCreate}
           >
             <IoIosCreate style={{ width: '50%', height: '50%' }} />
           </FloatButton>

@@ -11,7 +11,9 @@ import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { DictionaryCreatePopup } from '../inventory/DictionaryCreatePopup'
-import { IOCsvLanguage } from '../inventory/IOCsvLanguage'
+import { ExportLanguageFile } from '../inventory/ExportLanguageFile'
+import { FLoatTrayLanguage } from '../inventory/FloatTrayLanguage'
+import { InputLanguageFile } from '../inventory/InputLanguageFile'
 import { LanguageCreatePopup } from '../inventory/LanguageCreatePopup'
 import { OneLanguage } from './OneLanguage'
 
@@ -65,31 +67,37 @@ export const LanguageManagement = () => {
       <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
-        <div
-          style={{
-            display: 'flex',
-            gap: 10,
-            flexWrap: 'wrap',
-          }}
-        >
-          <DictionaryCreatePopup
+        {breakPoint > 1 ? (
+          <div
+            style={{
+              display: 'flex',
+              gap: 10,
+              flexWrap: 'wrap',
+            }}
+          >
+            <DictionaryCreatePopup
+              updateStoreLanguage={updateStoreLanguage}
+              setLetCallList={viewLanguageresult.setLetCall}
+              listKeyOfDictionary={[
+                'key',
+                ...(viewLanguageresult.data?.result.data.map((language) => language.key) ?? []),
+              ]}
+              listKeyExist={Object.keys(getLanguage.data?.result?.dictionary ?? {})}
+            />
+            <LanguageCreatePopup
+              updateStoreLanguage={updateStoreLanguage}
+              setLetCallList={viewLanguageresult.setLetCall}
+            />
+            <InputLanguageFile setLetCall={viewLanguageresult.setLetCall} />
+            <ExportLanguageFile viewLanguageResult={viewLanguageresult.data?.result.data ?? []} />
+          </div>
+        ) : (
+          <FLoatTrayLanguage
+            viewLanguageresult={viewLanguageresult}
+            getLanguage={getLanguage}
             updateStoreLanguage={updateStoreLanguage}
-            setLetCallList={viewLanguageresult.setLetCall}
-            listKeyOfDictionary={[
-              'key',
-              ...(viewLanguageresult.data?.result.data.map((language) => language.key) ?? []),
-            ]}
-            listKeyExist={Object.keys(getLanguage.data?.result?.dictionary ?? {})}
           />
-          <LanguageCreatePopup
-            updateStoreLanguage={updateStoreLanguage}
-            setLetCallList={viewLanguageresult.setLetCall}
-          />
-          <IOCsvLanguage
-            viewLanguageResult={viewLanguageresult.data?.result.data ?? []}
-            setLetCall={viewLanguageresult.setLetCall}
-          />
-        </div>
+        )}
       </div>
 
       {viewLanguageresult.loading ? (

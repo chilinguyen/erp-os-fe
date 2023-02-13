@@ -11,6 +11,7 @@ import { useCookies } from 'react-cookie'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { DeletePathPopup } from '../inventory'
+import { FloatTrayManagement } from '../inventory/FloatTrayManagement'
 
 export const PathsManagement = () => {
   const [cookies] = useCookies([TOKEN_AUTHENTICATION, USER_ID])
@@ -64,25 +65,32 @@ export const PathsManagement = () => {
     setLetCall(true)
   }, [page])
 
+  const handleRedirectCreate = () => {
+    router.push('/paths/create')
+  }
+
   return (
     <>
       <h2 style={{ display: breakPoint === 1 ? 'block' : 'none' }}>{breadCrumb}</h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ display: breakPoint === 1 ? 'none' : 'block' }}>{breadCrumb}</h2>
-        <div style={{ display: 'flex', gap: 5 }}>
-          <Button
-            onClick={() => {
-              router.push('/paths/create')
-            }}
-          >
-            {pathsCreatePascal}
-          </Button>
-          <DeletePathPopup
-            deleteId={pathSelectedId}
-            setDeleteId={setPathSelectedId}
-            setLetCallList={setLetCall}
+        {breakPoint > 1 ? (
+          <div style={{ display: 'flex', gap: 5 }}>
+            <Button onClick={handleRedirectCreate}>{pathsCreatePascal}</Button>
+            <DeletePathPopup
+              deleteId={pathSelectedId}
+              setDeleteId={setPathSelectedId}
+              setLetCallList={setLetCall}
+            />
+          </div>
+        ) : (
+          <FloatTrayManagement
+            pathSelectedId={pathSelectedId}
+            setPathSelectedId={setPathSelectedId}
+            setLetCall={setLetCall}
+            callCreate={handleRedirectCreate}
           />
-        </div>
+        )}
       </div>
       <CustomTable
         header={resultTableHeader.data?.result ?? [{ key: '', label: '' }]}
