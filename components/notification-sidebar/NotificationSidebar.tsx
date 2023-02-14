@@ -109,7 +109,9 @@ export const NotificationSidebar = ({ isOpenSideBar, setOpenSideBar, pixel }: IN
         >
           <h3>Notification</h3>
         </div>
-        <NotificationItem data={notifications[0]} />
+        {notifications.map((item) => (
+          <NotificationItem data={item} />
+        ))}
       </div>
     </>
   )
