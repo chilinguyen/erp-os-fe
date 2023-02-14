@@ -2,7 +2,12 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { authenticationSelector } from '@/redux/authentication'
-import { GeneralSettingsSelector, setIsUpdateAccess, setUserConfig } from '@/redux/general-settings'
+import {
+  GeneralSettingsSelector,
+  setIsUpdateAccess,
+  setIsUpdateNotification,
+  setUserConfig,
+} from '@/redux/general-settings'
 import { getMethod } from '@/services'
 import { UserConfig } from '@/types'
 import Pusher from 'pusher-js'
@@ -39,6 +44,8 @@ export const PusherProvider = ({ children }: { children: React.ReactNode }) => {
         const channel = pusher.subscribe(accountConfig.channelId)
         channel.bind(accountConfig.eventId, function (data: any) {
           if (data.isUpdateAccessPath) dispatch(setIsUpdateAccess(data.isUpdateAccessPath))
+          if (data.isUpdateNotification)
+            dispatch(setIsUpdateNotification(data.isUpdateNotification))
         })
       }
     }

@@ -6,6 +6,7 @@ import { authenticationSelector, setIsLoggedIn, setLoading } from '@/redux/authe
 import {
   GeneralSettingsSelector,
   setIsUpdateAccess,
+  setIsUpdateNotification,
   setIsUpdateSidebar,
 } from '@/redux/general-settings'
 import { getMethod, postMethod } from '@/services'
@@ -65,6 +66,7 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       setAccessPath(data)
       dispatch(setIsUpdateAccess(false))
       dispatch(setIsUpdateSidebar(true))
+      dispatch(setIsUpdateNotification(true))
     },
   })
 

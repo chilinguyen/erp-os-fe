@@ -66,7 +66,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
   return (
     <>
       <Backdrop
-        isShow={pixel < 960 && isOpenSideBar}
+        isShow={pixel < 1280 && isOpenSideBar}
         zIndex={49}
         style={{
           top: 60,
@@ -80,7 +80,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
       />
       <div
         style={{
-          width: pixel >= 960 || isOpenSideBar ? 300 : 0,
+          width: pixel >= 1280 || isOpenSideBar ? 300 : 0,
           position: 'fixed',
           top: 60,
           left: 0,
@@ -93,7 +93,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
         }}
       >
-        {pixel < 960 && !isOpenSideBar ? (
+        {pixel < 1280 && !isOpenSideBar ? (
           <div
             style={{
               position: 'absolute',
@@ -119,7 +119,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              width: pixel >= 960 || isOpenSideBar ? lengthSidebar : 0,
+              width: pixel >= 1280 || isOpenSideBar ? lengthSidebar : 0,
               alignItems: 'center',
             }}
           >

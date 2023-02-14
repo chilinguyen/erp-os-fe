@@ -7,6 +7,7 @@ export const apiRoute = {
     addNewUser: 'user/add-new-user',
     updateUser: 'user/update-user',
     userConfig: 'user/get-notification-config',
+    userNotification: 'user/get-notifications-user',
   },
   auth: {
     login: '/auth/login',
