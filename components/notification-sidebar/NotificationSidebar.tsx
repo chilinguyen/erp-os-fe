@@ -35,10 +35,12 @@ export const NotificationSidebar = ({ isOpenSideBar, setOpenSideBar, pixel }: IN
       }),
     handleSuccess(message, data) {
       dispatch(setNotifications(data))
+      toast.info(data[0].content)
     },
     handleError(status, message) {
       if (status) toast.error(translate(message))
     },
+    preventLoadingGlobal: true,
   })
 
   useEffect(() => {
