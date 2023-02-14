@@ -19,6 +19,11 @@ export interface UserResponseSuccess {
   type: 'INTERNAL' | 'EXTERNAL'
 }
 
+export interface UserNotifications {
+  content: string
+  sendTime: string
+}
+
 export interface UserListSuccess {
   data: UserResponseSuccess[]
   page: number

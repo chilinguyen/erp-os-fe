@@ -13,6 +13,7 @@ const initialState: GeneralSettingsStoreTypes = {
   },
   isUpdateAccess: false,
   isUpdateSidebar: false,
+  isUpdateNotification: false,
 }
 
 const GeneralSettingsSlice = createSlice({
@@ -43,6 +44,12 @@ const GeneralSettingsSlice = createSlice({
         isUpdateSidebar: action.payload,
       })
     },
+    setIsUpdateNotification: (state, action: PayloadAction<boolean>) => {
+      Object.assign(state, {
+        ...state,
+        isUpdateNotification: action.payload,
+      })
+    },
     resetGeneralSettings: () => initialState,
   },
 })
@@ -54,6 +61,7 @@ export const {
   setUserConfig,
   setIsUpdateAccess,
   setIsUpdateSidebar,
+  setIsUpdateNotification,
 } = GeneralSettingsSlice.actions
 
 export default GeneralSettingsSlice

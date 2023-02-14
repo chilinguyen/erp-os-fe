@@ -3,16 +3,18 @@ import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { ShareStoreSelector } from '@/redux/share-store'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { AiOutlineMenu } from 'react-icons/ai'
+import { CgMenuRound } from 'react-icons/cg'
+import { IoNotificationsCircleOutline } from 'react-icons/io5'
 import { useSelector } from 'react-redux'
 import { Search } from '../search'
 
 interface INavbarInternal {
   setOpenSideBar: React.MouseEventHandler<HTMLDivElement>
+  setOpenNoti: React.MouseEventHandler<HTMLDivElement>
   pixel: number
 }
 
-export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
+export const NavbarInternal = ({ setOpenSideBar, pixel, setOpenNoti }: INavbarInternal) => {
   const { darkTheme } = useSelector(GeneralSettingsSelector)
   const { breakPoint } = useSelector(ShareStoreSelector)
 
@@ -41,9 +43,9 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
           gap: 10,
         }}
       >
-        {pixel < 960 && (
+        {pixel < 1280 && (
           <div onClick={setOpenSideBar} style={{ width: 'fit-content', height: 'fit-content' }}>
-            <AiOutlineMenu size={25} />
+            <CgMenuRound size={25} />
           </div>
         )}
         <div
@@ -57,14 +59,11 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
           icon
         </div>
       </div>
-      {breakPoint > 2 && (
-        <div
-          style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
-          <Search />
-        </div>
-      )}
-      {/* <div
+
+      <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {breakPoint > 2 && <Search />}
+      </div>
+      <div
         style={{
           width: 'fit-content',
           display: 'flex',
@@ -74,8 +73,12 @@ export const NavbarInternal = ({ setOpenSideBar, pixel }: INavbarInternal) => {
           gap: 8,
         }}
       >
-        
-      </div> */}
+        {pixel < 1280 && (
+          <div onClick={setOpenNoti} style={{ width: 'fit-content', height: 'fit-content' }}>
+            <IoNotificationsCircleOutline size={25} />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

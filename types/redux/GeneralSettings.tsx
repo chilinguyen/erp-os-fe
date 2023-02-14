@@ -8,4 +8,5 @@ export type GeneralSettingsStoreTypes = {
   accountConfig: UserConfig
   isUpdateAccess: boolean
   isUpdateSidebar: boolean
+  isUpdateNotification: boolean
 }
