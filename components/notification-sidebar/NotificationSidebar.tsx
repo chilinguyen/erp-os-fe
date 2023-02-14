@@ -2,7 +2,7 @@ import { apiRoute } from '@/constants/apiRoutes'
 import { TOKEN_AUTHENTICATION, USER_ID } from '@/constants/auth'
 import { useApiCall, useTranslationFunction } from '@/hooks'
 import { themeValue } from '@/lib'
-import { GeneralSettingsSelector } from '@/redux/general-settings'
+import { GeneralSettingsSelector, setIsUpdateNotification } from '@/redux/general-settings'
 import { setNotifications, ShareStoreSelector } from '@/redux/share-store'
 import { getMethod } from '@/services'
 import { UserNotifications } from '@/types'
@@ -35,6 +35,7 @@ export const NotificationSidebar = ({ isOpenSideBar, setOpenSideBar, pixel }: IN
       }),
     handleSuccess(message, data) {
       dispatch(setNotifications(data))
+      dispatch(setIsUpdateNotification(false))
       toast.info(data[0].content)
     },
     handleError(status, message) {
