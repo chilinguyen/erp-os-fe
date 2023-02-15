@@ -72,11 +72,11 @@ export const NotificationSidebar = ({ isOpenSideBar, setOpenSideBar, pixel }: IN
           top: 60,
           right: 0,
           bottom: 0,
-          zIndex: pixel >= 1440 ? 2 : 50,
+          zIndex: pixel >= 1280 ? 2 : 50,
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           fontWeight: 500,
           transition: 'all 0.2s linear',
-          overflow: 'hidden',
+          overflow: 'auto',
           backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
         }}
       >

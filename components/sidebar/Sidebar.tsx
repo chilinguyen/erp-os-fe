@@ -85,7 +85,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           top: 60,
           left: 0,
           bottom: 0,
-          zIndex: pixel >= 960 ? 2 : 50,
+          zIndex: pixel >= 1280 ? 2 : 50,
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           fontWeight: 500,
           transition: 'all 0.2s linear',
