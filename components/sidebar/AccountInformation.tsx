@@ -29,9 +29,20 @@ export const AccountInformation = () => {
           justifyContent: 'left',
           alignItems: 'center',
           gap: 10,
+          position: 'relative',
         }}
       >
-        <div style={{ height: '60%', aspectRatio: '1 / 1', position: 'relative' }}>
+        <Image src="/facebook_cover_photo_1.png" layout="fill" />
+        <div
+          style={{
+            height: '60%',
+            aspectRatio: '1 / 1',
+            position: 'relative',
+            borderRadius: '100%',
+            border: `2px solid ${themeValue[darkTheme].colors.border}`,
+            boxShadow: themeValue[darkTheme].shadows.lg,
+          }}
+        >
           <Image src={accountInfo.avatar} layout="fill" />
         </div>
         <div
@@ -56,6 +67,8 @@ export const AccountInformation = () => {
               position: 'relative',
               backgroundColor: themeValue[darkTheme].colors.blue200,
               borderRadius: '100%',
+              border: `2px solid ${themeValue[darkTheme].colors.border}`,
+              boxShadow: themeValue[darkTheme].shadows.lg,
             }}
             onClick={() => {
               setIsOpen(!isOpen)
@@ -68,8 +81,8 @@ export const AccountInformation = () => {
       <div
         style={{
           width: '100%',
-          height: isOpen ? '100%' : 0,
-          transition: 'all 0.2s linear',
+          height: isOpen ? 'calc(100% - 120px)' : 0,
+          transition: 'all 0.3s linear',
           display: 'flex',
           flexDirection: 'column',
           position: 'absolute',
