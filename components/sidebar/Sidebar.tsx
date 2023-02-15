@@ -89,7 +89,8 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
           boxShadow: '0 12px 20px 6px rgb(104 112 118 / 0.08)',
           fontWeight: 500,
           transition: 'all 0.2s linear',
-          overflow: 'hidden',
+          overflowY: 'auto',
+          overflowX: 'hidden',
           backgroundColor: themeValue[darkTheme].colors.backgroundContrast,
         }}
       >
@@ -110,8 +111,7 @@ export const SideBar = ({ isOpenSideBar, setOpenSideBar, pixel }: ISideBar) => {
         <div
           style={{
             display: 'flex',
-            marginTop: 10,
-            height: '100%',
+            height: 'calc(100% - 120px)',
             borderTop: `1px solid ${themeValue[darkTheme].colors.border}`,
           }}
         >

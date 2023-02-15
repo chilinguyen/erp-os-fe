@@ -1,10 +1,11 @@
 import { themeValue } from '@/lib'
 import { GeneralSettingsSelector } from '@/redux/general-settings'
 import { ShareStoreSelector } from '@/redux/share-store'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { CgMenuRound } from 'react-icons/cg'
-import { IoNotificationsCircleOutline } from 'react-icons/io5'
+import { HiMenuAlt2 } from 'react-icons/hi'
+import { RiNotificationBadgeFill } from 'react-icons/ri'
 import { useSelector } from 'react-redux'
 import { Search } from '../search'
 
@@ -20,6 +21,21 @@ export const NavbarInternal = ({ setOpenSideBar, pixel, setOpenNoti }: INavbarIn
 
   const router = useRouter()
 
+  const iconButton = () => {
+    return (
+      <div
+        style={{ cursor: 'pointer', position: 'relative', height: '100px', aspectRatio: '1' }}
+        onClick={() => {
+          if (router.pathname !== '/dashboard') {
+            router.push('/dashboard')
+          }
+        }}
+      >
+        <Image src="/logo_transparent.png" layout="fill" />
+      </div>
+    )
+  }
+
   return (
     <div
       style={{
@@ -33,6 +49,7 @@ export const NavbarInternal = ({ setOpenSideBar, pixel, setOpenNoti }: INavbarIn
         right: 0,
         padding: '10px',
         zIndex: 5,
+        overflow: 'hidden',
       }}
     >
       <div
@@ -44,24 +61,19 @@ export const NavbarInternal = ({ setOpenSideBar, pixel, setOpenNoti }: INavbarIn
         }}
       >
         {pixel < 1280 && (
-          <div onClick={setOpenSideBar} style={{ width: 'fit-content', height: 'fit-content' }}>
-            <CgMenuRound size={25} />
+          <div
+            onClick={setOpenSideBar}
+            style={{ width: 'fit-content', height: 'fit-content', cursor: 'pointer' }}
+          >
+            <HiMenuAlt2 size={25} />
           </div>
         )}
-        <div
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            if (router.pathname !== '/dashboard') {
-              router.push('/dashboard')
-            }
-          }}
-        >
-          icon
-        </div>
+        {breakPoint > 2 && iconButton()}
       </div>
 
       <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {breakPoint > 2 && <Search />}
+        {breakPoint < 2 && iconButton()}
       </div>
       <div
         style={{
@@ -74,8 +86,11 @@ export const NavbarInternal = ({ setOpenSideBar, pixel, setOpenNoti }: INavbarIn
         }}
       >
         {pixel < 1280 && (
-          <div onClick={setOpenNoti} style={{ width: 'fit-content', height: 'fit-content' }}>
-            <IoNotificationsCircleOutline size={25} />
+          <div
+            onClick={setOpenNoti}
+            style={{ width: 'fit-content', height: 'fit-content', cursor: 'pointer' }}
+          >
+            <RiNotificationBadgeFill size={25} />
           </div>
         )}
       </div>
